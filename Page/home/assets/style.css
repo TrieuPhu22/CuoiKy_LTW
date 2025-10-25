@@ -16,8 +16,12 @@
 body{
     font-family: 'Montserrat', sans-serif;
     position: relative;
-    height: 1000vh;
+    min-height: 100vh;
     
+}
+a{
+    text-decoration: none;
+    color: inherit;
 }
 
 /* ========================================================== Header ========================================================== */
@@ -106,7 +110,6 @@ main{
     
 }
 .homeContainer{
-    min-height: 500px;
     width: var(--main-width);
 }
 .homeMenu{
@@ -135,7 +138,12 @@ main{
 
 }
 
-/* ==================================================================footer =============================================================== */
+
+
+
+
+
+/* ==================================================================footer fixed=============================================================== */
 
 footer{
     display: flex;
@@ -147,9 +155,69 @@ footer{
     height: 60px;
     background-color: var(--fourth-color);
 }
-footer .footerContact{
+footer .footer{
     display: flex;
     gap: 50px;
     color: white;
     font-size: 14px;
+}
+/* ===================================================================footer absolute===============================================================*/
+
+.footerContact{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 70px;
+}
+.footerContact h4{
+    padding-top: 30px;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+.footerContact a{
+    font-size: 14px;
+    color: var(--third-color);
+    margin: 6px 0;
+    display: block;
+    transition: color 0.3s ease;
+}
+.footerContact a:hover{
+    color: var(--primary-color);
+}
+
+.footerContact .homeContainer{
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.footerLogo img{
+    width: 120px;
+    height: auto;
+    margin-bottom: 10px;
+}
+.footerLogo p{
+    font-size: 14px;
+    color: var(--third-color);
+    margin: 2px 0;
+}
+.footerFollow div a{
+    display: flex;
+    justify-content: flex-start;
+    gap: 8px;
+    margin: 6px 0;
+}
+.footerAddress div{
+    max-width: 300px;
+}
+.footerAddress b{
+    font-size: 14px;
+    color: var(--third-color);
+    margin: 2px 0;
 }
