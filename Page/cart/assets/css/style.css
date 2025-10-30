@@ -1,0 +1,122 @@
+:root {
+  --main-width: 1180px;
+  --primary-color: #ed6b87;
+  --secondary-color: #696969;
+  --third-color: #444444;
+  --fourth-color: #e91e63;
+}
+
+/* ========================================================== Common ================================================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Montserrat", sans-serif;
+  position: relative;
+  min-height: 100vh;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ========================================================== Header ========================================================== */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #f1f1f1;
+}
+/* Social Media Icons */
+.homeIconSocial {
+  margin-left: 200px;
+  display: flex;
+  gap: 20px;
+}
+.homeIconSocial .bi-facebook {
+  color: #3b5998;
+}
+.homeIconSocial .bi-instagram {
+  color: #e1306c;
+}
+.homeIconSocial i {
+  font-size: 28px;
+  cursor: pointer;
+}
+/* logo */
+.homeLogo img {
+  margin-left: 100px;
+  width: 150px;
+  height: auto;
+}
+/* search and login */
+.homeSearchLogin {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-right: 200px;
+}
+.homeSearch {
+  position: relative;
+}
+.homeSearch input[type="text"] {
+  padding: 8px 12px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+.homeSearch input[type="text"]:focus {
+  border-color: #ed6b87;
+}
+.homeSearch button {
+  position: absolute;
+  padding: 8px 12px;
+  border: none;
+  color: black;
+  border-radius: 4px;
+  cursor: pointer;
+  top: 1px;
+  right: 2px;
+  background-color: transparent;
+}
+
+.Home_cart i,
+.Home_user i {
+  height: 20px;
+  width: 20px;
+  font-size: 18px;
+  padding: 10px;
+  background-color: #ed6b87;
+  color: white;
+  border-radius: 10%;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.Home_cart i:hover,
+.Home_user i:hover {
+  opacity: 0.8;
+}
+/* ==================================================================footer fixed=============================================================== */
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  background-color: var(--fourth-color);
+}
+footer .footer {
+  display: flex;
+  gap: 50px;
+  color: white;
+  font-size: 14px;
+}
