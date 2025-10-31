@@ -7,12 +7,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Hoa Cầm Tay</title>
-    <link rel="stylesheet" href="/Page/home/assets/css/reset.css" />
-    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css" />
-    <link rel="stylesheet" href="/Page/home/assets/css/breakpoint.css">
-    <link rel="stylesheet" href="/Page/home/assets/css/style.css" />
-    <link rel="stylesheet" href="/Page/home/assets/css/hoa_sinh_nhat_sang_trong.css" />
+    <base href="http://localhost/CuoiKy_LTW/">
+    <link rel="stylesheet" href="./Page/home/assets/css/reset.css" />
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./node_modules/bootstrap-icons/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="./Page/home/assets/css/breakpoint.css">
+    <link rel="stylesheet" href="./Page/home/assets/css/style.css" />
+    <link rel="stylesheet" href="./Page/home/assets/css/hoa_sinh_nhat_sang_trong.css" />
 </head>
 
 <body>
@@ -62,9 +63,9 @@
 
     <?php include __DIR__ . '/../includes/Footer.php'; ?>
 
-    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="/Page/home/assets/js/main.js"></script>
+    <script src="./Page/home/assets/js/main.js"></script>
 </body>
 
 </html>

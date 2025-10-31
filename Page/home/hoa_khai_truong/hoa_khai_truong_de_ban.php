@@ -7,12 +7,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Hoa Khai Trương Để Bàn</title>
-    <link rel="stylesheet" href="/Page/home/assets/css/reset.css" />
-    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css" />
-    <link rel="stylesheet" href="/Page/home/assets/css/breakpoint.css">
-    <link rel="stylesheet" href="/Page/home/assets/css/style.css" />
-    <link rel="stylesheet" href="/Page/home/assets/css/hoa_sinh_nhat_sang_trong.css" />
+    <base href="http://localhost/CuoiKy_LTW/">
+    <link rel="stylesheet" href="./Page/home/assets/css/reset.css" />
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./node_modules/bootstrap-icons/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="./Page/home/assets/css/breakpoint.css">
+    <link rel="stylesheet" href="./Page/home/assets/css/style.css" />
+    <link rel="stylesheet" href="./Page/home/assets/css/hoa_sinh_nhat_sang_trong.css" />
 </head>
 
 <body>

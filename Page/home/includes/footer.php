@@ -2,7 +2,7 @@
 <div class="footerContact">
     <div class="homeContainer">
         <div class="footerLogo">
-            <img src="../../img/Logo_LTW.jpg" alt="logo" />
+            <img src="./img/Logo_LTW.jpg" alt="logo" />
             <p>Hotline: 012345678</p>
             <p>Email: nhom5@gmail.com</p>
         </div>
