@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Hoa Sinh Nhật Sang Trọng</title>
+    <title>Giỏ Hoa</title>
     <base href="http://localhost/CuoiKy_LTW/">
     <link rel="stylesheet" href="./Page/home/assets/css/reset.css" />
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css" />
@@ -29,7 +29,7 @@
     <main>
 
         <div class="homeContainer my-5">
-            <h1 class="text-center category-title mb-3"> Hoa Sinh Nhật Sang Trọng</h1>
+            <h1 class="text-center category-title mb-3"> Giỏ Hoa</h1>
             <hr class="mb-4">
 
             <div class="row align-items-center mb-4">

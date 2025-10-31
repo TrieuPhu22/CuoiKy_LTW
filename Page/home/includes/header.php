@@ -8,7 +8,7 @@
     <!-- logo -->
     <div class="homeLogo">
         <!-- Use absolute paths so header works from pages in any subfolder -->
-        <a href="/Page/home/home.php"><img src="/img/Logo_LTW.jpg" alt="Logo" /></a>
+        <a href="../CuoiKy_LTW"><img src="./img/Logo_LTW.jpg" alt="Logo" /></a>
     </div>
     <!-- search & login  -->
     <div class="homeSearchLogin">
