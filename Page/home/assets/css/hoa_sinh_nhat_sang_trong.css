@@ -1,0 +1,419 @@
+/* Page-specific styles for hoa_sinh_nhat_sang_trong.html */
+.page-hoa-sinh-nhat-sang-trong {
+    min-height: 600px;
+}
+
+.page-hoa-sinh-nhat-sang-trong .category-info {
+    /* collapsed state (readmore) */
+    max-height: 300px;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.page-hoa-sinh-nhat-sang-trong .category-info[aria-expanded="true"] {
+    /* expanded state */
+    max-height: 2000px;
+    /* large enough to reveal content */
+    overflow: visible;
+}
+
+.page-hoa-sinh-nhat-sang-trong .category-info h2:first-of-type {
+    text-align: center;
+}
+
+.page-hoa-sinh-nhat-sang-trong .category-info h2 {
+    text-align: justify;
+}
+
+.page-hoa-sinh-nhat-sang-trong .category-info p,
+.page-hoa-sinh-nhat-sang-trong .category-info li {
+    text-align: justify;
+    line-height: 1.6;
+}
+
+.page-hoa-sinh-nhat-sang-trong .category-info .center-img {
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.page-hoa-sinh-nhat-sang-trong .category-info .center-img img {
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
+}
+
+.readmore-toggle {
+    color: #ff595a;
+    font-weight: 600;
+    text-decoration: underline;
+    text-align: center;
+    font-size: 14px;
+    display: block;
+}
+
+/* Small helpers for product cards inside this category */
+.page-hoa-sinh-nhat-sang-trong #product-list .product-thumb .content .description h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.page-hoa-sinh-nhat-sang-trong #product-list .product-thumb .buynow-button a {
+    display: inline-block;
+    padding: 8px 12px;
+    background: #ff595a;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+/* Responsive tweak */
+@media (max-width: 576px) {
+    .page-hoa-sinh-nhat-sang-trong .category-info {
+        max-height: 220px;
+    }
+}
+
+/* --- Layout tweaks: make product cards align horizontally and centered --- */
+.page-hoa-sinh-nhat-sang-trong #product-list .col {
+    display: flex;
+    align-items: stretch;
+    /* make cards same height */
+}
+
+.page-hoa-sinh-nhat-sang-trong #product-list .product-thumb {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    background: transparent;
+}
+
+.page-hoa-sinh-nhat-sang-trong #product-list .product-thumb .image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.page-hoa-sinh-nhat-sang-trong #product-list .product-thumb .image img {
+    width: 100%;
+    max-width: 280px;
+    /* control card image width */
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+.page-hoa-sinh-nhat-sang-trong #product-list .product-thumb .content {
+    flex: 1 0 auto;
+    width: 100%;
+    text-align: center;
+    padding: 0 6px 6px;
+}
+
+.page-hoa-sinh-nhat-sang-trong #product-list .product-thumb .description h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #2f475a;
+    margin: 6px 0 8px;
+}
+
+.page-hoa-sinh-nhat-sang-trong #product-list .product-thumb .price {
+    margin-bottom: 10px;
+}
+
+.page-hoa-sinh-nhat-sang-trong #product-list .product-thumb .price .price-new {
+    color: #b36aa0;
+    /* pink/purple tone similar to screenshot */
+    font-weight: 600;
+    display: block;
+}
+
+.page-hoa-sinh-nhat-sang-trong #product-list .product-thumb .price .price-old {
+    color: #9a9a9a;
+    text-decoration: line-through;
+    font-size: 0.9rem;
+    margin-left: 6px;
+}
+
+.page-hoa-sinh-nhat-sang-trong #product-list .product-thumb .buynow-button a {
+    background: #b36aa0;
+    /* match price tone */
+    padding: 10px 16px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* ensure consistent spacing in desktop grid */
+.page-hoa-sinh-nhat-sang-trong #product-list.row {
+    gap: 18px;
+}
+
+@media (max-width: 768px) {
+    .page-hoa-sinh-nhat-sang-trong #product-list .product-thumb .image img {
+        max-width: 220px;
+    }
+}
+
+/* Also apply rules without the page- prefix to ensure they take effect
+   when other templates or global CSS load the page differently. */
+#product-list .col {
+    display: flex !important;
+    align-items: stretch !important;
+}
+
+#product-list .product-thumb {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+    padding: 12px !important;
+    box-sizing: border-box !important;
+    background: transparent !important;
+}
+
+#product-list .product-thumb .image {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin-bottom: 12px !important;
+}
+
+#product-list .product-thumb .image img {
+    width: 100% !important;
+    max-width: 280px !important;
+    height: auto !important;
+    display: block !important;
+    object-fit: cover !important;
+}
+
+#product-list .product-thumb .content {
+    flex: 1 0 auto !important;
+    width: 100% !important;
+    text-align: center !important;
+    padding: 0 6px 6px !important;
+}
+
+#product-list .product-thumb .description h3 {
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    color: #2f475a !important;
+    margin: 6px 0 8px !important;
+}
+
+#product-list .product-thumb .price .price-new {
+    color: #b36aa0 !important;
+    font-weight: 600 !important;
+    display: block !important;
+}
+
+#product-list .product-thumb .buynow-button a {
+    background: #b36aa0 !important;
+    padding: 10px 16px !important;
+    border-radius: 8px !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    display: inline-block !important;
+}
+
+/* Make the product list a responsive grid so Bootstrap grid classes aren't needed */
+#product-list {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 18px !important;
+    align-items: start;
+}
+
+@media (max-width: 992px) {
+    #product-list {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    #product-list {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 576px) {
+    #product-list {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Ensure product cells (Bootstrap .col or custom) behave as grid items */
+#product-list>.col,
+#product-list>.product-cell,
+#product-list>.product-cell.mb-3 {
+    display: contents !important;
+    /* allow inner .product-thumb to act as the card */
+}
+
+/* --- Local utility and component styles to remove Bootstrap dependency --- */
+/* Neutralize commonly-used Bootstrap utility class names (safe, local overrides) */
+.text-center {
+    text-align: center;
+}
+
+.text-end {
+    text-align: right;
+}
+
+.mb-3 {
+    margin-bottom: 1rem;
+}
+
+.mt-4 {
+    margin-top: 1.5rem;
+}
+
+.lh-33 {
+    line-height: 33px;
+}
+
+.mobile-center {
+    text-align: center;
+}
+
+/* Display-control (sorting / view / limit) */
+.display-control {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.dc-left {
+    flex: 0 0 auto;
+}
+
+.dc-center {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+}
+
+.dc-right {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.hc-input-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.hc-label {
+    font-size: 0.95rem;
+    padding: 6px 8px;
+    color: #333;
+}
+
+.hc-select {
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fff;
+}
+
+.hc-btn {
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.hc-btn-light {
+    background: #f8f9fa;
+}
+
+.hc-active {
+    box-shadow: 0 0 0 3px rgba(179, 106, 160, 0.12);
+}
+
+/* Product cell wrapper (grid item) */
+.product-cell {
+    display: contents;
+    /* acts as grid child wrapper; inner .product-thumb is the card */
+}
+
+/* Pagination styles (local) */
+.pagination-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.pagination-left {
+    flex: 1;
+}
+
+.pagination-info {
+    flex: 1;
+    text-align: right;
+}
+
+.hc-pagination {
+    list-style: none;
+    display: flex;
+    gap: 8px;
+    padding: 0;
+    margin: 0;
+}
+
+.hc-page {
+    display: inline-block;
+}
+
+.hc-page .hc-page-link,
+.hc-page>a.hc-page-link {
+    padding: 6px 10px;
+    display: inline-block;
+    border-radius: 6px;
+    border: 1px solid #e6e6e6;
+    color: #333;
+    text-decoration: none;
+}
+
+.hc-page.active .hc-page-link,
+.hc-page.active>span.hc-page-link {
+    background: #b36aa0;
+    color: #fff;
+    border-color: #b36aa0;
+}
+
+.category-col {
+    width: 100%;
+}
+
+/* Tweak buy button alignment for removed 'text-center' dependency */
+.buynow-button {
+    text-align: center;
+}
+
+/* Make sure lozad images remain responsive without bootstrap's img-fluid */
+.product-thumb .image img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}

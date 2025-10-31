@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+    :root {
+        --main-width: 1180px;
+        --primary-color: #ed6b87;
+        --secondary-color: #696969;
+        --third-color: #444444;
+        --fourth-color: #e91e63;
+    }
+=======
 :root {
   --main-width: 1180px;
   --primary-color: #ed6b87;
@@ -5,9 +14,406 @@
   --third-color: #444444;
   --fourth-color: #e91e63;
 }
+>>>>>>> origin/main
 
 /* ========================================================== Common ================================================================= */
 
+<<<<<<< HEAD
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: "Montserrat", sans-serif;
+        position: relative;
+        min-height: 100vh;
+        /* tạo khoảng cách trên để header không dính sát mép trình duyệt */
+        padding-top: 20px;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    /* ========================================================== Header ========================================================== */
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f1f1f1;
+    }
+
+    /* Social Media Icons */
+    .homeIconSocial {
+        margin-left: 200px;
+        display: flex;
+        gap: 20px;
+    }
+
+    .homeIconSocial .bi-facebook {
+        color: #3b5998;
+    }
+
+    .homeIconSocial .bi-instagram {
+        color: #e1306c;
+    }
+
+    .homeIconSocial i {
+        font-size: 28px;
+        cursor: pointer;
+    }
+
+    /* logo */
+    .homeLogo img {
+        margin-left: 100px;
+        width: 150px;
+        height: auto;
+    }
+
+    /* search and login */
+    .homeSearchLogin {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-right: 200px;
+    }
+
+    .homeSearch {
+        position: relative;
+    }
+
+    .homeSearch input[type="text"] {
+        padding: 8px 12px;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        outline: none;
+        transition: border-color 0.3s ease;
+    }
+
+    .homeSearch input[type="text"]:focus {
+        border-color: #ed6b87;
+    }
+
+    .homeSearch button {
+        position: absolute;
+        padding: 8px 12px;
+        border: none;
+        color: black;
+        border-radius: 4px;
+        cursor: pointer;
+        top: 1px;
+        right: 2px;
+        background-color: transparent;
+    }
+
+    .Home_cart i,
+    .Home_user i {
+        height: 20px;
+        width: 20px;
+        font-size: 18px;
+        padding: 10px;
+        background-color: #ed6b87;
+        color: white;
+        border-radius: 10%;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .Home_cart i:hover,
+    .Home_user i:hover {
+        opacity: 0.8;
+    }
+
+    /* ========================================================== Main ========================================================== */
+    main {
+        display: flex;
+        justify-content: center;
+
+    }
+
+    .homeContainer {
+        width: var(--main-width);
+        margin: 0 auto;
+    }
+
+    /* menu */
+    .homeMenu {
+        display: flex;
+        gap: 20px;
+        padding: 20px 0;
+        justify-content: center;
+        border-bottom: 2px solid #f1f1f1;
+    }
+
+    /* Ensure menu stays visible above other content (prevents it being obscured) */
+    .homeMenu {
+        position: relative;
+        z-index: 50;
+        background: #fff;
+        /* keep menu readable on top of banners */
+    }
+
+    /* Dropdown menus should appear above content (Bootstrap default sometimes needs larger z-index) */
+    .homeMenu .dropdown-menu {
+        z-index: 1060;
+    }
+
+    .homeMenu .dropdown-toggle {
+        color: black;
+        font-weight: 600;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    /* Ensure all dropdown containers and buttons align consistently so the CHỦ ĐỀ item
+       sits level with other menu buttons (fixes small misalignment caused by icon/font) */
+    .homeMenu .dropdown {
+        display: flex;
+        align-items: center;
+    }
+
+    .homeMenu .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 10px;
+    }
+
+    .homeMenu .dropdown-toggle i {
+        font-size: 0.9rem;
+        line-height: 1;
+    }
+
+    .homeMenu .dropdown-toggle:focus,
+    .homeMenu .dropdown-toggle:hover {
+        color: var(--primary-color);
+    }
+
+    .homeMenu .dropdown-item {
+        transition: color 0.3s ease;
+    }
+
+    .homeMenu .dropdown-item:hover {
+        color: var(--primary-color);
+    }
+
+    /* banner */
+    .homeBanner {
+        padding: 5px;
+        border: 2px solid #f1f1f1;
+    }
+
+    .homeBanner:hover .banner-btn-prev,
+    .homeBanner:hover .banner-btn-next {
+        opacity: 1;
+    }
+
+    .banner-btn-prev {
+        left: -50px;
+        opacity: 0;
+    }
+
+    .banner-btn-next {
+        right: -50px;
+        opacity: 0;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: #ed6b87;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+
+    }
+
+    /* ============================================product ============================================ */
+    .home-product-section .home-product-title {
+        text-align: center;
+        font-size: 23px;
+        font-weight: 600;
+        color: var(--third-color);
+        margin: 24px 0;
+    }
+
+    .home-list-product {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+
+    .home-list-product-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding: 0 12px;
+        margin: 0 0 8px;
+    }
+
+    .home-list-product-item .name {
+        font-size: 16px;
+        color: var(--third-color);
+        font-weight: 700;
+    }
+
+    .home-list-product-item img {
+        width: 100%;
+        height: 326px
+    }
+
+    .home-list-product-item .price {
+        display: flex;
+        gap: 10px;
+        font-size: 14px;
+        color: var(--fourth-color);
+    }
+
+
+    .home-list-product-item .order-btn {
+        font-size: 12px;
+        background-color: var(--fourth-color);
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+
+    }
+
+    .home-list-product-item .order-btn:hover {
+        background-color: var(--primary-color);
+
+    }
+
+    /* ==================================================================footer fixed=============================================================== */
+
+    footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 40px;
+        background-color: var(--fourth-color);
+    }
+
+    footer .footer {
+        display: flex;
+        gap: 50px;
+        color: white;
+        font-size: 14px;
+    }
+
+    /* ===================================================================footer absolute===============================================================*/
+
+    .footerContact {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+        margin: 40px 0;
+    }
+
+    .footerContact h4 {
+        padding-top: 30px;
+        font-size: 15px;
+        font-weight: 800;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+    }
+
+    .footerContact a {
+        font-size: 14px;
+        color: var(--third-color);
+        margin: 6px 0;
+        display: block;
+        transition: color 0.3s ease;
+    }
+
+    .footerContact a:hover {
+        color: var(--primary-color);
+    }
+
+    .footerContact .homeContainer {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .footerLogo img {
+        width: 120px;
+        height: auto;
+        margin-bottom: 10px;
+    }
+
+    .footerLogo p {
+        font-size: 14px;
+        color: var(--third-color);
+        margin: 2px 0;
+    }
+
+    .footerFollow div a {
+        display: flex;
+        justify-content: flex-start;
+        gap: 8px;
+        margin: 6px 0;
+    }
+
+    .footerAddress div {
+        max-width: 300px;
+    }
+
+    .footerAddress b {
+        font-size: 14px;
+        color: var(--third-color);
+        margin: 2px 0;
+    }
+
+    /* === Theme helpers (buttons, accents used by category page) === */
+    .btn-pink {
+        background-color: var(--fourth-color);
+        border-color: var(--fourth-color);
+        color: #fff;
+    }
+
+    .btn-pink:hover {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .text-pink {
+        color: var(--fourth-color) !important;
+    }
+
+    .product-card {
+        border: none;
+    }
+
+    .product-card .card-img-top {
+        height: 300px;
+        object-fit: cover;
+    }
+
+    .product-card .card-body {
+        padding: 16px;
+    }
+
+    .product-card .card-title {
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .product-card .card-text {
+        color: var(--fourth-color);
+        font-weight: 700;
+    }
+=======
 * {
   margin: 0;
   padding: 0;
@@ -284,3 +690,4 @@ footer .footer {
   color: var(--third-color);
   margin: 2px 0;
 }
+>>>>>>> origin/main
