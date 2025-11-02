@@ -9,9 +9,10 @@ if (session_status() === PHP_SESSION_NONE) {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="http://localhost/CuoiKy_LTW/">
 
     <!-- Reset CSS -->
-    <link rel="stylesheet" href="./assets/css/reset.css" />
+    <link rel="stylesheet" href="Page/cart/assets/css/reset.css" />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -24,16 +25,16 @@ if (session_status() === PHP_SESSION_NONE) {
     <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
-      href="../../node_modules/bootstrap/dist/css/bootstrap.min.css"
+      href="node_modules/bootstrap/dist/css/bootstrap.min.css"
     />
     <link
       rel="stylesheet"
-      href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css"
+      href="node_modules/bootstrap-icons/font/bootstrap-icons.css"
     />
 
     <!-- Your CSS -->
-    <link rel="stylesheet" href="./assets/css/breakpoint.css" />
-    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link rel="stylesheet" href="Page/cart/assets/css/breakpoint.css" />
+    <link rel="stylesheet" href="Page/cart/assets/css/style.css" />
 
     <title>Giỏ hàng</title>
   </head>
@@ -135,12 +136,12 @@ if (session_status() === PHP_SESSION_NONE) {
     ?>
 
     <!-- Bootstrap JS & deps -->
-    <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
     <!-- Custom JS -->
-    <script src="./assets/js/script.js"></script>
+    <script src="Page/cart/assets/js/script.js"></script>
   </body>
 </html>
