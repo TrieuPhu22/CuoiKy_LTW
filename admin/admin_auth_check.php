@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'Admin') {
     session_destroy();
     
     // "Đá" họ về trang đăng nhập với thông báo lỗi
-    header("Location: ../page/home/home.php?error=access_denied");
+    header("Location: ../index.php?error=access_denied");
     exit;
 }
 
