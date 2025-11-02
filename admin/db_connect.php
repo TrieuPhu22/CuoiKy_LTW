@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 $servername = "localhost";
 $username = "root";       // Tên người dùng XAMPP mặc định
 $password = "";           // Mật khẩu XAMPP mặc định là rỗng
-$dbname = "admin_db";     // Tên CSDL bạn đã tạo
+$dbname = "flower-shop";     // Tên CSDL bạn đã tạo
 $port = "3308";            // Cổng mặc định của MySQL trên XAMPP
 // Tạo kết nối
 $conn = new mysqli($servername, $username, $password, $dbname, $port);

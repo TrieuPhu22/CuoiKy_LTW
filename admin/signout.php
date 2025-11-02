@@ -9,7 +9,7 @@ $_SESSION = array();
 session_destroy();
 
 // Chuyển hướng người dùng về trang chủ
-header("Location: ../page/home/home.php");
+header("Location: ./signin.php");
 exit;
 ?>
 
