@@ -18,9 +18,9 @@
                 <i class="bi bi-search"></i>
             </button>
         </div>
-        <d class="Home_cart">
-            <a href="#"><i class="bi bi-bag-fill"></i></a>
-        </d iv>
+        <div class="Home_cart">
+            <a href="Page/cart/cart.php"><i class="bi bi-bag-fill"></i></a>
+        </div>
         <div class="Home_user">
             <?php if (isset($_SESSION['user_username']) && !empty($_SESSION['user_username'])): ?>
                 
