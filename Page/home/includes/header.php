@@ -19,7 +19,7 @@
             </button>
         </div>
         <div class="Home_cart">
-            <a href="#"><i class="bi bi-bag-fill"></i></a>
+            <a href="Page/cart/cart.php"><i class="bi bi-bag-fill"></i></a>
         </div>
         <div class="Home_user">
             <a href="#"><i class="bi bi-person-fill"></i></a>
