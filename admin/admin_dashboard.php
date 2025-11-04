@@ -13,11 +13,15 @@ include 'admin_auth_check.php';
     <title>Admin Dashboard - Đã bảo vệ</title>
     <!-- Tải jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Tùy chỉnh font Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+    rel="stylesheet"
+    />
     
     <!-- Liên kết đến tệp CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+
+
 </head>
 <body class="bg-gray-100">
 
@@ -303,7 +307,7 @@ include 'admin_auth_check.php';
     <div id="toast-message" class="toast-message"></div>
 
     <!-- Liên kết đến tệp JS (Phải đặt sau jQuery) -->
-    <script src="app.js"></script>
+    <script src="./assets/js/app.js"></script>
 
 </body>
 </html>
