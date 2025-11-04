@@ -6,8 +6,8 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: #f3f4f6; /* bg-gray-100 */
+    font-family: 'Montserrat', sans-serif;
+    background-color: #fff;
     color: #374151; /* text-gray-700 */
     line-height: 1.5;
 }
@@ -495,4 +495,36 @@ th, td {
     display: block;
     opacity: 1;
     bottom: 30px;
+}
+/* ===================================== SignIn ===================================== */
+.auth-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.auth-form{
+    border: 1px solid #D1D5DB;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    background-color: #ffffff;
+    
+}
+.btn-signin{
+    background-color: #ed6b87;
+    color: #ffffff;
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+}
+.btn-signin:hover{
+    opacity: 0.8;
+}
+.auth-link{
+    text-decoration: underline;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.auth-link:hover{
+    color: #ed6b87;
+    font-weight: 600;
 }
