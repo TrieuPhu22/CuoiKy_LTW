@@ -1,6 +1,8 @@
 <?php
 // Menu include - moved from home.php
 ?>
+
+
 <div class="homeMenu">
     <!-- CHỦ ĐỀ (moved to front, styled pink) -->
     <div class="dropdown">

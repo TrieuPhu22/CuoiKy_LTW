@@ -49,11 +49,10 @@ $conn->close();
     rel="stylesheet"
     href="./node_modules/bootstrap-icons/font/bootstrap-icons.css"
     />
-    <!-- Breakpoint Css -->
-    <link rel="stylesheet" href="./Page/home/assets/css/breakpoint.css" />
-
     <!-- Custom Css -->
     <link rel="stylesheet" href="./Page/home/assets/css/style.css" />
+    <!-- Breakpoint Css -->
+    <link rel="stylesheet" href="./Page/home/assets/css/breakpoint.css" />
 
     <title>Home</title>
 </head>
@@ -65,7 +64,7 @@ $conn->close();
     <main>
     <div class="homeContainer">
         <!-- ========  Menu ======== -->
-       <?php include __DIR__ . '/includes/Menu.php'; ?>
+    <?php include __DIR__ . '/includes/Menu.php'; ?>
 
         <!-- ========  Banner Slider ======== -->
         <div
