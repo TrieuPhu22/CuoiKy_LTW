@@ -35,6 +35,8 @@ if (session_status() === PHP_SESSION_NONE) {
     <!-- Your CSS -->
     <link rel="stylesheet" href="Page/cart/assets/css/breakpoint.css" />
     <link rel="stylesheet" href="Page/cart/assets/css/style.css" />
+    <link rel="stylesheet" href="Page/home/assets/css/style.css" />
+    <link rel="stylesheet" href="Page/home/assets/css/breakpoint.css"/>
 
     <title>Giỏ hàng</title>
   </head>
@@ -92,7 +94,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <!-- TODO: Lặp qua các sản phẩm trong session/db của bạn -->
           </div>
 
-          <a href="../home/home.php" class="btn btn-outline-primary"
+          <a href="Page/home/home.php" class="btn btn-outline-primary"
             >Tiếp tục mua sắm</a
           >
         </div>
@@ -124,18 +126,16 @@ if (session_status() === PHP_SESSION_NONE) {
       <!-- Trạng thái giỏ hàng trống -->
       <div class="cart-empty-state text-center py-5" style="display: none">
         <p class="fs-4">Giỏ hàng hiện đang trống.</p>
-        <a href="../home/home.php" class="btn btn-outline-primary"
+        <a href="Page/home/home.php" class="btn btn-outline-primary"
           >Tiếp tục mua sắm</a
         >
       </div>
     </main>
 
     <!-- ======== Footer (include) ======== -->
-    <?php
-      require_once __DIR__ . '/../home/includes/footer.php';
-    ?>
-
-    <!-- Bootstrap JS & deps -->
+    <?php include __DIR__ . '/../home/includes/Footer.php'; ?>
+    
+    <!-- Bootstrap JS & deps -->  
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 
     <!-- jQuery -->

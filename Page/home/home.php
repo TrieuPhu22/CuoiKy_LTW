@@ -73,14 +73,8 @@ $conn->close();
         data-bs-ride="carousel"
         >
         <div class="carousel-inner">
+
             <div class="carousel-item active">
-            <img
-                src="https://in.flowercorner.vn/uploads/P68e4db20f378c2.78650817.webp"
-                class="d-block w-100"
-                alt="..."
-            />
-            </div>
-            <div class="carousel-item">
             <img
                 src="https://in.flowercorner.vn/uploads/P67b80eac1dca11.10889059.webp"
                 class="d-block w-100"
