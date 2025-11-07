@@ -25,6 +25,9 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <base href="http://localhost/CuoiKy_LTW/">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="img/favicon.png">
     
     <!-- Reset Css -->
     <link rel="stylesheet" href="./Page/home/assets/css/reset.css" />

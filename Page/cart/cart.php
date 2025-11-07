@@ -11,6 +11,9 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="http://localhost/CuoiKy_LTW/">
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    
     <!-- Reset CSS -->
     <link rel="stylesheet" href="Page/cart/assets/css/reset.css" />
 

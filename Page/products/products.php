@@ -18,6 +18,9 @@ $product_id = intval($_GET['id']);
     <!-- QUAN TRỌNG: Thêm base tag -->
     <base href="http://localhost/CuoiKy_LTW/">
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    
     <title>Chi tiết sản phẩm</title>
     
     <!-- jQuery -->
