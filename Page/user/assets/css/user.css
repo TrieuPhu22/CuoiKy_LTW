@@ -1,0 +1,134 @@
+    :root {
+    --main-width: 1180px;
+    --primary-color: #ed6b87;
+    --secondary-color: #696969;
+    --third-color: #444444;
+    --fourth-color: #e91e63;
+    }
+    /* ================================== Main ================================== */
+    main {
+    display: flex;
+    justify-content: center;
+    }
+    .userContainer {
+    width: var(--main-width);
+    }
+    /* =============================== User Info =============================== */
+
+    .userContainer h1{
+    margin-bottom: 20px;
+    font-size: 26px;
+    }
+    .userForm legend{
+    font-size: 18px;
+    margin-bottom: 20px;
+    padding: 7px 0;
+    }
+    .userMain{
+    gap: 30px;
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    }
+
+/* user left */
+    .form_group{
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    
+    }
+    .form_group input{
+        width: 700px;
+        padding: 8px 12px;
+        border: 1px solid var(--secondary-color);
+        border-radius: 4px;
+    }
+    .form_group input:focus{
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 5px rgba(237, 107, 135, 0.5);
+    }
+    .form_group label{
+    font-weight: bold;
+    font-size: 14px;
+    }
+
+
+
+    .userForm .submit_btn {
+    font-size: 12px;
+    background-color: var(--fourth-color);
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    }
+
+    .userForm .submit_btn:hover {
+    background-color: var(--primary-color);
+    }
+
+    .form-btn{
+    display: flex;
+    justify-content: flex-end;
+    }
+/* user right */
+.userRight{
+    margin-top: 30px;
+    width: 250px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+    height: fit-content;
+}
+.userRightContent{
+    display: flex;
+    flex-direction: column;
+    }
+.userRightContent a{
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--secondary-color);
+    transition: all 0.3s ease;
+}
+.userRightContent a:last-child{
+    border-bottom: none;
+}
+
+.userRightContent a:hover{
+
+    color: var(--primary-color);
+}
+/* =================================== Order History ================================ */
+.userOrder {
+    margin-top: 30px;
+}
+.userOrder table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.userOrder th, .userOrder td {
+    padding: 12px 15px;
+    border: 1px solid var(--secondary-color);
+    
+    text-align: left;
+}
+.userOrder th {
+    background-color: var(--primary-color);
+    color: white;
+}
+.userOrder tr:nth-child(even) {
+    background-color: var(--fourth-color);
+}
+.orderLeft{
+    flex:1;
+}
+.orderRight{
+    margin-top: 30px;
+    width: 250px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+    height: fit-content;
+}

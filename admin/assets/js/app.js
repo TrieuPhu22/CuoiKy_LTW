@@ -301,6 +301,8 @@ $(document).ready(function() {
                 <td>${user.id}</td>
                 <td>${user.username}</td>
                 <td>${user.email}</td>
+                <td>${user.phone || 'Chưa có'}</td>
+                <td>${user.address || 'Chưa có'}</td>
                 <td>${formatBadge('role', user.role)}</td>
                 <td>${user.join_date}</td>
                 <td>
@@ -317,6 +319,8 @@ $(document).ready(function() {
         $('#user-modal-title').text('Thêm Người Dùng Mới');
         $('#user-action').val('add');
         $('#user-id').val('');
+        $('#user-password').prop('required', true); // Bắt buộc khi thêm mới
+        $('#password-hint').hide(); // Ẩn hint khi thêm mới
         $('#user-modal').css('display', 'flex');
     });
     
@@ -335,7 +339,12 @@ $(document).ready(function() {
                     $('#user-id').val(user.id);
                     $('#user-username').val(user.username);
                     $('#user-email').val(user.email);
+                    $('#user-phone').val(user.phone || '');
+                    $('#user-address').val(user.address || '');
                     $('#user-role').val(user.role);
+                    $('#user-password').val(''); // Reset password field
+                    $('#user-password').prop('required', false); // Không bắt buộc khi sửa
+                    $('#password-hint').show(); // Hiện hint khi sửa
                     
                     $('#user-modal-title').text('Sửa Người Dùng');
                     $('#user-action').val('update');
@@ -370,8 +379,8 @@ $(document).ready(function() {
                         // Thêm hàng mới
                         $('#users-table tbody').append(renderUserRow(response.data));
                     } else {
-                        // Sửa hàng
-                        const oldJoinDate = $(`#users-table tr[data-id="${response.data.id}"] td:nth-child(5)`).text();
+                        // Sửa hàng - giữ nguyên join_date
+                        const oldJoinDate = $(`#users-table tr[data-id="${response.data.id}"] td:nth-child(7)`).text();
                         response.data.join_date = oldJoinDate;
                         
                         const updatedRow = renderUserRow(response.data);

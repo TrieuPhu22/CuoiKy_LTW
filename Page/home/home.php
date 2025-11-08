@@ -79,21 +79,21 @@ $conn->close();
 
             <div class="carousel-item active">
             <img
-                src="https://in.flowercorner.vn/uploads/P67b80eac1dca11.10889059.webp"
+                src="./img/banner1.jpg"
                 class="d-block w-100"
                 alt="..."
             />
             </div>
             <div class="carousel-item">
             <img
-                src="https://in.flowercorner.vn/uploads/P657fd247737038.75342862.webp"
+                src="./img/banner2.jpg"
                 class="d-block w-100"
                 alt="..."
             />
             </div>
             <div class="carousel-item">
             <img
-                src="https://in.flowercorner.vn/uploads/P649ea8ef2ed4f0.09844576.webp"
+                src="./img/banner3.jpg"
                 class="d-block w-100"
                 alt="..."
             />

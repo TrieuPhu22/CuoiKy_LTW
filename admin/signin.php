@@ -18,6 +18,8 @@ if (isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../img/favicon.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <!-- Reset Css -->
     <link rel="stylesheet" href="./assets/css/reset.css">

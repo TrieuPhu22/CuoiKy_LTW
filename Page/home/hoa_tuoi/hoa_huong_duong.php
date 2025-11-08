@@ -21,14 +21,12 @@
 <body>
     <?php include __DIR__ . '/../includes/Header.php'; ?>
 
-    <!-- Menu: place outside <main> so layout stacks top->down like homepage -->
-    <div class="homeContainer">
-        <?php include __DIR__ . '/../includes/Menu.php'; ?>
-    </div>
+
 
     <main>
 
         <div class="homeContainer my-5">
+            <?php include __DIR__ . '/../includes/Menu.php'; ?>
             <h1 class="text-center category-title mb-3"> Hoa Hướng Dương</h1>
             <hr class="mb-4">
 
@@ -97,7 +95,7 @@
 
     <?php include __DIR__ . '/../includes/Footer.php'; ?>
 
-    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="/Page/home/assets/js/main.js"></script>
 </body>
