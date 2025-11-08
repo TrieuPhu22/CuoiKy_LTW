@@ -34,7 +34,7 @@
                         <?php echo htmlspecialchars($_SESSION['user_username']); ?>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="admin/profile.php">Tài khoản của tôi</a></li>
+                        <li><a class="dropdown-item" href="Page/user/user.php">Tài khoản của tôi</a></li>
                         <li><a class="dropdown-item" href="admin/signout.php">Đăng xuất</a></li>
                     </ul>
                 </div>

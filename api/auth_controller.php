@@ -78,7 +78,7 @@ elseif ($action === 'signin') {
     }
 
     // --- Tìm người dùng bằng email ---
-    $stmt = $conn->prepare("SELECT id, username, email, password, role FROM users WHERE email = ?");
+    $stmt = $conn->prepare("SELECT id, username, email, password, role, phone, address FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -101,6 +101,9 @@ elseif ($action === 'signin') {
         // --- Lưu thông tin vào SESSION ---
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_username'] = $user['username'];
+        $_SESSION['user_email'] = $user['email'];
+        $_SESSION['user_phone'] = $user['phone'];
+        $_SESSION['user_address'] = $user['address'];
         $_SESSION['user_role'] = $user['role'];
 
         // Trả về thông báo thành công và vai trò (role)

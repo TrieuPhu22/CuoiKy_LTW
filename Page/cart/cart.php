@@ -34,8 +34,9 @@ if (session_status() === PHP_SESSION_NONE) {
     />
 
     <!-- Your CSS -->
-    <link rel="stylesheet" href="Page/cart/assets/css/breakpoint.css" />
+    
     <link rel="stylesheet" href="Page/cart/assets/css/style.css" />
+    <link rel="stylesheet" href="Page/cart/assets/css/breakpoint.css" />
 
     <title>Giỏ hàng</title>
   </head>
