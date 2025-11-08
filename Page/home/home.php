@@ -25,6 +25,9 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <base href="http://localhost/CuoiKy_LTW/">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="img/favicon.png">
     
     <!-- Reset Css -->
     <link rel="stylesheet" href="./Page/home/assets/css/reset.css" />
@@ -73,16 +76,10 @@ $conn->close();
         data-bs-ride="carousel"
         >
         <div class="carousel-inner">
+
             <div class="carousel-item active">
             <img
-                src="./img/banner1.jpg"
-                class="d-block w-100"
-                alt="..."
-            />
-            </div>
-            <div class="carousel-item">
-            <img
-                src="./img/banner2.jpg"
+                src="https://in.flowercorner.vn/uploads/P67b80eac1dca11.10889059.webp"
                 class="d-block w-100"
                 alt="..."
             />
