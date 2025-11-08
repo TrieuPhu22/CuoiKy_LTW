@@ -10,6 +10,8 @@ include 'admin_auth_check.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Đã bảo vệ</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../img/favicon.png">
     <!-- Tải jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link
