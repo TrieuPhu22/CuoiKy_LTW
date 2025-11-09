@@ -66,15 +66,10 @@ function renderProductList(data, selector) {
     })
     .join("");
 
-  // Đổ HTML vào selector
   $(selector).html(html);
 }
-
-// BƯỚC 3: Dùng $(document).ready
+// Lọc sản phẩm và render khi tài liệu sẵn sàng
 $(document).ready(function () {
-  console.log("home_script.js loaded"); // DEBUG
-  console.log("Products from DB:", allProductsFromDB); // DEBUG
-
   // 1. Lọc Hoa Sinh Nhật
   const birthdayProducts = allProductsFromDB.filter(function (product) {
     return product.category === "hoa_sinh_nhat";

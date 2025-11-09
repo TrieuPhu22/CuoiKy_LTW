@@ -91,17 +91,50 @@ $(document).ready(function() {
     // --- QUẢN LÝ SẢN PHẨM (PRODUCTS) ---
     // ===================================
 
+    // ⚡ Hàm lấy tên subcategory
+   function getSubcategoryName(category, subcategory) {
+        const subcategories = {
+            'chu_de': {
+                'hoa_cam_tay': 'Hoa Cầm Tay',
+                'hoa_chuc_mung': 'Hoa Chúc Mừng',
+                'hoa_tang_le_hoa_chia_buon': 'Hoa Tăng Lễ Hoa Chia Buồn'
+            },
+            'hoa_sinh_nhat': {
+                'sang_trong': 'Sang Trọng',
+                'tang_nguoi_yeu': 'Tặng Người Yêu'
+            },
+            'hoa_khai_truong': {
+                'de_ban': 'Để Bàn',
+                'hien_dai': 'Hiện Đại'
+            },
+            'thiet_ke': {
+                'bo_hoa': 'Bó Hoa',
+                'gio_hoa': 'Giỏ Hoa'
+            },
+            'hoa_tuoi': {
+                'hoa_hong': 'Hoa Hồng',
+                'hoa_baby': 'Hoa Baby',
+                'hoa_huong_duong': 'Hoa Hướng Dương'
+            }
+        };
+        
+        if (subcategories[category] && subcategories[category][subcategory]) {
+            return subcategories[category][subcategory];
+        }
+        return '';
+    }
+
     // Hàm tải danh sách sản phẩm
     function loadProducts() {
         $.ajax({
             url: '../api/products.php',
-            method: 'POST', // Đổi sang POST để thống nhất
+            method: 'POST',
             data: { action: 'get_all' },
             dataType: 'json',
             success: function(response) {
                 if (response.success) {
                     const tbody = $('#products-table tbody');
-                    tbody.empty(); // Xoá dữ liệu cũ
+                    tbody.empty();
                     response.data.forEach(function(product) {
                         tbody.append(renderProductRow(product));
                     });
@@ -113,39 +146,74 @@ $(document).ready(function() {
         });
     }
     
+
+    // ⚡ Xử lý khi chọn category → load subcategories
+   $('#product-category').on('change', function() {
+    const category = $(this).val();
+    
+    if (category) {
+        $.ajax({
+            url: '../api/products.php',
+            method: 'POST',
+            data: { action: 'get_subcategories', category: category },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success && Object.keys(response.data).length > 0) {
+                    const subcatSelect = $('#product-subcategory');
+                    subcatSelect.empty();
+                    subcatSelect.append('<option value="">-- Chọn danh mục con --</option>');
+                    
+                    // ⚡ response.data = { id: {key, name}, ... }
+                    $.each(response.data, function(id, obj) {
+                        subcatSelect.append(`<option value="${id}">${obj.name}</option>`);
+                    });
+                    
+                    $('#subcategory-group').show();
+                } else {
+                    $('#subcategory-group').hide();
+                }
+            }
+        });
+    } else {
+        $('#subcategory-group').hide();
+    }
+});
     // Hàm render một hàng sản phẩm
     function renderProductRow(product) {
-         // Định dạng giá tiền
-        const formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price);
-        
-        // Thêm timestamp (new Date().getTime()) để tránh lỗi cache của trình duyệt khi ảnh được cập nhật
-        const imageUrl = product.image_url 
-                        ? `${product.image_url}?t=${new Date().getTime()}` 
-                        : 'https://placehold.co/100x100/E2E8F0/A0AEC0?text=SP';
-        
-        return `
-            <tr data-id="${product.id}">
-                <td>${product.id}</td>
-                <td>
-                    <div class="product-cell">
-                        <img src="${imageUrl}" alt="Product Image">
-                        <div>
-                            <p class="product-name">${product.name}</p>
-                            <!-- SỬA: Hiển thị mô tả ngắn -->
-                            <p class="product-category">${product.description ? product.description.substring(0, 30) : ''}...</p>
-                        </div>
-                    </div>
-                </td>
-                <td>${formattedPrice}</td>
-                <td>${getCategoryName(product.category)}</td> 
-                <td>${product.stock}</td>
-                <td>
-                    <button class="btn btn-edit btn-edit-product" data-id="${product.id}">Sửa</button>
-                    <button class="btn btn-delete btn-delete-product" data-id="${product.id}">Xoá</button>
-                </td>
-            </tr>
-        `;
+    const formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price);
+    
+    const imageUrl = product.image_url 
+                    ? `${product.image_url}?t=${new Date().getTime()}` 
+                    : 'https://placehold.co/100x100/E2E8F0/A0AEC0?text=SP';
+    
+    let categoryText = getCategoryName(product.category);
+    if (product.subcategory_name) {  // ⚡ Dùng subcategory_name từ database
+        categoryText += ` / ${product.subcategory_name}`;
     }
+
+    return `
+        <tr data-id="${product.id}">
+            <td>${product.id}</td>
+            <td>
+                <div class="product-cell">
+                    <img src="${imageUrl}" alt="Product Image">
+                    <div>
+                        <p class="product-name">${product.name}</p>
+                        <p class="product-category">${product.description ? product.description.substring(0, 30) : ''}...</p>
+                    </div>
+                </div>
+            </td>
+            <td>${formattedPrice}</td>
+            <td>${categoryText}</td> 
+            <td>${product.stock}</td>
+            <td>
+                <button class="btn btn-edit btn-edit-product" data-id="${product.id}">Sửa</button>
+                <button class="btn btn-delete btn-delete-product" data-id="${product.id}">Xoá</button>
+            </td>
+        </tr>
+    `;
+}
+
 
     // Mở Modal Thêm Sản phẩm
     $('#btn-add-product').on('click', function() {
@@ -156,8 +224,10 @@ $(document).ready(function() {
         $('#product-existing-image').val(''); // Xoá ảnh cũ
         $('#product-image-file').val(''); // Xoá file đã chọn
         $('#product-category').val('');
+        $('#subcategory-group').hide(); 
         $('#product-modal').css('display', 'flex');
     });
+
     
     // Mở Modal Sửa Sản phẩm
     $(document).on('click', '.btn-edit-product', function() {
@@ -184,10 +254,19 @@ $(document).ready(function() {
                     $('#product-existing-image').val(product.image_url);
                     $('#product-image-file').val(''); // Reset ô chọn file
                     
-                    // Cập nhật modal
+                    if (product.category) {
+                        $('#product-category').trigger('change');
+                        
+                        // Đợi subcategories load xong rồi mới set giá trị
+                        setTimeout(() => {
+                            $('#product-subcategory').val(product.subcategory_id);
+                        }, 300);
+                    }
+                    
                     $('#product-modal-title').text('Sửa Sản Phẩm');
                     $('#product-action').val('update');
                     $('#product-modal').css('display', 'flex');
+
                 } else {
                     showToast(response.message, false);
                 }
@@ -204,13 +283,13 @@ $(document).ready(function() {
         
         // Sử dụng FormData để gửi cả text và file
         const formData = new FormData(this);
+
         
         $.ajax({
             url: '../api/products.php',
             method: 'POST',
             data: formData, // Gửi FormData
             dataType: 'json',
-            // Thêm 2 dòng này để AJAX gửi file
             processData: false,
             contentType: false,
             success: function(response) {
@@ -227,6 +306,7 @@ $(document).ready(function() {
                         const updatedRow = renderProductRow(response.data);
                         $(`#products-table tr[data-id="${response.data.id}"]`).replaceWith(updatedRow);
                     }
+                    loadProducts();
                 } else {
                     showToast(response.message, false);
                 }

@@ -40,9 +40,6 @@
                 <a class="dropdown-item ajax-link" href="./Page/home/hoa_sinh_nhat/hoa_sinh_nhat_sang_trong.php">HOA SINH NHẬT SANG TRỌNG</a>
             </li>
             <li>
-                <a class="dropdown-item ajax-link" href="./Page/home/hoa_sinh_nhat/hoa_sinh_nhat_gia_re.php">HOA SINH NHẬT GIÁ RẺ</a>
-            </li>
-            <li>
                 <a class="dropdown-item ajax-link" href="./Page/home/hoa_sinh_nhat/hoa_sinh_nhat_tang_nguoi_yeu.php">HOA SINH NHẬT TẶNG NGƯỜI YÊU</a>
             </li>
         </ul>
@@ -64,9 +61,7 @@
             <li>
                 <a class="dropdown-item ajax-link" href="./Page/home/hoa_khai_truong/ke_hoa_khai_truong.php">KỆ HOA KHAI TRƯƠNG HIỆN ĐẠI</a>
             </li>
-            <li>
-                <a class="dropdown-item ajax-link" href="./Page/home/hoa_khai_truong/hoa_khai_truong_gia_re.php">HOA KHAI TRƯƠNG GIÁ RẺ</a>
-            </li>
+
         </ul>
     </div>
 
@@ -81,7 +76,6 @@
         </button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="./Page/home/thiet_ke/bo_hoa.php">BÓ HOA</a></li>
-            <li><a class="dropdown-item" href="./Page/home/thiet_ke/lang_hoa.php">LẴNG HOA</a></li>
             <li><a class="dropdown-item" href="./Page/home/thiet_ke/gio_hoa.php">GIỎ HOA</a></li>
         </ul>
     </div>
