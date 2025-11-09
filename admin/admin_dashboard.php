@@ -216,6 +216,12 @@ include 'admin_auth_check.php';
                         <option value="hoa_tuoi">Hoa Tươi</option>
                     </select>
                 </div>
+                <div class="form-group" id="subcategory-group" style="display: none;">
+                    <label for="product-subcategory">Danh mục con:</label>
+                    <select id="product-subcategory" name="subcategory_id">
+                        <option value="">-- Chọn danh mục con --</option>
+                    </select>
+                </div>
                 
                 <div class="form-group">
                     <label for="product-image-file">Hình ảnh:</label>
