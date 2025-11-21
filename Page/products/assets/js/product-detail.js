@@ -2,6 +2,9 @@ $(document).ready(function () {
   console.log("product-detail.js loaded");
   console.log("Product ID:", PRODUCT_ID);
 
+  // Biến lưu thông tin sản phẩm hiện tại
+  let currentProduct = null;
+
   // Load product detail when page loads
   loadProductDetail();
 
@@ -40,6 +43,19 @@ $(document).ready(function () {
     return categories[key] || key;
   }
 
+  // Chuẩn hóa đường dẫn ảnh
+  function normalizeImagePath(imageUrl) {
+    if (!imageUrl) return "";
+
+    let cleanPath = imageUrl;
+    if (cleanPath.startsWith("../")) {
+      cleanPath = cleanPath.substring(3);
+    } else if (cleanPath.startsWith("./")) {
+      cleanPath = cleanPath.substring(2);
+    }
+    return cleanPath;
+  }
+
   // --- LOAD PRODUCT DETAIL ---
 
   function loadProductDetail() {
@@ -61,6 +77,7 @@ $(document).ready(function () {
         $("#loading-spinner").hide();
 
         if (response.success) {
+          currentProduct = response.data;
           displayProductDetail(response.data);
           loadRelatedProducts(response.data.category);
         } else {
@@ -89,19 +106,11 @@ $(document).ready(function () {
 
     // Set product image
     let imageUrl = "https://placehold.co/500x500/E2E8F0/A0AEC0?text=Sản+Phẩm";
-
     if (product.image_url) {
-      let cleanPath = product.image_url;
-      // Xử lý đường dẫn ảnh
-      if (cleanPath.startsWith("../")) {
-        cleanPath = cleanPath.substring(3);
-      } else if (cleanPath.startsWith("./")) {
-        cleanPath = cleanPath.substring(2);
-      }
-      imageUrl = `${cleanPath}?t=${new Date().getTime()}`;
-      console.log("Image URL:", imageUrl);
+      imageUrl = `${normalizeImagePath(
+        product.image_url
+      )}?t=${new Date().getTime()}`;
     }
-
     $("#product-image").attr("src", imageUrl).attr("alt", product.name);
 
     // Set category
@@ -113,7 +122,7 @@ $(document).ready(function () {
     // Set stock status
     const stockText =
       product.stock > 0 ? `Còn hàng (${product.stock} sản phẩm)` : "Hết hàng";
-    const stockClass = product.stock > 0 ? "in-stock" : "out-of-stock";
+    const stockClass = product.stock > 0 ? "text-success" : "text-danger";
     $("#product-stock").text(stockText).addClass(stockClass);
 
     // Set description
@@ -132,6 +141,7 @@ $(document).ready(function () {
 
     // Show product detail section
     $("#product-detail-section").fadeIn();
+    console.log("✅ Product detail displayed");
   }
 
   // --- LOAD RELATED PRODUCTS ---
@@ -150,7 +160,6 @@ $(document).ready(function () {
             .filter((p) => p.category === category && p.id != PRODUCT_ID)
             .slice(0, 4);
 
-          console.log("Related products:", relatedProducts);
           displayRelatedProducts(relatedProducts);
         }
       },
@@ -172,13 +181,7 @@ $(document).ready(function () {
     products.forEach((product) => {
       let imageUrl = "https://placehold.co/300x300/E2E8F0/A0AEC0?text=SP";
       if (product.image_url) {
-        let cleanPath = product.image_url;
-        if (cleanPath.startsWith("../")) {
-          cleanPath = cleanPath.substring(3);
-        } else if (cleanPath.startsWith("./")) {
-          cleanPath = cleanPath.substring(2);
-        }
-        imageUrl = cleanPath;
+        imageUrl = normalizeImagePath(product.image_url);
       }
 
       const card = `
@@ -198,8 +201,120 @@ $(document).ready(function () {
     });
   }
 
-  // --- QUANTITY CONTROLS ---
+  // --- CART FUNCTIONS ---
 
+  function addToCartAPI(quantity, redirectAfter = false) {
+    if (!currentProduct) {
+      showToast("Không tìm thấy thông tin sản phẩm!", false);
+      return;
+    }
+
+    // Kiểm tra tồn kho
+    if (currentProduct.stock <= 0) {
+      showToast("Sản phẩm đã hết hàng!", false);
+      return;
+    }
+
+    if (quantity > currentProduct.stock) {
+      showToast(`Chỉ còn ${currentProduct.stock} sản phẩm!`, false);
+      return;
+    }
+
+    const requestData = {
+      action: "add",
+      product_id: currentProduct.id,
+      name: currentProduct.name,
+      price: currentProduct.price,
+      quantity: quantity,
+      image: normalizeImagePath(currentProduct.image_url),
+    };
+
+    console.log("📦 Adding to cart:", requestData);
+
+    $.ajax({
+      url: "api/cart.php",
+      method: "POST",
+      data: requestData,
+      dataType: "json",
+      success: function (response) {
+        console.log("✅ Cart API response:", response);
+
+        if (response.success) {
+          if (redirectAfter) {
+            // Mua ngay - chuyển đến giỏ hàng
+            window.location.href = "Page/cart/cart.php";
+          } else {
+            // Thêm vào giỏ - hiển thị thông báo
+            showToast(
+              `Đã thêm ${quantity} x "${currentProduct.name}" vào giỏ hàng!`,
+              true
+            );
+            updateCartCount();
+          }
+        } else {
+          // Kiểm tra xem có phải lỗi chưa đăng nhập không
+          if (response.message && response.message.includes("đăng nhập")) {
+            if (
+              confirm(
+                "Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng. Đăng nhập ngay?"
+              )
+            ) {
+              window.location.href = "admin/signin.php?redirect=cart";
+            }
+          } else {
+            showToast(response.message || "Có lỗi xảy ra!", false);
+          }
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("❌ AJAX error:", error);
+        console.error("Response:", xhr.responseText);
+        showToast("Không thể thêm vào giỏ hàng!", false);
+      },
+    });
+  }
+
+  function updateCartCount() {
+    $.ajax({
+      url: "api/cart.php",
+      method: "POST",
+      data: { action: "get" },
+      dataType: "json",
+      success: function (response) {
+        if (response.success && response.count > 0) {
+          const badge = $(".cart-count-badge");
+          if (badge.length) {
+            badge.text(response.count).show();
+          }
+        }
+      },
+      error: function (error) {
+        console.error("Error getting cart count:", error);
+      },
+    });
+  }
+
+  // --- EVENT HANDLERS ---
+
+  // Thêm vào giỏ hàng
+  $("#add-to-cart").on("click", function (e) {
+    e.preventDefault();
+    console.log("=== ADD TO CART CLICKED ===");
+
+    const quantity = parseInt($("#quantity").val()) || 1;
+    addToCartAPI(quantity, false);
+  });
+
+  // Mua ngay
+  $("#buy-now").on("click", function (e) {
+    e.preventDefault();
+    console.log("=== BUY NOW CLICKED ===");
+
+    const quantity = parseInt($("#quantity").val()) || 1;
+    addToCartAPI(quantity, true);
+  });
+
+  // Tăng số lượng
   $("#increase-qty").on("click", function () {
     const qtyInput = $("#quantity");
     const currentQty = parseInt(qtyInput.val());
@@ -210,6 +325,7 @@ $(document).ready(function () {
     }
   });
 
+  // Giảm số lượng
   $("#decrease-qty").on("click", function () {
     const qtyInput = $("#quantity");
     const currentQty = parseInt(qtyInput.val());
@@ -219,26 +335,12 @@ $(document).ready(function () {
     }
   });
 
-  // Prevent invalid quantity input
+  // Validate input số lượng
   $("#quantity").on("input", function () {
     const value = parseInt($(this).val());
     const max = parseInt($(this).attr("max"));
 
     if (value < 1) $(this).val(1);
     if (value > max) $(this).val(max);
-  });
-
-  // --- ADD TO CART ---
-
-  $("#add-to-cart").on("click", function () {
-    const quantity = parseInt($("#quantity").val());
-    const productName = $("#product-name").text();
-    showToast(`Đã thêm ${quantity} x "${productName}" vào giỏ hàng!`, true);
-  });
-
-  // --- BUY NOW ---
-
-  $("#buy-now").on("click", function () {
-    showToast("Chức năng mua ngay đang được phát triển!", true);
   });
 });

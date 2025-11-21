@@ -65,60 +65,41 @@ $product_id = intval($_GET['id']);
     <!-- Product Detail Section -->
     <div class="container product-detail-container" id="product-detail-section" style="display: none;">
         <div class="row mt-5">
-            <!-- Product Image -->
             <div class="col-md-6">
-                <div class="product-image-wrapper">
-                    <img id="product-image" src="" alt="Product Image" class="img-fluid product-main-image">
-                </div>
+                <img id="product-image" src="" alt="Product" class="img-fluid rounded shadow">
             </div>
-
-            <!-- Product Info -->
             <div class="col-md-6">
-                <div class="product-info">
-                    <h1 id="product-name" class="product-title"></h1>
-                    
-                    <div class="product-category mb-3">
-                        <span class="badge bg-secondary" id="product-category"></span>
-                    </div>
-                    
-                    <div class="product-price mb-4">
-                        <h2 id="product-price" class="text-danger"></h2>
-                    </div>
-                    
-                    <div class="product-stock mb-3">
-                        <p><strong>Tình trạng:</strong> 
-                            <span id="product-stock" class="stock-status"></span>
-                        </p>
-                    </div>
-                    
-                    <div class="product-description mb-4">
-                        <h5>Mô tả sản phẩm:</h5>
-                        <p id="product-description"></p>
-                    </div>
-                    
-                    <!-- Quantity Selector -->
-                    <div class="quantity-selector mb-4">
-                        <label class="form-label"><strong>Số lượng:</strong></label>
-                        <div class="input-group" style="width: 150px;">
-                            <button class="btn btn-outline-secondary" type="button" id="decrease-qty">
-                                <i class="bi bi-dash"></i>
-                            </button>
-                            <input type="number" class="form-control text-center" id="quantity" value="1" min="1">
-                            <button class="btn btn-outline-secondary" type="button" id="increase-qty">
-                                <i class="bi bi-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Action Buttons -->
-                    <div class="product-actions">
-                        <button class="btn btn-primary btn-lg me-2" id="add-to-cart">
-                            <i class="bi bi-cart-plus"></i> Thêm vào giỏ hàng
+                <h1 id="product-name" class="mb-3"></h1>
+                <p class="text-muted mb-2">
+                    <span class="badge bg-secondary" id="product-category"></span>
+                </p>
+                <h2 class="text-danger mb-3" id="product-price"></h2>
+                <p class="mb-3">
+                    <strong>Tình trạng: </strong>
+                    <span id="product-stock"></span>
+                </p>
+                <p class="mb-4" id="product-description"></p>
+                
+                <div class="mb-4">
+                    <label class="form-label"><strong>Số lượng:</strong></label>
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="btn btn-outline-secondary" id="decrease-qty">
+                            <i class="bi bi-dash"></i>
                         </button>
-                        <button class="btn btn-success btn-lg" id="buy-now">
-                            <i class="bi bi-bag-check"></i> Mua ngay
+                        <input type="number" id="quantity" class="form-control text-center" value="1" min="1" style="width: 80px;">
+                        <button class="btn btn-outline-secondary" id="increase-qty">
+                            <i class="bi bi-plus"></i>
                         </button>
                     </div>
+                </div>
+                
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary btn-lg flex-fill" id="add-to-cart">
+                        <i class="bi bi-cart-plus"></i> Thêm vào giỏ hàng
+                    </button>
+                    <button class="btn btn-success btn-lg flex-fill" id="buy-now">
+                        <i class="bi bi-lightning-fill"></i> Mua ngay
+                    </button>
                 </div>
             </div>
         </div>
@@ -126,9 +107,7 @@ $product_id = intval($_GET['id']);
         <!-- Related Products Section -->
         <div class="related-products mt-5">
             <h3 class="mb-4">Sản phẩm liên quan</h3>
-            <div class="row" id="related-products-container">
-                <!-- Related products will be loaded here -->
-            </div>
+            <div class="row" id="related-products-container"></div>
         </div>
     </div>
 

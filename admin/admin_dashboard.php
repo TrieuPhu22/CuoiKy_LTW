@@ -153,18 +153,20 @@ include 'admin_auth_check.php';
                         <h3 class="content-title">Quản lý Đơn hàng</h3>
                     </div>
                     <div class="table-container">
-                        <table class="data-table" id="orders-table">
+                        <table class="data-table">
                             <thead>
                                 <tr>
                                     <th>ID Đơn hàng</th>
                                     <th>Tên khách hàng</th>
+                                    <th>Số điện thoại</th> <!-- ✅ THÊM CỘT SĐT -->
+                                    <th>Địa chỉ</th> <!-- ✅ THÊM CỘT ĐỊA CHỈ -->
                                     <th>Tổng tiền</th>
                                     <th>Trạng thái</th>
                                     <th>Ngày đặt</th>
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="orders-table">
                                 <!-- Dữ liệu đơn hàng sẽ được chèn vào đây bằng jQuery -->
                             </tbody>
                         </table>
