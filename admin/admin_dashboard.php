@@ -1,9 +1,8 @@
 <?php
+
 // BƯỚC 1: Thêm "Người gác cổng"
 // Tệp này sẽ kiểm tra session, nếu không phải Admin, sẽ đá về trang signin.php
 include 'admin_auth_check.php';
-
-
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -11,17 +10,17 @@ include 'admin_auth_check.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Đã bảo vệ</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../img/favicon.png">
     <!-- Tải jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link
+    <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
     rel="stylesheet"
     />
     
     <!-- Liên kết đến tệp CSS -->
     <link rel="stylesheet" href="./assets/css/style.css">
-
-
 </head>
 <body class="bg-gray-100">
 
@@ -56,22 +55,21 @@ include 'admin_auth_check.php';
             <!-- Header (Đã cập nhật) -->
             <header class="main-header">
                 <div>
-                    <!-- THAY ĐỔI: Hiển thị tên Admin đã đăng nhập -->
                     <h2>Chào mừng trở lại, <?php echo htmlspecialchars($_SESSION['user_username']); ?>!</h2>
                 </div>
                 <div class="header-right">
                     <button class="header-button">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341A6.002 6.002 0 006 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                     </button>
-                    <!-- THAY ĐỔI: Chuyển nút Đăng xuất thành link -->
+                    
                     <a href="signout.php" class="logout-button">Đăng xuất</a>
                 </div>
             </header>
 
-            <!-- Content Area (Giữ nguyên) -->
+            
             <main class="content-area">
                 
-                <!-- Section: Dashboard (Default) -->
+                <!-- Dashboard Section -->
                 <div id="dashboard-section" class="content-section" style="display: block;">
                     <h3 class="content-title">Dashboard</h3>
                     <div class="dashboard-grid">
@@ -93,7 +91,7 @@ include 'admin_auth_check.php';
                     </div>
                 </div>
 
-                <!-- Section: Quản lý Sản phẩm -->
+                <!-- Products Section -->
                 <div id="products-section" class="content-section">
                     <div class="table-header">
                         <h3 class="content-title">Quản lý Sản phẩm</h3>
@@ -135,6 +133,8 @@ include 'admin_auth_check.php';
                                     <th>ID</th>
                                     <th>Tên người dùng</th>
                                     <th>Email</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Địa chỉ</th>
                                     <th>Vai trò</th>
                                     <th>Ngày tham gia</th>
                                     <th>Hành động</th>
@@ -153,18 +153,20 @@ include 'admin_auth_check.php';
                         <h3 class="content-title">Quản lý Đơn hàng</h3>
                     </div>
                     <div class="table-container">
-                        <table class="data-table" id="orders-table">
+                        <table class="data-table">
                             <thead>
                                 <tr>
                                     <th>ID Đơn hàng</th>
                                     <th>Tên khách hàng</th>
+                                    <th>Số điện thoại</th> <!-- ✅ THÊM CỘT SĐT -->
+                                    <th>Địa chỉ</th> <!-- ✅ THÊM CỘT ĐỊA CHỈ -->
                                     <th>Tổng tiền</th>
                                     <th>Trạng thái</th>
                                     <th>Ngày đặt</th>
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="orders-table">
                                 <!-- Dữ liệu đơn hàng sẽ được chèn vào đây bằng jQuery -->
                             </tbody>
                         </table>
@@ -175,7 +177,7 @@ include 'admin_auth_check.php';
         </div>
     </div>
 
-    <!-- Modal cho Form Thêm/Sửa Sản Phẩm (Giữ nguyên) -->
+    <!-- Modal cho Form Thêm/Sửa Sản Phẩm -->
     <div id="product-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -216,6 +218,12 @@ include 'admin_auth_check.php';
                         <option value="hoa_tuoi">Hoa Tươi</option>
                     </select>
                 </div>
+                <div class="form-group" id="subcategory-group" style="display: none;">
+                    <label for="product-subcategory">Danh mục con:</label>
+                    <select id="product-subcategory" name="subcategory_id">
+                        <option value="">-- Chọn danh mục con --</option>
+                    </select>
+                </div>
                 
                 <div class="form-group">
                     <label for="product-image-file">Hình ảnh:</label>
@@ -233,7 +241,7 @@ include 'admin_auth_check.php';
         </div>
     </div>
     
-    <!-- Modal cho Form Thêm/Sửa Người Dùng (Giữ nguyên) -->
+    <!-- Modal cho Form Thêm/Sửa Người Dùng (ĐÃ CẬP NHẬT) -->
     <div id="user-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -248,10 +256,32 @@ include 'admin_auth_check.php';
                     <label for="user-username">Tên người dùng:</label>
                     <input type="text" id="user-username" name="username" required>
                 </div>
+
                 <div class="form-group">
                     <label for="user-email">Email:</label>
                     <input type="email" id="user-email" name="email" required>
                 </div>
+
+                <div class="form-group">
+                    <label for="user-password">
+                        Mật khẩu:
+                        <span id="password-hint" style="color: #888; font-size: 12px; display: none;">
+                            (Để trống nếu không đổi)
+                        </span>
+                    </label>
+                    <input type="password" id="user-password" name="password" minlength="6">
+                </div>
+
+                <div class="form-group">
+                    <label for="user-phone">Số điện thoại:</label>
+                    <input type="text" id="user-phone" name="phone" placeholder="0123456789">
+                </div>
+
+                <div class="form-group">
+                    <label for="user-address">Địa chỉ:</label>
+                    <textarea id="user-address" name="address" rows="3" placeholder="Nhập địa chỉ..."></textarea>
+                </div>
+
                 <div class="form-group">
                     <label for="user-role">Vai trò:</label>
                     <select id="user-role" name="role" required>
@@ -259,6 +289,7 @@ include 'admin_auth_check.php';
                         <option value="Admin">Admin</option>
                     </select>
                 </div>
+
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
                     <button type="submit" class="btn btn-submit">Lưu lại</button>
@@ -267,7 +298,7 @@ include 'admin_auth_check.php';
         </div>
     </div>
     
-    <!-- Modal cho Form Sửa Đơn Hàng (Giữ nguyên) -->
+    <!-- Modal cho Form Sửa Đơn Hàng -->
     <div id="order-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -302,7 +333,6 @@ include 'admin_auth_check.php';
         </div>
     </div>
 
-
     <!-- Thông báo Toast -->
     <div id="toast-message" class="toast-message"></div>
 
@@ -311,4 +341,3 @@ include 'admin_auth_check.php';
 
 </body>
 </html>
-

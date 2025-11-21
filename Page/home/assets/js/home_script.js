@@ -25,8 +25,8 @@ function renderProductList(data, selector) {
         let cleanPath = imageUrl;
 
         if (imageUrl.startsWith("../uploads/")) {
-          // 2a. Sửa lỗi CSDL lưu sai: cắt bỏ '../'
-          cleanPath = imageUrl.substring(3); // Giờ nó là 'uploads/ten_anh.jpg'
+
+          cleanPath = imageUrl.substring(3);
         } else if (imageUrl.startsWith("uploads/")) {
           // 2b. Đường dẫn CSDL lưu đúng
           cleanPath = imageUrl;
@@ -36,9 +36,9 @@ function renderProductList(data, selector) {
         finalImageUrl = cleanPath;
       }
 
-      // === KẾT THÚC SỬA LỖI ===
 
-      // 2b. Định dạng giá tiền
+
+
       const formattedPrice = new Intl.NumberFormat("vi-VN", {
         style: "currency",
         currency: "VND",
@@ -66,15 +66,10 @@ function renderProductList(data, selector) {
     })
     .join("");
 
-  // Đổ HTML vào selector
   $(selector).html(html);
 }
-
-// BƯỚC 3: Dùng $(document).ready
+// Lọc sản phẩm và render khi tài liệu sẵn sàng
 $(document).ready(function () {
-  console.log("home_script.js loaded"); // DEBUG
-  console.log("Products from DB:", allProductsFromDB); // DEBUG
-
   // 1. Lọc Hoa Sinh Nhật
   const birthdayProducts = allProductsFromDB.filter(function (product) {
     return product.category === "hoa_sinh_nhat";

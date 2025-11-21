@@ -1,70 +1,120 @@
 <?php
+// filepath: c:\xampp12\htdocs\CuoiKy_LTW\api\products.php
 // Bao gồm tệp kết nối CSDL
 include '../admin/db_connect.php';
 
 // ===================================
 // HÀM: XỬ LÝ UPLOAD FILE
 // ===================================
-/**
- * Xử lý việc upload file ảnh.
- * @param array $fileData Dữ liệu từ $_FILES['image_file']
- * @param string $oldImageUrl Đường dẫn ảnh cũ (để xoá khi update)
- * @return string Đường dẫn ảnh mới, hoặc ảnh cũ nếu lỗi, hoặc rỗng nếu không có ảnh
- */
 function handleFileUpload($fileData, $oldImageUrl = '') {
-    // 1. Kiểm tra xem có file mới được upload không
     if (!isset($fileData) || $fileData['error'] !== UPLOAD_ERR_OK) {
-        // Không có file mới, giữ nguyên ảnh cũ
         return $oldImageUrl;
     }
 
-    // Đường dẫn thư mục upload (tính từ file api/products.php)
     $uploadDir = '../uploads/'; 
-    // Đường dẫn lưu vào CSDL (tính từ file admin_dashboard.php)
     $dbPath = '../uploads/'; 
 
-    // Tạo thư mục nếu chưa tồn tại
     if (!is_dir($uploadDir)) {
         mkdir($uploadDir, 0777, true);
     }
 
-    // Tạo tên file duy nhất để tránh trùng lặp
     $fileName = uniqid() . '-' . basename($fileData['name']);
     $targetPath = $uploadDir . $fileName;
     $dbPathWithFile = $dbPath . $fileName;
 
-    // 2. Kiểm tra bảo mật cơ bản
-    // Kiểm tra xem có phải ảnh thật không
     $check = getimagesize($fileData['tmp_name']);
     if ($check === false) {
-        // Không phải file ảnh
-        return $oldImageUrl; // Giữ ảnh cũ
+        return $oldImageUrl;
     }
 
-    // Kiểm tra dung lượng (ví dụ: 5MB)
     if ($fileData['size'] > 5000000) {
-        // File quá lớn
-        return $oldImageUrl; // Giữ ảnh cũ
+        return $oldImageUrl;
     }
 
-    // 3. Di chuyển file
     if (move_uploaded_file($fileData['tmp_name'], $targetPath)) {
-        // 4. Xoá file ảnh cũ (nếu có và không phải là link placeholder)
         if ($oldImageUrl && file_exists('../' . $oldImageUrl) && !filter_var($oldImageUrl, FILTER_VALIDATE_URL)) {
-            unlink('../' . $oldImageUrl);
+            @unlink('../' . $oldImageUrl);
         }
-        
-        // Trả về đường dẫn MỚI (để lưu vào CSDL)
         return $dbPathWithFile;
     }
 
-    // Nếu di chuyển thất bại, giữ nguyên ảnh cũ
     return $oldImageUrl;
 }
 
+// ===================================
+// HÀM: LẤY SUBCATEGORIES THEO CATEGORY
+// ===================================
+function getSubcategories($conn, $category) {
+    $sql = "SELECT id, subcategory_key, subcategory_name 
+            FROM subcategories 
+            WHERE category = ?
+            ORDER BY subcategory_name";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $category);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $data = [];
+    
+    while ($row = $res->fetch_assoc()) {
+        $data[$row['id']] = [
+            'key'  => $row['subcategory_key'],
+            'name' => $row['subcategory_name']
+        ];
+    }
+    $stmt->close();
+    
+    return $data;  // ✅ TRẢ VỀ ARRAY thay vì echo + exit
+}
+// =============== Lấy sản phẩm theo subcategory ===============
+function getProductsBySubcategory($conn, $subcategoryId) {
+    $subcategoryId = (int)$subcategoryId;
+    $sql = "SELECT p.id, p.name, p.description, p.price, p.category, 
+                   p.subcategory_id, s.subcategory_name,
+                   p.stock, p.image_url 
+            FROM products p
+            LEFT JOIN subcategories s ON p.subcategory_id = s.id
+            WHERE p.subcategory_id = ?
+            ORDER BY p.id DESC";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $subcategoryId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $products = [];
+    
+    while($row = $result->fetch_assoc()) {
+        $products[] = $row;
+    }
+    $stmt->close();
+    echo json_encode(['success' => true, 'data' => $products]);
+}
+// =============== Tìm kiếm sản phẩm ===============
+function searchProducts($conn, $keyword) {
+    $keyword = '%' . $conn->real_escape_string($keyword) . '%';
+    $sql = "SELECT p.id, p.name, p.description, p.price, p.category, 
+                   p.subcategory_id, s.subcategory_name,
+                   p.stock, p.image_url 
+            FROM products p
+            LEFT JOIN subcategories s ON p.subcategory_id = s.id
+            WHERE p.name LIKE ? 
+               OR p.description LIKE ?
+               OR s.subcategory_name LIKE ?
+            ORDER BY p.name ASC
+            LIMIT 20";
+    
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sss", $keyword, $keyword, $keyword);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $products = [];
+    
+    while($row = $result->fetch_assoc()) {
+        $products[] = $row;
+    }
+    $stmt->close();
+    echo json_encode(['success' => true, 'data' => $products]);
+}
 
 // --- XỬ LÝ ROUTING ---
-// Đặt header là JSON
 header('Content-Type: application/json');
 
 if (isset($_POST['action'])) {
@@ -74,9 +124,26 @@ if (isset($_POST['action'])) {
         case 'get_all':
             getAllProducts($conn);
             break;
+
+        case 'get_subcategories':
+            $category = $_POST['category'] ?? '';
+            $subcats = getSubcategories($conn, $category);
+            echo json_encode(['success' => true, 'data' => $subcats]);  
+            break;
         
+        case 'get_by_subcategory':  
+        getProductsBySubcategory($conn, $_POST['subcategory_id']);
+        break;
+
+        case 'search':
+        $keyword = $_POST['keyword'] ?? $_GET['keyword'] ?? '';
+        if (strlen($keyword) >= 2) {
+            searchProducts($conn, $keyword);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Vui lòng nhập ít nhất 2 ký tự.']);
+        }
+        break;
         case 'add':
-            // Gửi $_FILES vào hàm add
             addProduct($conn, $_POST, $_FILES);
             break;
 
@@ -85,7 +152,6 @@ if (isset($_POST['action'])) {
             break;
             
         case 'update':
-            // Gửi $_FILES vào hàm update
             updateProduct($conn, $_POST, $_FILES);
             break;
             
@@ -98,15 +164,18 @@ if (isset($_POST['action'])) {
             break;
     }
 } else {
-    // Nếu không có action POST, mặc định lấy tất cả
     getAllProducts($conn);
 }
 
 // --- CÁC HÀM XỬ LÝ ---
 
-// Hàm lấy TẤT CẢ sản phẩm
 function getAllProducts($conn) {
-    $sql = "SELECT id, name, description, price, category, stock, image_url FROM products";
+    $sql = "SELECT p.id, p.name, p.description, p.price, p.category, 
+                   p.subcategory_id, s.subcategory_name,
+                   p.stock, p.image_url 
+            FROM products p
+            LEFT JOIN subcategories s ON p.subcategory_id = s.id
+            ORDER BY p.id DESC";
     $result = $conn->query($sql);
     $products = [];
 
@@ -118,10 +187,14 @@ function getAllProducts($conn) {
     echo json_encode(['success' => true, 'data' => $products]);
 }
 
-// Hàm lấy MỘT sản phẩm
 function getOneProduct($conn, $id) {
     $id = intval($id);
-    $sql = "SELECT id, name, description, price, category, stock, image_url FROM products WHERE id = ?";
+    $sql = "SELECT p.id, p.name, p.description, p.price, p.category, 
+                   p.subcategory_id, s.subcategory_name,
+                   p.stock, p.image_url 
+            FROM products p
+            LEFT JOIN subcategories s ON p.subcategory_id = s.id
+            WHERE p.id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $id);
     $stmt->execute();
@@ -135,25 +208,38 @@ function getOneProduct($conn, $id) {
     $stmt->close();
 }
 
-
-// Hàm THÊM sản phẩm mới
 function addProduct($conn, $data, $files) {
-    // Lấy dữ liệu từ $data (là $_POST)
-    $name = $data['name']; //lấy tên sản phẩm
-    $desc = $data['description']; //lấy mô tả sản phẩm
-    $price = $data['price']; //lấy giá sản phẩm
-    $stock = $data['stock']; //lấy số lượng tồn kho
-    $category = $data['category']; //lấy danh mục sản phẩm
+    $name = $data['name'];
+    $desc = $data['description'];
+    $price = $data['price'];
+    $stock = $data['stock'];
+    $category = $data['category'];
+    $subcategory_id = !empty($data['subcategory_id']) ? (int)$data['subcategory_id'] : NULL;
 
-    // Xử lý file upload
     $imageFile = isset($files['image_file']) ? $files['image_file'] : null;
-    $image = handleFileUpload($imageFile, ''); // '' vì đây là 'add', chưa có ảnh cũ
+    $image = handleFileUpload($imageFile, '');
 
-    $stmt = $conn->prepare("INSERT INTO products (name, description, price, stock, category, image_url) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssdiss", $name, $desc, $price, $stock, $category, $image);
+    $stmt = $conn->prepare("INSERT INTO products (name, description, price, stock, category, subcategory_id, image_url) 
+                           VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssdisss", $name, $desc, $price, $stock, $category, $subcategory_id, $image);
 
     if ($stmt->execute()) {
         $newId = $conn->insert_id;
+        
+        $subcategory_name = '';
+        if ($subcategory_id) {
+            $sqlSub = "SELECT subcategory_name FROM subcategories WHERE id = ?";
+            $stmtSub = $conn->prepare($sqlSub);
+            $stmtSub->bind_param("i", $subcategory_id);
+            $stmtSub->execute();
+            $resSub = $stmtSub->get_result();
+            if ($resSub->num_rows > 0) {
+                $rowSub = $resSub->fetch_assoc();
+                $subcategory_name = $rowSub['subcategory_name'];
+            }
+            $stmtSub->close();
+        }
+        
         $newProduct = [
             'id' => $newId,
             'name' => $name,
@@ -161,7 +247,9 @@ function addProduct($conn, $data, $files) {
             'price' => $price,
             'stock' => $stock,
             'category' => $category,
-            'image_url' => $image // Trả về đường dẫn ảnh mới
+            'subcategory_id' => $subcategory_id,
+            'subcategory_name' => $subcategory_name,
+            'image_url' => $image
         ];
         echo json_encode(['success' => true, 'message' => 'Thêm sản phẩm thành công!', 'data' => $newProduct]);
     } else {
@@ -170,7 +258,6 @@ function addProduct($conn, $data, $files) {
     $stmt->close();
 }
 
-// Hàm CẬP NHẬT sản phẩm
 function updateProduct($conn, $data, $files) {
     $id = intval($data['id']);
     $name = $data['name'];
@@ -178,25 +265,43 @@ function updateProduct($conn, $data, $files) {
     $price = $data['price'];
     $stock = $data['stock'];
     $category = $data['category'];
+    $subcategory_id = !empty($data['subcategory_id']) ? (int)$data['subcategory_id'] : NULL;
     
-    // Lấy đường dẫn ảnh cũ từ trường hidden
-    $old_image_url = $data['existing_image_url'];
+    $old_image_url = $data['existing_image_url'] ?? '';
 
-    // Xử lý file upload
     $imageFile = isset($files['image_file']) ? $files['image_file'] : null;
-    $image = handleFileUpload($imageFile, $old_image_url); // Gửi ảnh cũ để xử lý
+    $image = handleFileUpload($imageFile, $old_image_url);
 
-    $stmt = $conn->prepare("UPDATE products SET name = ?, description = ?, price = ?, stock = ?, category = ?, image_url = ? WHERE id = ?");
-    $stmt->bind_param("ssdissi", $name, $desc, $price, $stock, $category, $image, $id);
+    $stmt = $conn->prepare("UPDATE products 
+                           SET name = ?, description = ?, price = ?, stock = ?, category = ?, subcategory_id = ?, image_url = ? 
+                           WHERE id = ?");
+    $stmt->bind_param("ssdisssi", $name, $desc, $price, $stock, $category, $subcategory_id, $image, $id);
 
     if ($stmt->execute()) {
-         $updatedProduct = [
+        $subcategory_name = '';
+        if ($subcategory_id) {
+            $sqlSub = "SELECT subcategory_name FROM subcategories WHERE id = ?";
+            $stmtSub = $conn->prepare($sqlSub);
+            $stmtSub->bind_param("i", $subcategory_id);
+            $stmtSub->execute();
+            $resSub = $stmtSub->get_result();
+            if ($resSub->num_rows > 0) {
+                $rowSub = $resSub->fetch_assoc();
+                $subcategory_name = $rowSub['subcategory_name'];
+            }
+            $stmtSub->close();
+        }
+        
+        $updatedProduct = [
             'id' => $id,
             'name' => $name,
             'description' => $desc,
             'price' => $price,
             'stock' => $stock,
-            'image_url' => $image // Trả về đường dẫn ảnh (mới hoặc cũ)
+            'category' => $category,
+            'subcategory_id' => $subcategory_id,
+            'subcategory_name' => $subcategory_name,
+            'image_url' => $image
         ];
         echo json_encode(['success' => true, 'message' => 'Cập nhật sản phẩm thành công!', 'data' => $updatedProduct]);
     } else {
@@ -205,11 +310,9 @@ function updateProduct($conn, $data, $files) {
     $stmt->close();
 }
 
-// Hàm XOÁ sản phẩm
 function deleteProduct($conn, $id) {
     $id = intval($id);
     
-    // 1. Lấy đường dẫn ảnh trước khi xoá
     $sqlSelect = "SELECT image_url FROM products WHERE id = ?";
     $stmtSelect = $conn->prepare($sqlSelect);
     $stmtSelect->bind_param("i", $id);
@@ -222,14 +325,12 @@ function deleteProduct($conn, $id) {
     }
     $stmtSelect->close();
 
-    // 2. Xoá sản phẩm khỏi CSDL
     $stmtDelete = $conn->prepare("DELETE FROM products WHERE id = ?");
     $stmtDelete->bind_param("i", $id);
 
     if ($stmtDelete->execute()) {
-        // 3. Nếu xoá CSDL thành công, xoá file ảnh
         if ($image_url && file_exists('../' . $image_url) && !filter_var($image_url, FILTER_VALIDATE_URL)) {
-            unlink('../' . $image_url);
+            @unlink('../' . $image_url);
         }
         echo json_encode(['success' => true, 'message' => 'Xoá sản phẩm thành công.']);
     } else {
@@ -238,7 +339,5 @@ function deleteProduct($conn, $id) {
     $stmtDelete->close();
 }
 
-// Đóng kết nối CSDL
 $conn->close();
 ?>
-

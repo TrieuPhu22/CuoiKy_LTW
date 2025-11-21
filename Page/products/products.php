@@ -1,12 +1,10 @@
 <?php
 session_start();
-
 // Kiểm tra xem có ID sản phẩm không
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     header('Location: /CuoiKy_LTW/Page/home/home.php');
     exit;
 }
-
 $product_id = intval($_GET['id']);
 ?>
 <!DOCTYPE html>
@@ -15,8 +13,19 @@ $product_id = intval($_GET['id']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- QUAN TRỌNG: Thêm base tag -->
-    <base href="http://localhost/CuoiKy_LTW/">
+    <?php
+    // Tự động lấy giao thức (http hoặc https)
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
+    
+    // Tự động lấy tên máy chủ (localhost hoặc 192.168.1.5)
+    $host = $_SERVER['HTTP_HOST'];
+    
+    // Tên thư mục gốc của dự án
+    $project_root = '/CuoiKy_LTW/';
+    
+    // In ra thẻ <base> động
+    echo "<base href='{$protocol}://{$host}{$project_root}'>";
+?>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="img/favicon.png">

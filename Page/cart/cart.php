@@ -46,7 +46,7 @@ while ($row = $result->fetch_assoc()) {
         'name' => $row['name'],
         'price' => floatval($row['price']),
         'quantity' => intval($row['quantity']),
-        'image' => $row['image'],
+        'image' => str_replace('../uploads/', 'uploads/', $row['image']), // ✅ SỬA LẠI ĐƯỜNG DẪN
         'stock' => intval($row['stock'])
     ];
     $cartTotal += floatval($row['subtotal']);
@@ -64,7 +64,19 @@ $finalTotal = $cartTotal + $shippingFee - $discount;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <base href="http://localhost/CuoiKy_LTW/">
+    <?php
+    // Tự động lấy giao thức (http hoặc https)
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
+    
+    // Tự động lấy tên máy chủ (localhost hoặc 192.168.1.5)
+    $host = $_SERVER['HTTP_HOST'];
+    
+    // Tên thư mục gốc của dự án
+    $project_root = '/CuoiKy_LTW/';
+    
+    // In ra thẻ <base> động
+    echo "<base href='{$protocol}://{$host}{$project_root}'>";
+?>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="img/favicon.png">
@@ -91,7 +103,7 @@ $finalTotal = $cartTotal + $shippingFee - $discount;
     />
 
     <!-- Your CSS -->
-    <link rel="stylesheet" href="Page/cart/assets/css/breakpoint.css" />
+    
     <link rel="stylesheet" href="Page/cart/assets/css/style.css" />
     <link rel="stylesheet" href="Page/home/assets/css/style.css" />
     <link rel="stylesheet" href="Page/home/assets/css/breakpoint.css"/>
@@ -128,13 +140,14 @@ $finalTotal = $cartTotal + $shippingFee - $discount;
                     <div class="cart-items-list">
                         <?php foreach ($cart as $productId => $item): 
                             $itemTotal = $item['price'] * $item['quantity'];
-                            $imageUrl = !empty($item['image']) ? $item['image'] : 'https://placehold.co/100x100/E2E8F0/A0AEC0?text=SP';
+                            // ✅ SỬA LẠI ĐƯỜNG DẪN ẢNH
+                            $imageUrl = !empty($item['image']) ? $item['image'] : 'img/placeholder.jpg';
                         ?>
                             <div class="cart-item" data-product-id="<?php echo $productId; ?>">
                                 <div class="cart-item__image">
                                     <img src="<?php echo htmlspecialchars($imageUrl); ?>" 
                                          alt="<?php echo htmlspecialchars($item['name']); ?>"
-                                         onerror="this.src='https://placehold.co/100x100/E2E8F0/A0AEC0?text=SP'">
+                                         onerror="this.src='img/placeholder.jpg'">
                                 </div>
                                 
                                 <div class="cart-item__info">
@@ -202,9 +215,10 @@ $finalTotal = $cartTotal + $shippingFee - $discount;
                             <strong><?php echo number_format($finalTotal, 0, ',', '.'); ?>₫</strong>
                         </div>
                         
-                        <button class="btn btn-success w-100" id="checkout-btn">
-                            <i class="bi bi-credit-card me-2"></i>Thanh toán
-                        </button>
+                        <!-- Đảm bảo nút checkout ĐÚNG cấu trúc này -->
+                    <button class="btn btn-success w-100" id="checkout-btn" type="button">
+                        <i class="bi bi-credit-card me-2"></i>Thanh toán
+                    </button>
                     </div>
                 </div>
             </div>
@@ -222,5 +236,44 @@ $finalTotal = $cartTotal + $shippingFee - $discount;
 
     <!-- Custom JS -->
     <script src="Page/cart/assets/js/script.js"></script>
+
+    <!-- Thêm Modal xác nhận thanh toán TRƯỚC thẻ đóng </body> -->
+<!-- Modal Xác Nhận Thanh Toán -->
+<div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="checkoutModalLabel">
+          <i class="bi bi-credit-card me-2"></i>Xác nhận thanh toán
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-3">Bạn có chắc chắn muốn thanh toán đơn hàng này?</p>
+        <div class="alert alert-info">
+          <strong>Tổng tiền:</strong> <span id="modal-total-price"><?php echo number_format($finalTotal, 0, ',', '.'); ?>₫</span>
+        </div>
+        <div class="mb-3">
+          <label for="customer_name" class="form-label">Tên người nhận <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="customer_name" value="<?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : ''; ?>" required>
+        </div>
+        <div class="mb-3">
+          <label for="customer_phone" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+          <input type="tel" class="form-control" id="customer_phone" required>
+        </div>
+        <div class="mb-3">
+          <label for="customer_address" class="form-label">Địa chỉ giao hàng <span class="text-danger">*</span></label>
+          <textarea class="form-control" id="customer_address" rows="2" required></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-success" id="confirm-checkout-btn">
+          <i class="bi bi-check-circle me-2"></i>Xác nhận thanh toán
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
   </body>
 </html>

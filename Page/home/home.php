@@ -17,15 +17,27 @@ if ($result && $result->num_rows > 0) {
 }
 $conn->close();
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <base href="http://localhost/CuoiKy_LTW/">
-
+    <?php
+    // Tự động lấy giao thức (http hoặc https)
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
+    
+    // Tự động lấy tên máy chủ (localhost hoặc 192.168.1.5)
+    $host = $_SERVER['HTTP_HOST'];
+    
+    // Tên thư mục gốc của dự án
+    $project_root = '/CuoiKy_LTW/';
+    
+    // In ra thẻ <base> động
+    echo "<base href='{$protocol}://{$host}{$project_root}'>";
+?>
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="img/favicon.png">
     
@@ -79,21 +91,21 @@ $conn->close();
 
             <div class="carousel-item active">
             <img
-                src="https://in.flowercorner.vn/uploads/P67b80eac1dca11.10889059.webp"
+                src="./img/banner1.jpg"
                 class="d-block w-100"
                 alt="..."
             />
             </div>
             <div class="carousel-item">
             <img
-                src="https://in.flowercorner.vn/uploads/P657fd247737038.75342862.webp"
+                src="./img/banner2.jpg"
                 class="d-block w-100"
                 alt="..."
             />
             </div>
             <div class="carousel-item">
             <img
-                src="https://in.flowercorner.vn/uploads/P649ea8ef2ed4f0.09844576.webp"
+                src="./img/banner3.jpg"
                 class="d-block w-100"
                 alt="..."
             />

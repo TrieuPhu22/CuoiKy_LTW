@@ -21,6 +21,8 @@ $redirectParam = isset($_GET['redirect']) ? $_GET['redirect'] : '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../img/favicon.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
     <!-- Reset Css -->
