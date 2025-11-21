@@ -40,7 +40,30 @@ function handleFileUpload($fileData, $oldImageUrl = '') {
 
     return $oldImageUrl;
 }
-
+// ===================================
+// HÀM: LẤY SUBCATEGORIES THEO CATEGORY
+// ===================================
+function getSubcategories($conn, $category) {
+    $sql = "SELECT id, subcategory_key, subcategory_name 
+            FROM subcategories 
+            WHERE category = ?
+            ORDER BY subcategory_name";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $category);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $data = [];
+    
+    while ($row = $res->fetch_assoc()) {
+        $data[$row['id']] = [
+            'key'  => $row['subcategory_key'],
+            'name' => $row['subcategory_name']
+        ];
+    }
+    $stmt->close();
+    
+    return $data;  // ✅ TRẢ VỀ ARRAY thay vì echo + exit
+}
 // =============== Lấy sản phẩm theo subcategory ===============
 function getProductsBySubcategory($conn, $subcategoryId) {
     $subcategoryId = (int)$subcategoryId;
