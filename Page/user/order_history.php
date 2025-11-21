@@ -10,16 +10,26 @@ if (!isset($_SESSION['user_id'])) {
 
 include __DIR__ . '/../../admin/db_connect.php';
 
-// Lấy lịch sử đơn hàng của người dùng từ cơ sở dữ liệu
-    // $userId = $_SESSION['user_id'];
-    // $stmt = $conn->prepare("SELECT order_id, order_date, total_amount, status FROM orders WHERE user_id = ? ORDER BY order_date DESC");
-    // $stmt->bind_param("i", $userId);
-    // $stmt->execute();
-    // $result = $stmt->get_result();
+// ✅ LẤY LỊCH SỬ ĐƠN HÀNG
+$userId = intval($_SESSION['user_id']);
+$sql = "SELECT id, customer_name, customer_phone, customer_address, 
+               total_price, status, 
+               DATE_FORMAT(order_date, '%d/%m/%Y %H:%i') as formatted_date
+        FROM orders 
+        WHERE user_id = ? 
+        ORDER BY order_date DESC";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+$result = $stmt->get_result();
 
-    // while ($order = $result->fetch_assoc()):
+$orders = [];
+while ($row = $result->fetch_assoc()) {
+    $orders[] = $row;
+}
+$stmt->close();
+$conn->close();
 ?>
-<?php //endwhile; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,6 +51,9 @@ include __DIR__ . '/../../admin/db_connect.php';
     <!-- Reset Css -->
     <link rel="stylesheet" href="./Page/home/assets/css/reset.css">
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    
     <!-- Bootstrap Css -->
     <link
     rel="stylesheet"
@@ -63,7 +76,7 @@ include __DIR__ . '/../../admin/db_connect.php';
     <link rel="stylesheet" href="./Page/user/assets/css/user.css" />
     <!-- Breakpoint Css -->
     <link rel="stylesheet" href="./Page/home/assets/css/breakpoint.css" />
-    <title>User</title>
+    <title>Lịch sử đơn hàng</title>
 </head>
 <body>
     <!-- Header -->
@@ -82,37 +95,80 @@ include __DIR__ . '/../../admin/db_connect.php';
                 <div class="orderLeft">
                     <div class="userContent">
                         <h1>Lịch sử đơn hàng</h1>
-                        
                     </div>
+                    
                     <div class="userOrder">
-                        <!-- Nội dung lịch sử đơn hàng sẽ được hiển thị ở đây -->
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Mã Đơn Hàng</th>
-                                    <th scope="col">Ngày Đặt Hàng</th>
-                                    <th scope="col">Tổng Tiền</th>
-                                    <th scope="col">Trạng Thái</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td>12345</td>
-                                    <td>2023-10-01</td>
-                                    <td>100,00,000 VND</td>
-                                    <td>Đang xử lý</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
+                        <?php if (empty($orders)): ?>
+                            <div class="alert alert-info text-center">
+                                <i class="bi bi-inbox" style="font-size: 3rem;"></i>
+                                <p class="mt-3">Bạn chưa có đơn hàng nào.</p>
+                                <a href="Page/home/home.php" class="btn btn-primary mt-2">
+                                    <i class="bi bi-shop me-2"></i>Mua sắm ngay
+                                </a>
+                            </div>
+                        <?php else: ?>
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th scope="col">Mã Đơn Hàng</th>
+                                        <th scope="col">Người Nhận</th>
+                                        <th scope="col">SĐT</th>
+                                        <th scope="col">Ngày Đặt</th>
+                                        <th scope="col">Tổng Tiền</th>
+                                        <th scope="col">Trạng Thái</th>
+                                        <th scope="col">Chi tiết</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($orders as $order): ?>
+                                        <tr>
+                                            <td><strong>#<?php echo $order['id']; ?></strong></td>
+                                            <td><?php echo htmlspecialchars($order['customer_name']); ?></td>
+                                            <td><?php echo htmlspecialchars($order['customer_phone']); ?></td>
+                                            <td><?php echo $order['formatted_date']; ?></td>
+                                            <td class="text-danger fw-bold">
+                                                <?php echo number_format($order['total_price'], 0, ',', '.'); ?>₫
+                                            </td>
+                                            <td>
+                                                <?php 
+                                                $statusClass = 'badge ';
+                                                switch($order['status']) {
+                                                    case 'Đang xử lý':
+                                                        $statusClass .= 'bg-warning text-dark';
+                                                        break;
+                                                    case 'Đã giao':
+                                                        $statusClass .= 'bg-success';
+                                                        break;
+                                                    case 'Đã hủy':
+                                                        $statusClass .= 'bg-danger';
+                                                        break;
+                                                    default:
+                                                        $statusClass .= 'bg-secondary';
+                                                }
+                                                ?>
+                                                <span class="<?php echo $statusClass; ?>">
+                                                    <?php echo $order['status']; ?>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary view-order-detail" 
+                                                        data-order-id="<?php echo $order['id']; ?>">
+                                                    <i class="bi bi-eye"></i> Xem
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php endif; ?>
                     </div>
                 </div>
+                
                 <!-- Right content -->
                 <div class="orderRight">
                     <div class="userRightContent">
                         <a href="./Page/user/user.php">Tài khoản của tôi</a>
-                        <a href="./Page/user/order_history.php">Lịch sử đơn hàng</a>
+                        <a href="./Page/user/order_history.php" class="active">Lịch sử đơn hàng</a>
                     </div>
                 </div>
                 
@@ -125,11 +181,87 @@ include __DIR__ . '/../../admin/db_connect.php';
 <!-- Footer -->
 <?php include __DIR__ . '/../home/includes/Footer.php'; ?>
 
+<!-- Modal Chi Tiết Đơn Hàng -->
+<div class="modal fade" id="orderDetailModal" tabindex="-1" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderDetailModalLabel">
+                    <i class="bi bi-receipt me-2"></i>Chi tiết đơn hàng
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="order-detail-content">
+                <div class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Đang tải...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Custom User JS -->
-<script src="./Page/user/assets/js/user.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Xem chi tiết đơn hàng
+    $('.view-order-detail').click(function() {
+        const orderId = $(this).data('order-id');
+        const modal = new bootstrap.Modal(document.getElementById('orderDetailModal'));
+        modal.show();
+        
+        // Gọi API lấy chi tiết
+        $.ajax({
+            url: '/CuoiKy_LTW/api/orders.php',
+            method: 'POST',
+            data: { action: 'get_one', id: orderId },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    const order = response.data;
+                    let html = `
+                        <div class="mb-3">
+                            <strong>Mã đơn hàng:</strong> #${order.id}<br>
+                            <strong>Người nhận:</strong> ${order.customer_name}<br>
+                            <strong>SĐT:</strong> ${order.customer_phone}<br>
+                            <strong>Địa chỉ:</strong> ${order.customer_address}<br>
+                            <strong>Trạng thái:</strong> <span class="badge bg-warning">${order.status}</span>
+                        </div>
+                        <h6>Sản phẩm đã đặt:</h6>
+                        <table class="table table-sm">
+                            <thead><tr><th>Sản phẩm</th><th>SL</th><th>Đơn giá</th><th>Thành tiền</th></tr></thead>
+                            <tbody>`;
+                    
+                    order.items.forEach(item => {
+                        html += `<tr>
+                            <td>${item.product_name}</td>
+                            <td>${item.quantity}</td>
+                            <td>${parseInt(item.price).toLocaleString('vi-VN')}₫</td>
+                            <td>${(item.price * item.quantity).toLocaleString('vi-VN')}₫</td>
+                        </tr>`;
+                    });
+                    
+                    html += `</tbody></table>
+                        <div class="text-end">
+                            <h5>Tổng: <span class="text-danger">${parseFloat(order.total_price).toLocaleString('vi-VN')}₫</span></h5>
+                        </div>`;
+                    
+                    $('#order-detail-content').html(html);
+                } else {
+                    $('#order-detail-content').html('<div class="alert alert-danger">Không tìm thấy đơn hàng!</div>');
+                }
+            },
+            error: function() {
+                $('#order-detail-content').html('<div class="alert alert-danger">Lỗi khi tải dữ liệu!</div>');
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>

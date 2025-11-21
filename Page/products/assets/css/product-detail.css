@@ -212,3 +212,8 @@
     width: 100%;
   }
 }
+
+#add-to-cart {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
