@@ -512,6 +512,7 @@ td {
 .auth-container {
   flex: 1; /* Chiếm toàn bộ không gian còn lại */
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 40px 20px;
@@ -634,35 +635,35 @@ td {
 
 /* ✅ ALERT THÔNG BÁO TRONG FORM */
 .alert {
-    padding: 12px 16px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
 }
 
 .alert i {
-    margin-right: 8px;
-    font-size: 16px;
+  margin-right: 8px;
+  font-size: 16px;
 }
 
 .alert-info {
-    background-color: #e3f2fd;
-    color: #1976d2;
-    border-left: 4px solid #1976d2;
+  background-color: #e3f2fd;
+  color: #1976d2;
+  border-left: 4px solid #1976d2;
 }
 
 .alert-danger {
-    background-color: #ffebee;
-    color: #c62828;
-    border-left: 4px solid #c62828;
+  background-color: #ffebee;
+  color: #c62828;
+  border-left: 4px solid #c62828;
 }
 
 .alert-success {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-    border-left: 4px solid #2e7d32;
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border-left: 4px solid #2e7d32;
 }
 
 /* Footer fixed */
@@ -677,16 +678,16 @@ footer {
 
 /* ✅ RESPONSIVE */
 @media (max-width: 768px) {
-    .auth-container {
-        padding: 20px 15px;
-        min-height: calc(100vh - 150px);
-    }
+  .auth-container {
+    padding: 20px 15px;
+    min-height: calc(100vh - 150px);
+  }
 
-    .auth-form {
-        padding: 30px 20px;
-    }
+  .auth-form {
+    padding: 30px 20px;
+  }
 
-    .auth-title {
-        font-size: 24px;
-    }
+  .auth-title {
+    font-size: 24px;
+  }
 }
