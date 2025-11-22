@@ -360,10 +360,25 @@ header {
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
+.cart-empty-state .item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .cart-empty-state i {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cart-empty-state .cart {
+  font-size: 30px;
   margin-bottom: 25px;
+}
+.cart-empty-state .item a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .cart-empty-state h3 {

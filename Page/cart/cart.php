@@ -123,12 +123,15 @@ $finalTotal = $cartTotal + $shippingFee - $discount;
         <?php if (empty($cart)): ?>
             <!-- Giỏ hàng trống -->
             <div class="cart-empty-state">
-                <i class="bi bi-cart-x"></i>
-                <h3>Giỏ hàng của bạn đang trống</h3>
-                <p>Hãy thêm sản phẩm vào giỏ hàng để tiếp tục mua sắm</p>
-                <a href="Page/home/home.php" class="btn btn-primary">
-                    <i class="bi bi-arrow-left me-2"></i>Tiếp tục mua sắm
+                <div class="item cart"><i class="bi bi-cart-x"></i></div>
+                <div class="item"><h3>Giỏ hàng của bạn đang trống</h3></div>
+                <div class="item"><p>Hãy thêm sản phẩm vào giỏ hàng để tiếp tục mua sắm</p></div>
+                <div class="item">
+                  <a href="Page/home/home.php" class="btn btn-primary">
+                  <i class="bi bi-arrow-left me-2"></i>
+                  <div>Tiếp tục mua sắm</div>
                 </a>
+              </div>
             </div>
         <?php else: ?>
             <!-- Giỏ hàng có sản phẩm -->

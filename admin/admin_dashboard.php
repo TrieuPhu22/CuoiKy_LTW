@@ -75,7 +75,7 @@ include 'admin_auth_check.php';
                     <div class="dashboard-grid">
                         <div class="card">
                             <div class="card-title">Tổng doanh thu</div>
-                            <div class="card-value">120.000.000 đ</div>
+                            <div class="card-value">12.000.000 đ</div>
                             <div class="card-footer text-green-600">+15% so với tháng trước</div>
                         </div>
                         <div class="card">
@@ -85,7 +85,7 @@ include 'admin_auth_check.php';
                         </div>
                         <div class="card">
                             <div class="card-title">Người dùng đăng ký</div>
-                            <div class="card-value">150</div>
+                            <div class="card-value">10</div>
                             <div class="card-footer text-green-600">+5 mới hôm nay</div>
                         </div>
                     </div>
@@ -158,8 +158,8 @@ include 'admin_auth_check.php';
                                 <tr>
                                     <th>ID Đơn hàng</th>
                                     <th>Tên khách hàng</th>
-                                    <th>Số điện thoại</th> <!-- ✅ THÊM CỘT SĐT -->
-                                    <th>Địa chỉ</th> <!-- ✅ THÊM CỘT ĐỊA CHỈ -->
+                                    <th>Số điện thoại</th> 
+                                    <th>Địa chỉ</th> 
                                     <th>Tổng tiền</th>
                                     <th>Trạng thái</th>
                                     <th>Ngày đặt</th>
