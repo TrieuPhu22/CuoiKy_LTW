@@ -74,6 +74,15 @@ $product_id = intval($_GET['id']);
                     <span class="badge bg-secondary" id="product-category"></span>
                 </p>
                 <h2 class="text-danger mb-3" id="product-price"></h2>
+                
+                <!-- Rating Summary -->
+                <div class="mb-3" id="rating-summary">
+                    <div class="d-flex align-items-center">
+                        <div class="rating-stars-display me-2"></div>
+                        <span class="text-muted">(<span id="total-reviews">0</span> đánh giá)</span>
+                    </div>
+                </div>
+                
                 <p class="mb-3">
                     <strong>Tình trạng: </strong>
                     <span id="product-stock"></span>
@@ -100,6 +109,36 @@ $product_id = intval($_GET['id']);
                     <button class="btn btn-success btn-lg flex-fill" id="buy-now">
                         <i class="bi bi-lightning-fill"></i> Mua ngay
                     </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reviews Section -->
+        <div class="reviews-section mt-5">
+            <h3 class="mb-4">Đánh giá sản phẩm</h3>
+            
+            <!-- Rating Overview -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 text-center border-end">
+                            <h1 class="display-4 text-warning mb-0" id="average-rating">0</h1>
+                            <div id="average-stars" class="mb-2"></div>
+                            <p class="text-muted mb-0"><span id="total-reviews-text">0</span> đánh giá</p>
+                        </div>
+                        <div class="col-md-9">
+                            <div id="rating-breakdown"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews List -->
+            <div id="reviews-container">
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Đang tải...</span>
+                    </div>
                 </div>
             </div>
         </div>

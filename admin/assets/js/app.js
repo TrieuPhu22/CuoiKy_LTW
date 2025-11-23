@@ -780,4 +780,315 @@ $(document).ready(function () {
       });
     }
   });
+
+  // ============================================================
+  // ✅ QUẢN LÝ ĐÁNH GIÁ (REVIEWS)
+  // ============================================================
+
+  // Load danh sách đánh giá
+  function loadReviews() {
+    $.ajax({
+      url: "../api/reviews.php",
+      method: "POST",
+      data: { action: "get_all" },
+      dataType: "json",
+      success: function (response) {
+        if (response.success) {
+          displayReviews(response.data);
+        } else {
+          showToast("Lỗi khi tải danh sách đánh giá!", false);
+        }
+      },
+      error: function () {
+        showToast("Lỗi kết nối server!", false);
+      },
+    });
+  }
+
+  // Hiển thị danh sách đánh giá
+  function displayReviews(reviews) {
+    const tbody = $("#reviews-table");
+    tbody.empty();
+
+    if (reviews.length === 0) {
+      tbody.append(
+        '<tr><td colspan="8" style="text-align: center;">Chưa có đánh giá nào</td></tr>'
+      );
+      return;
+    }
+
+    reviews.forEach(function (review) {
+      // Tạo sao đánh giá
+      let stars = "";
+      for (let i = 1; i <= 5; i++) {
+        if (i <= review.rating) {
+          stars += '<span style="color: #F1899F;">★</span>';
+        } else {
+          stars += '<span style="color: #ddd;">★</span>';
+        }
+      }
+
+      // Rút gọn comment
+      let shortComment = review.comment
+        ? review.comment.substring(0, 50) +
+          (review.comment.length > 50 ? "..." : "")
+        : '<em style="color: #999;">Không có nhận xét</em>';
+
+      // ✅ Icon trả lời
+      const replyIcon = review.reply
+        ? '<span style="color: #28a745;" title="Đã trả lời">✓</span>'
+        : '<span style="color: #999;" title="Chưa trả lời">-</span>';
+
+      const row = `
+        <tr>
+          <td>${review.id}</td>
+          <td>${review.username}</td>
+          <td>${review.product_name || "N/A"}</td>
+          <td>#${review.order_id}</td>
+          <td>${stars} (${review.rating}/5)</td>
+          <td>${shortComment}</td>
+          <td>${review.formatted_date} ${replyIcon}</td>
+          <td>
+            <button class="btn-action btn-view-review" data-id="${
+              review.id
+            }" title="Xem chi tiết" style="background: #3b82f6; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+              </svg>
+            </button>
+            <button class="btn-action btn-delete-review" data-id="${
+              review.id
+            }" title="Xóa" style="background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 5px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+              </svg>
+            </button>
+          </td>
+        </tr>
+      `;
+      tbody.append(row);
+    });
+  }
+
+  // Xem chi tiết đánh giá
+  $(document).on("click", ".btn-view-review", function () {
+    const reviewId = $(this).data("id");
+
+    $.ajax({
+      url: "../api/reviews.php",
+      method: "POST",
+      data: { action: "get_one", id: reviewId },
+      dataType: "json",
+      success: function (response) {
+        if (response.success) {
+          const review = response.data;
+
+          // Tạo sao đánh giá
+          let stars = "";
+          for (let i = 1; i <= 5; i++) {
+            stars +=
+              i <= review.rating
+                ? '<span style="color: #F1899F; font-size: 24px;">★</span>'
+                : '<span style="color: #ddd; font-size: 24px;">★</span>';
+          }
+
+          // ✅ Phần hiển thị reply
+          let replySection = "";
+          if (review.reply_id) {
+            replySection = `
+              <div style="background: #f0f9ff; padding: 15px; border-radius: 5px; border-left: 4px solid #3b82f6; margin-top: 20px;">
+                <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 10px;">
+                  <strong style="color: #1e40af;">💬 Phản hồi từ ${review.admin_username}:</strong>
+                  <div>
+                    <button class="btn-edit-reply" data-reply-id="${review.reply_id}" data-review-id="${review.id}" style="background: #f59e0b; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-right: 5px;">Sửa</button>
+                    <button class="btn-delete-reply" data-reply-id="${review.reply_id}" style="background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Xóa</button>
+                  </div>
+                </div>
+                <p style="margin: 0; color: #334155;" id="reply-text-${review.reply_id}">${review.reply}</p>
+                <small style="color: #64748b;">Trả lời lúc: ${review.reply_date}</small>
+              </div>
+            `;
+          } else {
+            replySection = `
+              <div style="margin-top: 20px; padding: 15px; background: #f9fafb; border-radius: 5px;">
+                <strong>💬 Trả lời đánh giá này:</strong>
+                <textarea id="reply-input" class="form-control" rows="3" placeholder="Nhập phản hồi của bạn..." style="margin-top: 10px; width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+                <button class="btn-primary" id="btn-submit-reply" data-review-id="${review.id}" style="margin-top: 10px; background: #3b82f6; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">Gửi phản hồi</button>
+              </div>
+            `;
+          }
+
+          const content = `
+            <div style="padding: 20px;">
+              <div style="margin-bottom: 15px;">
+                <strong>Người đánh giá:</strong> ${review.username} (${
+            review.email
+          })
+              </div>
+              <div style="margin-bottom: 15px;">
+                <strong>Sản phẩm:</strong> ${review.product_name || "N/A"}
+              </div>
+              <div style="margin-bottom: 15px;">
+                <strong>Đơn hàng:</strong> #${review.order_id} - ${
+            review.customer_name
+          }
+              </div>
+              <div style="margin-bottom: 15px;">
+                <strong>Số sao:</strong> ${stars} (${review.rating}/5)
+              </div>
+              <div style="margin-bottom: 15px;">
+                <strong>Nhận xét:</strong>
+                <p style="background: #f5f5f5; padding: 15px; border-radius: 5px; margin-top: 10px;">
+                  ${
+                    review.comment ||
+                    '<em style="color: #999;">Không có nhận xét</em>'
+                  }
+                </p>
+              </div>
+              <div style="margin-bottom: 15px;">
+                <strong>Ngày đánh giá:</strong> ${review.formatted_date}
+              </div>
+              
+              ${replySection}
+            </div>
+          `;
+
+          $("#review-detail-content").html(content);
+          $("#review-detail-modal").fadeIn(300);
+        } else {
+          showToast(response.message, false);
+        }
+      },
+      error: function () {
+        showToast("Lỗi khi tải chi tiết đánh giá!", false);
+      },
+    });
+  });
+
+  // ✅ GỬI PHẢN HỒI MỚI
+  $(document).on("click", "#btn-submit-reply", function () {
+    const reviewId = $(this).data("review-id");
+    const reply = $("#reply-input").val().trim();
+
+    if (!reply) {
+      showToast("Vui lòng nhập nội dung phản hồi!", false);
+      return;
+    }
+
+    $.ajax({
+      url: "../api/reviews.php",
+      method: "POST",
+      data: {
+        action: "add_reply",
+        review_id: reviewId,
+        reply: reply,
+      },
+      dataType: "json",
+      success: function (response) {
+        if (response.success) {
+          showToast(response.message, true);
+          $("#review-detail-modal").fadeOut(300);
+          loadReviews();
+        } else {
+          showToast(response.message, false);
+        }
+      },
+      error: function () {
+        showToast("Lỗi khi gửi phản hồi!", false);
+      },
+    });
+  });
+
+  // ✅ SỬA PHẢN HỒI
+  $(document).on("click", ".btn-edit-reply", function () {
+    const replyId = $(this).data("reply-id");
+    const reviewId = $(this).data("review-id");
+    const currentReply = $(`#reply-text-${replyId}`).text();
+
+    const newReply = prompt("Sửa phản hồi:", currentReply);
+    if (newReply === null || newReply.trim() === "") return;
+
+    $.ajax({
+      url: "../api/reviews.php",
+      method: "POST",
+      data: {
+        action: "update_reply",
+        reply_id: replyId,
+        reply: newReply.trim(),
+      },
+      dataType: "json",
+      success: function (response) {
+        if (response.success) {
+          showToast(response.message, true);
+          $(`#reply-text-${replyId}`).text(newReply.trim());
+        } else {
+          showToast(response.message, false);
+        }
+      },
+      error: function () {
+        showToast("Lỗi khi cập nhật phản hồi!", false);
+      },
+    });
+  });
+
+  // ✅ XÓA PHẢN HỒI
+  $(document).on("click", ".btn-delete-reply", function () {
+    const replyId = $(this).data("reply-id");
+
+    if (!confirm("Bạn có chắc muốn xóa phản hồi này?")) return;
+
+    $.ajax({
+      url: "../api/reviews.php",
+      method: "POST",
+      data: {
+        action: "delete_reply",
+        id: replyId,
+      },
+      dataType: "json",
+      success: function (response) {
+        if (response.success) {
+          showToast(response.message, true);
+          $("#review-detail-modal").fadeOut(300);
+          loadReviews();
+        } else {
+          showToast(response.message, false);
+        }
+      },
+      error: function () {
+        showToast("Lỗi khi xóa phản hồi!", false);
+      },
+    });
+  });
+
+  // Xóa đánh giá
+  $(document).on("click", ".btn-delete-review", function () {
+    const reviewId = $(this).data("id");
+
+    if (confirm("Bạn có chắc muốn xóa đánh giá này?")) {
+      $.ajax({
+        url: "../api/reviews.php",
+        method: "POST",
+        data: { action: "delete", id: reviewId },
+        dataType: "json",
+        success: function (response) {
+          if (response.success) {
+            showToast(response.message, true);
+            loadReviews();
+          } else {
+            showToast(response.message, false);
+          }
+        },
+        error: function () {
+          showToast("Lỗi khi xóa đánh giá!", false);
+        },
+      });
+    }
+  });
+
+  // Load reviews khi click vào menu
+  $(document).on("click", '[data-target="reviews-section"]', function () {
+    loadReviews();
+  });
 });

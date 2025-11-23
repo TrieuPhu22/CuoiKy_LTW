@@ -194,6 +194,63 @@
   }
 }
 
+/* Reviews Section */
+.reviews-section {
+  border-top: 1px solid #dee2e6;
+  padding-top: 2rem;
+}
+
+/* Rating Overview Card - Background màu #FFFBF8 cho phần tổng quan */
+.reviews-section > .card {
+  background-color: #fffbf8 !important;
+  border: 1px solid #f1899f;
+}
+
+.reviews-section > .card .border-end {
+  border-color: #f1899f !important;
+}
+
+.rating-stars-display {
+  font-size: 1.2rem;
+}
+
+.rating-breakdown .progress {
+  background-color: #e9ecef;
+}
+
+/* Giữ màu trắng cho các card review bên dưới */
+#reviews-container .card {
+  transition: transform 0.2s;
+  background-color: #fff !important;
+}
+
+#reviews-container .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Thay đổi màu sao từ warning (vàng) sang hồng #F1899F */
+.rating-stars .star:hover,
+.rating-stars .star.active {
+  color: #f1899f !important;
+}
+
+.rating-display {
+  color: #f1899f !important;
+  font-size: 1.5rem;
+}
+
+/* Màu hồng cho các ngôi sao đánh giá */
+.text-warning,
+.bi-star-fill.text-warning,
+.bi-star-half.text-warning {
+  color: #f1899f !important;
+}
+
+.progress-bar.bg-warning {
+  background-color: #f1899f !important;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .product-title {

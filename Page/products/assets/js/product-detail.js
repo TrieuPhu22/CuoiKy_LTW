@@ -80,6 +80,7 @@ $(document).ready(function () {
           currentProduct = response.data;
           displayProductDetail(response.data);
           loadRelatedProducts(response.data.category);
+          loadProductReviews(response.data.id); // Load reviews for the product
         } else {
           console.error("API error:", response.message);
           $("#error-section").show();
@@ -292,6 +293,194 @@ $(document).ready(function () {
         console.error("Error getting cart count:", error);
       },
     });
+  }
+
+  // --- LOAD PRODUCT REVIEWS ---
+
+  function loadProductReviews(productId) {
+    console.log("🔄 Loading reviews for product:", productId);
+
+    // ✅ Kiểm tra productId hợp lệ
+    if (!productId || productId <= 0) {
+      console.error("❌ Invalid product ID:", productId);
+      displayEmptyReviews();
+      return;
+    }
+
+    $.ajax({
+      url: "/CuoiKy_LTW/api/reviews.php",
+      method: "POST",
+      data: {
+        action: "get_by_product",
+        product_id: productId,
+      },
+      dataType: "json",
+      timeout: 10000, // ✅ Thêm timeout 10 giây
+      success: function (response) {
+        console.log("✅ Reviews API response:", response);
+        if (response.success) {
+          displayReviews(response.data);
+        } else {
+          console.warn("⚠️ No reviews:", response.message);
+          displayEmptyReviews();
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("❌ Error loading reviews:", {
+          status: status,
+          error: error,
+          response: xhr.responseText,
+        });
+        displayErrorReviews();
+      },
+    });
+  }
+
+  // ✅ Hiển thị khi chưa có đánh giá
+  function displayEmptyReviews() {
+    $("#average-rating").text("0");
+    $("#total-reviews").text("0");
+    $("#total-reviews-text").text("0");
+    $("#average-stars").html('<i class="bi bi-star text-muted"></i>'.repeat(5));
+    $(".rating-stars-display").html(
+      '<i class="bi bi-star text-muted"></i>'.repeat(5) + " <strong>0</strong>"
+    );
+
+    let breakdownHtml = "";
+    for (let i = 5; i >= 1; i--) {
+      breakdownHtml += `
+        <div class="d-flex align-items-center mb-2">
+          <span class="me-2" style="width: 60px;">${i} <i class="bi bi-star-fill text-warning"></i></span>
+          <div class="progress flex-grow-1" style="height: 8px;">
+            <div class="progress-bar bg-warning" role="progressbar" style="width: 0%"></div>
+          </div>
+          <span class="ms-2 text-muted" style="width: 50px;">0</span>
+        </div>
+      `;
+    }
+    $("#rating-breakdown").html(breakdownHtml);
+
+    $("#reviews-container").html(
+      '<p class="text-muted">Chưa có đánh giá nào cho sản phẩm này.</p>'
+    );
+  }
+
+  // ✅ Hiển thị khi có lỗi
+  function displayErrorReviews() {
+    $("#reviews-container").html(
+      '<div class="alert alert-warning"><i class="bi bi-exclamation-triangle me-2"></i>Không thể tải đánh giá. Vui lòng thử lại sau.</div>'
+    );
+  }
+
+  // DISPLAY REVIEWS
+  function displayReviews(data) {
+    const { reviews, total, average_rating, rating_count } = data;
+
+    console.log("📊 Displaying reviews:", { total, average_rating });
+
+    // Update average rating
+    $("#average-rating").text(average_rating);
+    $("#total-reviews").text(total);
+    $("#total-reviews-text").text(total);
+
+    // Display average stars
+    let avgStarsHtml = "";
+    for (let i = 1; i <= 5; i++) {
+      if (i <= Math.floor(average_rating)) {
+        avgStarsHtml += '<i class="bi bi-star-fill text-warning"></i>';
+      } else if (i === Math.ceil(average_rating) && average_rating % 1 !== 0) {
+        avgStarsHtml += '<i class="bi bi-star-half text-warning"></i>';
+      } else {
+        avgStarsHtml += '<i class="bi bi-star text-muted"></i>';
+      }
+    }
+    $("#average-stars").html(avgStarsHtml);
+
+    // Display rating summary stars
+    let summaryStarsHtml = "";
+    for (let i = 1; i <= 5; i++) {
+      summaryStarsHtml +=
+        i <= Math.floor(average_rating)
+          ? '<i class="bi bi-star-fill text-warning"></i>'
+          : '<i class="bi bi-star text-muted"></i>';
+    }
+    $(".rating-stars-display").html(
+      summaryStarsHtml + ` <strong>${average_rating}</strong>`
+    );
+
+    // Display rating breakdown
+    let breakdownHtml = "";
+    for (let i = 5; i >= 1; i--) {
+      const count = rating_count[i] || 0;
+      const percentage = total > 0 ? ((count / total) * 100).toFixed(0) : 0;
+      breakdownHtml += `
+        <div class="d-flex align-items-center mb-2">
+          <span class="me-2" style="width: 60px;">${i} <i class="bi bi-star-fill text-warning"></i></span>
+          <div class="progress flex-grow-1" style="height: 8px;">
+            <div class="progress-bar bg-warning" role="progressbar" 
+                 style="width: ${percentage}%" aria-valuenow="${percentage}" 
+                 aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <span class="ms-2 text-muted" style="width: 50px;">${count}</span>
+        </div>
+      `;
+    }
+    $("#rating-breakdown").html(breakdownHtml);
+
+    // Display reviews list
+    if (reviews.length === 0) {
+      $("#reviews-container").html(
+        '<p class="text-muted">Chưa có đánh giá nào cho sản phẩm này.</p>'
+      );
+      return;
+    }
+
+    let reviewsHtml = "";
+    reviews.forEach((review) => {
+      let starsHtml = "";
+      for (let i = 1; i <= 5; i++) {
+        starsHtml +=
+          i <= review.rating
+            ? '<i class="bi bi-star-fill text-warning"></i>'
+            : '<i class="bi bi-star text-muted"></i>';
+      }
+
+      // ✅ Phần reply từ Admin
+      let replyHtml = "";
+      if (review.reply_id && review.reply) {
+        replyHtml = `
+          <div class="admin-reply mt-3 p-3" style="background: #f0f9ff; border-left: 4px solid #3b82f6; border-radius: 4px;">
+            <div class="d-flex align-items-center mb-2">
+              <i class="bi bi-person-badge text-primary me-2"></i>
+              <strong class="text-primary">Phản hồi từ Flower Shop</strong>
+            </div>
+            <p class="mb-1">${review.reply}</p>
+            <small class="text-muted">${review.reply_date || ""}</small>
+          </div>
+        `;
+      }
+
+      reviewsHtml += `
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div>
+                <strong>${review.username}</strong>
+                <div class="mt-1">${starsHtml}</div>
+              </div>
+              <small class="text-muted">${review.formatted_date}</small>
+            </div>
+            <p class="mb-0">${
+              review.comment ||
+              '<em class="text-muted">Người dùng không để lại nhận xét</em>'
+            }</p>
+            ${replyHtml}
+          </div>
+        </div>
+      `;
+    });
+
+    $("#reviews-container").html(reviewsHtml);
   }
 
   // --- EVENT HANDLERS ---

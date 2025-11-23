@@ -1,7 +1,5 @@
 <?php
-
 // BƯỚC 1: Thêm "Người gác cổng"
-// Tệp này sẽ kiểm tra session, nếu không phải Admin, sẽ đá về trang signin.php
 include 'admin_auth_check.php';
 ?>
 <!DOCTYPE html>
@@ -47,12 +45,17 @@ include 'admin_auth_check.php';
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
                     <span>Quản lý Đơn hàng</span>
                 </a>
+                <!-- ✅ THÊM MENU QUẢN LÝ ĐÁNH GIÁ -->
+                <a class="nav-link" href="#" data-target="reviews-section">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                    <span>Quản lý Đánh giá</span>
+                </a>
             </nav>
         </div>
 
         <!-- Main content -->
         <div class="main-content">
-            <!-- Header (Đã cập nhật) -->
+            <!-- Header -->
             <header class="main-header">
                 <div>
                     <h2>Chào mừng trở lại, <?php echo htmlspecialchars($_SESSION['user_username']); ?>!</h2>
@@ -168,6 +171,32 @@ include 'admin_auth_check.php';
                             </thead>
                             <tbody id="orders-table">
                                 <!-- Dữ liệu đơn hàng sẽ được chèn vào đây bằng jQuery -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ✅ THÊM SECTION: QUẢN LÝ ĐÁNH GIÁ -->
+                <div id="reviews-section" class="content-section">
+                    <div class="table-header">
+                        <h3 class="content-title">Quản lý Đánh giá</h3>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Người dùng</th>
+                                    <th>Sản phẩm</th>
+                                    <th>Đơn hàng</th>
+                                    <th>Đánh giá</th>
+                                    <th>Nhận xét</th>
+                                    <th>Ngày đánh giá</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reviews-table">
+                                <!-- Dữ liệu đánh giá sẽ được chèn vào đây bằng jQuery -->
                             </tbody>
                         </table>
                     </div>
@@ -330,6 +359,22 @@ include 'admin_auth_check.php';
                     <button type="submit" class="btn btn-submit">Cập nhật</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- ✅ THÊM MODAL XEM CHI TIẾT ĐÁNH GIÁ -->
+    <div id="review-detail-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Chi tiết đánh giá</h4>
+                <button class="modal-close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" id="review-detail-content">
+                <!-- Nội dung chi tiết sẽ được load bằng JavaScript -->
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
         </div>
     </div>
 
