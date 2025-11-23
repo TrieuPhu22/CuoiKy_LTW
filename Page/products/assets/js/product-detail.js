@@ -186,7 +186,7 @@ $(document).ready(function () {
       }
 
       const card = `
-        <div class="col-md-3 col-sm-6 mb-4">
+        <div class="col-md-3 col-sm-6 mb-4 product-card">
           <div class="card related-product-card" onclick="window.location.href='Page/products/products.php?id=${
             product.id
           }'">

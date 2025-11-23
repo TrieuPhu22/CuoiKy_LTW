@@ -62,7 +62,7 @@ if (isset($_SESSION['user_id'])) {
     <!-- logo -->
     <div class="homeLogo">
         <!-- Use absolute paths so header works from pages in any subfolder -->
-        <a href="../"><img src="../img/Logo_LTW.jpg" alt="Logo" /></a>
+        <a href="../"><img src="../img/../img/favicon.png" alt="Logo" /></a>
     </div>
     <!-- search & login  -->
     <div class="homeSearchLogin">
@@ -149,7 +149,7 @@ if (isset($_SESSION['user_id'])) {
 <div class="footerContact">
     <div class="homeContainer">
         <div class="footerLogo">
-            <img src="../img/Logo_LTW.jpg" alt="logo" />
+            <img src="../img/../img/favicon.png" alt="logo" />
             <p>Hotline: 012345678</p>
             <p>Email: nhom5@gmail.com</p>
         </div>

@@ -38,8 +38,12 @@
                 <div class="col-auto">
                     <label for="input-sort" class="form-label visually-hidden">Sắp xếp</label>
                     <select id="input-sort" class="form-select sort-select" style="width:220px;">
-                        <option value="">Giá (Thấp &gt; Cao)</option>
-                        <option value="">Tên (A - Z)</option>
+                        <option value="default">Sắp xếp (Mặc định)</option>
+                        <option value="price_asc">Giá: Thấp → Cao</option>
+                        <option value="price_desc">Giá: Cao → Thấp</option>
+                        <option value="name_asc">Tên: A → Z</option>
+                        <option value="name_desc">Tên: Z → A</option>
+                        <option value="newest">Mới nhất</option>
                     </select>
                 </div>
             </div>
@@ -70,19 +74,36 @@
     <script src="./Page/home/assets/js/home_script.js"></script>
     <script>
         $(document).ready(function() {
-            
-            $.ajax({
-                url: './api/products.php',
-                method: 'POST',
-                data: { action: 'get_by_subcategory', subcategory_id: 4 },  
-                dataType: 'json',
-                success: function(response) {
-                    if (response.success && response.data.length > 0) {
-                        renderProductList(response.data, '#product-grid');
-                    } else {
-                        $('#product-grid').html('<div class="col-12"><p>Không có sản phẩm nào.</p></div>');
+            let currentSortBy = 'default';  
+
+            // Hàm load sản phẩm
+            function loadProducts() {
+                $.ajax({
+                    url: './api/products.php',
+                    method: 'POST',
+                    data: { 
+                        action: 'get_by_subcategory', 
+                        subcategory_id: 4,
+                        sort_by: currentSortBy  
+                    },  
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success && response.data.length > 0) {
+                            renderProductList(response.data, '#product-grid');
+                        } else {
+                            $('#product-grid').html('<div class="col-12"><p>Không có sản phẩm nào.</p></div>');
+                        }
                     }
-                }
+                });
+            }
+
+            // Load sản phẩm ban đầu
+            loadProducts();
+
+            // Xử lý khi thay đổi sắp xếp
+            $('#input-sort').on('change', function() {
+                currentSortBy = $(this).val();
+                loadProducts();  // Tải lại sản phẩm
             });
         });
     </script>
