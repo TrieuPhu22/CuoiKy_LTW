@@ -63,43 +63,18 @@ function getSubcategories($conn, $category) {
     }
     $stmt->close();
     
-    return $data;  // ✅ TRẢ VỀ ARRAY thay vì echo + exit
+    return $data;  
 }
 // =============== Lấy sản phẩm theo subcategory ===============
-function getProductsBySubcategory($conn, $subcategoryId, $sortBy = 'default') {
+function getProductsBySubcategory($conn, $subcategoryId) {
     $subcategoryId = (int)$subcategoryId;
-    
-    // ⭐ Xác định cách sắp xếp
-    $orderBy = "p.id DESC";  // Default
-    
-    switch($sortBy) {
-        case 'price_asc':
-            $orderBy = "p.price ASC";  // Giá thấp -> cao
-            break;
-        case 'price_desc':
-            $orderBy = "p.price DESC";  // Giá cao -> thấp
-            break;
-        case 'name_asc':
-            $orderBy = "p.name ASC";  // A -> Z
-            break;
-        case 'name_desc':
-            $orderBy = "p.name DESC";  // Z -> A
-            break;
-        case 'newest':
-            $orderBy = "p.id DESC";  // Mới nhất
-            break;
-        default:
-            $orderBy = "p.id DESC";
-    }
-    
     $sql = "SELECT p.id, p.name, p.description, p.price, p.category, 
                    p.subcategory_id, s.subcategory_name,
                    p.stock, p.image_url 
             FROM products p
             LEFT JOIN subcategories s ON p.subcategory_id = s.id
             WHERE p.subcategory_id = ?
-            ORDER BY {$orderBy}";
-    
+            ORDER BY p.id DESC";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $subcategoryId);
     $stmt->execute();
@@ -112,10 +87,39 @@ function getProductsBySubcategory($conn, $subcategoryId, $sortBy = 'default') {
     $stmt->close();
     echo json_encode(['success' => true, 'data' => $products]);
 }
+// =============== Tìm kiếm sản phẩm ===============
+function searchProducts($conn, $keyword) {
+    $keyword = '%' . $conn->real_escape_string($keyword) . '%';
+    $sql = "SELECT p.id, p.name, p.description, p.price, p.category, 
+                   p.subcategory_id, s.subcategory_name,
+                   p.stock, p.image_url 
+            FROM products p
+            LEFT JOIN subcategories s ON p.subcategory_id = s.id
+            WHERE p.name LIKE ? 
+               OR p.description LIKE ?
+               OR s.subcategory_name LIKE ?
+            ORDER BY p.name ASC
+            LIMIT 20";
+    
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sss", $keyword, $keyword, $keyword);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $products = [];
+    
+    while($row = $result->fetch_assoc()) {
+        $products[] = $row;
+    }
+    $stmt->close();
+    echo json_encode(['success' => true, 'data' => $products]);
+}
 
-// =============== Sắp xếp kết quả tìm kiếm ===============
-function searchProducts($conn, $keyword, $sortBy = 'default') {
-    $keyword = '%' . $keyword . '%';
+// =============== Lấy sản phẩm theo subcategory + pagination ===============
+function getProductsBySubcategoryPaginated($conn, $subcategoryId, $sortBy = 'default', $page = 1) {
+    $subcategoryId = (int)$subcategoryId;
+    $page = max(1, (int)$page);
+    $itemsPerPage = 8;  // ⭐ 8 sản phẩm mỗi trang
+    $offset = ($page - 1) * $itemsPerPage;
     
     // ⭐ Xác định cách sắp xếp
     $orderBy = "p.id DESC";
@@ -140,6 +144,97 @@ function searchProducts($conn, $keyword, $sortBy = 'default') {
             $orderBy = "p.id DESC";
     }
     
+    // ⭐ Lấy tổng số sản phẩm
+    $sqlCount = "SELECT COUNT(*) as total FROM products p
+                 WHERE p.subcategory_id = ?";
+    $stmtCount = $conn->prepare($sqlCount);
+    $stmtCount->bind_param("i", $subcategoryId);
+    $stmtCount->execute();
+    $resultCount = $stmtCount->get_result();
+    $rowCount = $resultCount->fetch_assoc();
+    $totalProducts = (int)$rowCount['total'];
+    $stmtCount->close();
+    
+    // ⭐ Lấy sản phẩm của trang hiện tại
+    $sql = "SELECT p.id, p.name, p.description, p.price, p.category, 
+                   p.subcategory_id, s.subcategory_name,
+                   p.stock, p.image_url 
+            FROM products p
+            LEFT JOIN subcategories s ON p.subcategory_id = s.id
+            WHERE p.subcategory_id = ?
+            ORDER BY {$orderBy}
+            LIMIT ? OFFSET ?";
+    
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("iii", $subcategoryId, $itemsPerPage, $offset);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $products = [];
+    
+    while($row = $result->fetch_assoc()) {
+        $products[] = $row;
+    }
+    $stmt->close();
+    
+    // ⭐ Trả về dữ liệu kèm thông tin phân trang
+    echo json_encode([
+        'success' => true, 
+        'data' => $products,
+        'pagination' => [
+            'current_page' => $page,
+            'items_per_page' => $itemsPerPage,
+            'total_items' => $totalProducts,
+            'total_pages' => ceil($totalProducts / $itemsPerPage),
+            'has_more' => ($offset + $itemsPerPage) < $totalProducts
+        ]
+    ]);
+}
+
+// =============== Sắp xếp kết quả tìm kiếm + pagination ===============
+function searchProductsPaginated($conn, $keyword, $sortBy = 'default', $page = 1) {
+    $keyword = '%' . $keyword . '%';
+    $page = max(1, (int)$page);
+    $itemsPerPage = 8;
+    $offset = ($page - 1) * $itemsPerPage;
+    
+    // ⭐ Xác định cách sắp xếp
+    $orderBy = "p.id DESC";
+    
+    switch($sortBy) {
+        case 'price_asc':
+            $orderBy = "p.price ASC";
+            break;
+        case 'price_desc':
+            $orderBy = "p.price DESC";
+            break;
+        case 'name_asc':
+            $orderBy = "p.name ASC";
+            break;
+        case 'name_desc':
+            $orderBy = "p.name DESC";
+            break;
+        case 'newest':
+            $orderBy = "p.id DESC";
+            break;
+        default:
+            $orderBy = "p.id DESC";
+    }
+    
+    // ⭐ Lấy tổng số sản phẩm
+    $sqlCount = "SELECT COUNT(*) as total FROM products p
+                 LEFT JOIN subcategories s ON p.subcategory_id = s.id
+                 WHERE p.name LIKE ? 
+                    OR p.description LIKE ?
+                    OR s.subcategory_name LIKE ?";
+    $stmtCount = $conn->prepare($sqlCount);
+    $stmtCount->bind_param("sss", $keyword, $keyword, $keyword);
+    $stmtCount->execute();
+    $resultCount = $stmtCount->get_result();
+    $rowCount = $resultCount->fetch_assoc();
+    $totalProducts = (int)$rowCount['total'];
+    $stmtCount->close();
+    
+    // ⭐ Lấy sản phẩm của trang hiện tại
     $sql = "SELECT p.id, p.name, p.description, p.price, p.category, 
                    p.subcategory_id, s.subcategory_name,
                    p.stock, p.image_url 
@@ -149,10 +244,10 @@ function searchProducts($conn, $keyword, $sortBy = 'default') {
                OR p.description LIKE ?
                OR s.subcategory_name LIKE ?
             ORDER BY {$orderBy}
-            LIMIT 20";
+            LIMIT ? OFFSET ?";
     
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sss", $keyword, $keyword, $keyword);
+    $stmt->bind_param("sssii", $keyword, $keyword, $keyword, $itemsPerPage, $offset);
     $stmt->execute();
     $result = $stmt->get_result();
     $products = [];
@@ -161,56 +256,76 @@ function searchProducts($conn, $keyword, $sortBy = 'default') {
         $products[] = $row;
     }
     $stmt->close();
-    echo json_encode(['success' => true, 'data' => $products]);
+    
+    echo json_encode([
+        'success' => true, 
+        'data' => $products,
+        'pagination' => [
+            'current_page' => $page,
+            'items_per_page' => $itemsPerPage,
+            'total_items' => $totalProducts,
+            'total_pages' => ceil($totalProducts / $itemsPerPage),
+            'has_more' => ($offset + $itemsPerPage) < $totalProducts
+        ]
+    ]);
 }
 
 // --- XỬ LÝ ROUTING ---
 header('Content-Type: application/json');
 
-$action = $_POST['action'] ?? $_GET['action'] ?? 'get_all';
+if (isset($_POST['action'])) {
+    $action = $_POST['action'];
 
-switch ($action) {
-    case 'get_all':
-        getAllProducts($conn);
-        break;
-    case 'get_subcategories':
-        $cat = $_POST['category'] ?? '';
-        $subcats = getSubcategories($conn, $cat);
-        echo json_encode(['success' => true, 'data' => $subcats]);
-        break;
-    case 'get_by_subcategory':
+    switch ($action) {
+        case 'get_all':
+            getAllProducts($conn);
+            break;
+
+        case 'get_subcategories':
+            $category = $_POST['category'] ?? '';
+            $subcats = getSubcategories($conn, $category);
+            echo json_encode(['success' => true, 'data' => $subcats]);  
+            break;
+        
+        case 'get_by_subcategory':  
         $subcategoryId = $_POST['subcategory_id'] ?? 0;
-        $sortBy = $_POST['sort_by'] ?? 'default';  // ⭐ Lấy sort_by
-        getProductsBySubcategory($conn, $subcategoryId, $sortBy);
+        $sortBy = $_POST['sort_by'] ?? 'default';
+        $page = $_POST['page'] ?? 1;  // ⭐ Lấy page
+        getProductsBySubcategoryPaginated($conn, $subcategoryId, $sortBy, $page);
         break;
-    case 'search':
+
+        case 'search':
         $keyword = $_POST['keyword'] ?? $_GET['keyword'] ?? '';
-        $sortBy = $_POST['sort_by'] ?? 'default';  // ⭐ Lấy sort_by
+        $sortBy = $_POST['sort_by'] ?? 'default';
+        $page = $_POST['page'] ?? 1;  // ⭐ Lấy page
         if (strlen($keyword) >= 2) {
-            searchProducts($conn, $keyword, $sortBy);
+            searchProductsPaginated($conn, $keyword, $sortBy, $page);
         } else {
             echo json_encode(['success' => false, 'message' => 'Vui lòng nhập ít nhất 2 ký tự.']);
         }
         break;
-    case 'add':
-        addProduct($conn, $_POST, $_FILES);
-        break;
+        case 'add':
+            addProduct($conn, $_POST, $_FILES);
+            break;
 
-    case 'get_one':
-        getOneProduct($conn, $_POST['id']);
-        break;
-        
-    case 'update':
-        updateProduct($conn, $_POST, $_FILES);
-        break;
-        
-    case 'delete':
-        deleteProduct($conn, $_POST['id']);
-        break;
-        
-    default:
-        echo json_encode(['success' => false, 'message' => 'Hành động không hợp lệ.']);
-        break;
+        case 'get_one':
+            getOneProduct($conn, $_POST['id']);
+            break;
+            
+        case 'update':
+            updateProduct($conn, $_POST, $_FILES);
+            break;
+            
+        case 'delete':
+            deleteProduct($conn, $_POST['id']);
+            break;
+            
+        default:
+            echo json_encode(['success' => false, 'message' => 'Hành động không hợp lệ.']);
+            break;
+    }
+} else {
+    getAllProducts($conn);
 }
 
 // --- CÁC HÀM XỬ LÝ ---
