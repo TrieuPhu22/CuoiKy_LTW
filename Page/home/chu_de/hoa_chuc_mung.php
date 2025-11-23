@@ -54,16 +54,7 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-12">
-                    <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
-                        <ul class="pagination">
-                            <li class="page-item active"><a class="page-link">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
+
         </div>
     </main>
 

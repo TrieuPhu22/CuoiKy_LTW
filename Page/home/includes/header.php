@@ -1,5 +1,9 @@
-
-
+<?php
+// ⭐ THÊM DÒNG NÀY Ở ĐẦU FILE
+if (!isset($_SESSION)) {
+    session_start();
+}
+?>
 <header>
     <!-- icon social -->
     <div class="homeIconSocial">
