@@ -21,4 +21,3 @@ if ($conn->connect_error) {
 // Đặt bảng mã thành UTF-8 (Rất quan trọng)
 $conn->set_charset("utf8mb4");
 ?>
-
