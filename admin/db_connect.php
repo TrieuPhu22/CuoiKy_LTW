@@ -9,7 +9,7 @@ $servername = "localhost";
 $username = "root";       // Tên người dùng XAMPP mặc định
 $password = "";           // Mật khẩu XAMPP mặc định là rỗng
 $dbname = "flower_shop";     // Tên CSDL bạn đã tạo
-$port = "3309";            // Cổng mặc định của MySQL trên XAMPP
+$port = "3307";            // Cổng mặc định của MySQL trên XAMPP
 // Tạo kết nối
 $conn = new mysqli($servername, $username, $password, $dbname, $port);
 
@@ -21,4 +21,3 @@ if ($conn->connect_error) {
 // Đặt bảng mã thành UTF-8 (Rất quan trọng)
 $conn->set_charset("utf8mb4");
 ?>
-
