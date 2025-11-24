@@ -44,7 +44,8 @@ if (isset($_SESSION['user_id'])) {
     href="../node_modules/bootstrap-icons/font/bootstrap-icons.css"
     />
     <link rel="stylesheet" href="../Page/home/assets/css/style.css">
-
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="../Page/home/assets/css/style.css" />
     <!-- admin -->
     <link rel="stylesheet" href="./assets/css/style.css">
     <!-- BreakPoint Css -->
@@ -198,6 +199,7 @@ if (isset($_SESSION['user_id'])) {
     <!-- bootstrap js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./assets/js/signupService.js"></script>
+    <script src="../Page/home/assets/js/home_script.js"></script>
 </body>
 </html>
 

@@ -23,9 +23,9 @@ $(document).ready(function () {
     console.log("📦 Dữ liệu form:", formData);
     $("#auth-error").hide();
 
-    // ✅ SỬA ĐƯỜNG DẪN API
+  
     $.ajax({
-      url: "/CuoiKy_LTW/api/auth_controller.php", // ✅ Đường dẫn tuyệt đối
+      url: "/CuoiKy_LTW/api/auth_controller.php", 
       method: "POST",
       data: formData,
       dataType: "json",

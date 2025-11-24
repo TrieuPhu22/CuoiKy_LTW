@@ -239,6 +239,7 @@ $finalTotal = $cartTotal + $shippingFee - $discount;
 
     <!-- Custom JS -->
     <script src="Page/cart/assets/js/script.js"></script>
+    <script src="./Page/home/assets/js/home_script.js"></script>
 
     <!-- Thêm Modal xác nhận thanh toán TRƯỚC thẻ đóng </body> -->
 <!-- Modal Xác Nhận Thanh Toán -->
