@@ -172,5 +172,6 @@ $product_id = intval($_GET['id']);
         console.log('Product ID loaded:', PRODUCT_ID);
     </script>
     <script src="Page/products/assets/js/product-detail.js"></script>
+    <script src="./Page/home/assets/js/home_script.js"></script>
 </body>
 </html>

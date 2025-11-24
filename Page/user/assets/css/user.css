@@ -7,6 +7,7 @@
     }
     /* ================================== Main ================================== */
     main {
+        min-height:65vh;
     display: flex;
     justify-content: center;
     }

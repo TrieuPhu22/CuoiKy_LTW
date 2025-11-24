@@ -29,7 +29,7 @@ $conn->close();
     // Tự động lấy giao thức (http hoặc https)
     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
     
-    // Tự động lấy tên máy chủ (localhost hoặc 192.168.1.5)
+
     $host = $_SERVER['HTTP_HOST'];
     
     // Tên thư mục gốc của dự án
@@ -49,6 +49,8 @@ $conn->close();
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
     />
+    <!-- SWIPER CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -87,7 +89,7 @@ $conn->close();
         class="carousel slide homeBanner"
         data-bs-ride="carousel"
         >
-        <div class="carousel-inner">
+        <div class="carousel-inner ">
 
             <div class="carousel-item active">
             <img
@@ -130,48 +132,107 @@ $conn->close();
             <span class="visually-hidden">Next</span>
         </button>
         </div>
-        <!-- ======== Hoa Sinh Nhật ======== -->
-        <div class="home-product-section">
+<!-- ======== Hoa Sinh Nhật ======== -->
+    <div class="home-product-section position-relative"> <div class="mb-3">
         <h2 class="home-product-title">Hoa Sinh Nhật</h2>
-        <!-- list product -->
-        <div class="home-list-product" id="product-list-birthday">
-            <!-- DỮ LIỆU SẼ ĐƯỢC JS ĐỔ VÀO ĐÂY -->
-        </div>
-        </div>
+    </div>
+
+    <div class="swiper swiper-birthday">
+        <div class="swiper-wrapper" id="product-list-birthday">
+            </div>
+        
+        <div class="swiper-pagination"></div>
+
+        <button class=" swiper-nav-btn swiper-prev-birthday">
+            <i class="bi bi-chevron-left"></i>
+        </button>
+        <button class=" swiper-nav-btn swiper-next-birthday">
+            <i class="bi bi-chevron-right"></i>
+        </button>
+    </div>
+</div>
+
+
 
         <!-- ======== Hoa Khai Trương ======== -->
-        <div class="home-product-section">
+        <div class="home-product-section position-relative"> <div class="mb-3">
         <h2 class="home-product-title">Hoa Khai Trương</h2>
-        <!-- list product -->
-        <div class="home-list-product" id="product-list-opening">
-            <!-- DỮ LIỆU SẼ ĐƯỢC JS ĐỔ VÀO ĐÂY -->
-        </div>
-        </div>
-        <!-- ======== Chủ Đề ======== -->
-        <div class="home-product-section">
-        <h2 class="home-product-title">Chủ Đề</h2>
-        <!-- list product -->
-        <div class="home-list-product" id="product-list-theme">
-            <!-- DỮ LIỆU SẼ ĐƯỢC JS ĐỔ VÀO ĐÂY -->
-        </div>
-        </div>
-        <!-- ======== Thiết Kế ======== -->
-        <div class="home-product-section">
-        <h2 class="home-product-title">Thiết Kế</h2>
-        <!-- list product -->
-        <div class="home-list-product" id="product-list-design">
-            <!-- DỮ LIỆU SẼ ĐƯỢC JS ĐỔ VÀO ĐÂY -->
-        </div>
-        </div>
-        <!-- ======== Hoa Tươi ======== -->
-        <div class="home-product-section">
-        <h2 class="home-product-title">Hoa Tươi</h2>
-        <!-- list product -->
-        <div class="home-list-product" id="product-list-fresh">
-            <!-- DỮ LIỆU SẼ ĐƯỢC JS ĐỔ VÀO ĐÂY -->
-        </div>
-        </div>
     </div>
+
+    <div class="swiper swiper-opening">
+        <div class="swiper-wrapper" id="product-list-opening">
+            </div>
+        
+        <div class="swiper-pagination"></div>
+
+        <button class=" swiper-nav-btn swiper-prev-opening">
+            <i class="bi bi-chevron-left"></i>
+        </button>
+        <button class=" swiper-nav-btn swiper-next-opening">
+            <i class="bi bi-chevron-right"></i>
+        </button>
+    </div>
+</div>
+
+        
+        <!-- ======== Chủ Đề ======== -->
+        <div class="home-product-section position-relative"> <div class="mb-3">
+        <h2 class="home-product-title">Hoa Chủ Đề</h2>
+    </div>
+
+    <div class="swiper swiper-theme">
+        <div class="swiper-wrapper" id="product-list-theme">
+            </div>
+        
+        <div class="swiper-pagination"></div>
+
+        <button class=" swiper-nav-btn swiper-prev-theme">
+            <i class="bi bi-chevron-left"></i>
+        </button>
+        <button class=" swiper-nav-btn swiper-next-theme">
+            <i class="bi bi-chevron-right"></i>
+        </button>
+    </div>
+</div>
+
+        <!-- ======== Thiết Kế ======== -->
+        <div class="home-product-section position-relative"> <div class="mb-3">
+        <h2 class="home-product-title">Hoa Thiết Kế</h2>
+    </div>
+
+    <div class="swiper swiper-design">
+        <div class="swiper-wrapper" id="product-list-design">
+            </div>
+        
+        <div class="swiper-pagination"></div>
+
+        <button class=" swiper-nav-btn swiper-prev-design">
+            <i class="bi bi-chevron-left"></i>
+        </button>
+        <button class=" swiper-nav-btn swiper-next-design">
+            <i class="bi bi-chevron-right"></i>
+        </button>
+    </div>
+</div>
+        <!-- ======== Hoa Tươi ======== -->
+       <div class="home-product-section position-relative"> <div class="mb-3">
+        <h2 class="home-product-title">Hoa Tươi</h2>
+    </div>
+
+    <div class="swiper swiper-fresh">
+        <div class="swiper-wrapper" id="product-list-fresh">
+            </div>
+        
+        <div class="swiper-pagination"></div>
+
+        <button class=" swiper-nav-btn swiper-prev-fresh">
+            <i class="bi bi-chevron-left"></i>
+        </button>
+        <button class=" swiper-nav-btn swiper-next-fresh">
+            <i class="bi bi-chevron-right"></i>
+        </button>
+    </div>
+</div>
     </main>
 
     <!-- ======== Footer ======== -->
@@ -185,10 +246,13 @@ $conn->close();
     
     <!-- bootstrap js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SWIPER JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     
     <!-- custom js -->
-    <script src="./Page/home/assets/js/home_script.js"></script>
+     <script src="./Page/home/assets/js/home_script.js"></script>
+    <script src="./Page/home/assets/js/swiper.js"></script>
 </body>
 </html>

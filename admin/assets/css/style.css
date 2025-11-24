@@ -52,6 +52,7 @@ td {
   text-align: left;
 }
 
+
 /* --- Layout Chính --- */
 .container {
   display: flex;
@@ -510,6 +511,7 @@ td {
 }
 /* ===================================== SignIn ===================================== */
 .auth-container {
+  margin-top: 40px;
   flex: 1; /* Chiếm toàn bộ không gian còn lại */
   display: flex;
   flex-direction: column;

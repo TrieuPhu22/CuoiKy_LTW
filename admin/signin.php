@@ -39,7 +39,8 @@ $redirectParam = isset($_GET['redirect']) ? $_GET['redirect'] : '';
     <!-- Bootstrap Icons Css -->
     <link rel="stylesheet" href="../node_modules/bootstrap-icons/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="../Page/home/assets/css/style.css">
-
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="../Page/home/assets/css/style.css" />
     <!-- admin -->
     <link rel="stylesheet" href="./assets/css/style.css">
     
@@ -168,6 +169,7 @@ $redirectParam = isset($_GET['redirect']) ? $_GET['redirect'] : '';
     <!-- bootstrap js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./assets/js/signinService.js"></script>
+         <script src="../Page/home/assets/js/home_script.js"></script>
 </body>
 </html>
 

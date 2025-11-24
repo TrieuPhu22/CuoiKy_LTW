@@ -17,7 +17,7 @@ body {
   font-family: "Montserrat", sans-serif;
   position: relative;
   min-height: 100vh;
-  padding-bottom: 60px; /* Để không bị footer che */
+
   background-color: #f8f9fa;
 }
 a {
@@ -34,6 +34,7 @@ header {
   background-color: white;
   border-bottom: 2px solid #f1f1f1;
 }
+
 /* Social Media Icons */
 .homeIconSocial {
   margin-left: 200px;
