@@ -26,6 +26,16 @@
 
 /* Tablet: từ 576px đến 991.98px */
 @media (min-width: 576px) and (max-width: 991.98px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 6px;
+    gap: 10px;
+  }
+  main{
+    padding-top:175px;
+  }
   .homeContainer {
     width: 98%;
     padding: 0 12px;
@@ -61,6 +71,9 @@
     justify-content: center;
     padding-bottom: 6px;
     gap: 10px;
+  }
+  main{
+    padding-top:175px;
   }
   .homeLogo img, .homeIconSocial, .homeSearchLogin {
     margin-left:0 !important;

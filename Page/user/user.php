@@ -148,5 +148,6 @@ include __DIR__ . '/../../admin/db_connect.php';
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Custom User JS -->
 <script src="./Page/user/assets/js/user.js"></script>
+    <script src="./Page/home/assets/js/home_script.js"></script>
 </body>
 </html>
