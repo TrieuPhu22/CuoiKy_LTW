@@ -75,16 +75,17 @@ error_log("Base Path: " . $basePath);
         
         <div class="ai-chat-products" id="ai-chat-products" style="display: none;"></div>
         
-        <div class="ai-chat-input-wrapper">
-            <input type="text" id="ai-chat-input" class="ai-chat-input" placeholder="VD: Hoa sinh nhật giá 500k" />
-            <button class="ai-chat-send" id="ai-chat-send">
-                <i class="bi bi-send-fill"></i>
-            </button>
+        <div class="ai-chat-input-area">
+            <div class="ai-chat-input-wrapper">
+                <input type="text" id="ai-chat-input" class="ai-chat-input" placeholder="VD: Hoa sinh nhật giá 500k" />
+                <button class="ai-chat-send" id="ai-chat-send">
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- ✅ CSS INLINE CHO CHATBOT - ĐẢM BẢO LUÔN LOAD -->
 <style>
 /* ===== NÚT CHAT FLOATING - GÓC DƯỚI PHẢI ===== */
 .ai-chat-floating-wrapper {
@@ -210,7 +211,7 @@ error_log("Base Path: " . $basePath);
 /* Chat Container - Draggable */
 .ai-chat-container {
     width: 400px;
-    max-height: 600px;
+    height: 550px;
     background: white;
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
@@ -219,6 +220,7 @@ error_log("Base Path: " . $basePath);
     overflow: hidden;
     position: relative;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    
 }
 
 /* ✅ DRAGGING STATE - THÊM VÀO ĐÂY */
@@ -438,9 +440,9 @@ error_log("Base Path: " . $basePath);
 /* Product Cards */
 .ai-chat-products {
     padding: 20px;
-    background: #fff;
+    background: #f1f1f1;
     border-top: 1px solid #e9ecef;
-    max-height: 300px;
+    max-height: 500px;
     overflow-x: auto;
 }
 
@@ -482,7 +484,7 @@ error_log("Base Path: " . $basePath);
 
 .ai-product-image {
     width: 100%;
-    height: 150px;
+    height: 100px;
     object-fit: cover;
     background: #f8f9fa;
     transition: transform 0.3s ease;
@@ -501,8 +503,6 @@ error_log("Base Path: " . $basePath);
     font-weight: 600;
     color: #333;
     margin-bottom: 12px;
-    line-height: 1.4;
-    height: 42px;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -523,8 +523,11 @@ error_log("Base Path: " . $basePath);
     border-top: 1px solid #e9ecef;
     display: flex;
     gap: 10px;
+    
 }
-
+/* .ai-chat-input-area{
+    max-height: 80px;
+} */
 .ai-chat-input {
     flex: 1;
     padding: 10px 16px;
