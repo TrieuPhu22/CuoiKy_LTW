@@ -55,9 +55,7 @@ $(document).ready(function () {
     }
     return cleanPath;
   }
-
   // --- LOAD PRODUCT DETAIL ---
-
   function loadProductDetail() {
     console.log("Loading product detail...");
     $("#loading-spinner").show();
