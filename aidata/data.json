@@ -1,0 +1,866 @@
+[
+  {
+    "id": 6,
+    "name": "Kiêu Kỳ",
+    "price": 870000,
+    "category": "hoa_sinh_nhat",
+    "subcategory": "Sang Trọng",
+    "image_url": "../uploads/692296d8e2f3e-1.webp",
+    "description": "Hoa hồng song hỷ 10 cành, Cẩm chướng hồng đơn 10 cành, Cát tường phớt hồng 5 cành"
+  },
+  {
+    "id": 7,
+    "name": "Pink Serenity",
+    "price": 900000,
+    "category": "hoa_sinh_nhat",
+    "subcategory": "Sang Trọng",
+    "image_url": "../uploads/6922985bdd20a-2.jpg",
+    "description": "Cúc mẫu đơn hồng 5 cành, Baby trắng 100g, Lá bạc"
+  },
+  {
+    "id": 8,
+    "name": "Má Hồng",
+    "price": 910000,
+    "category": "hoa_sinh_nhat",
+    "subcategory": "Sang Trọng",
+    "image_url": "../uploads/692298acef8f7-bo-hoa-hong-ma-hong.jpg.webp",
+    "description": "Hoa hồng lạc thần 20 cành, Phăng Xê Trắng 10 cành, Lá bạc nhí"
+  },
+  {
+    "id": 9,
+    "name": "Forever You",
+    "price": 920000,
+    "category": "hoa_sinh_nhat",
+    "subcategory": "Sang Trọng",
+    "image_url": "../uploads/692298e029b98-forever-you.jpg.webp",
+    "description": "Hoa hồng đỏ 35 cành, Baby trắng, lá bạc Trung"
+  },
+  {
+    "id": 10,
+    "name": "Evermore",
+    "price": 980000,
+    "category": "hoa_sinh_nhat",
+    "subcategory": "Sang Trọng",
+    "image_url": "../uploads/692299131ad07-bo-hoa-hong-Evermore.jpg.webp",
+    "description": "Hoa hồng juliet 20 bông, Hoa Ren, cỏ đồng tiền, cúc tana"
+  },
+  {
+    "id": 11,
+    "name": "La Vie En Rose",
+    "price": 1000000,
+    "category": "hoa_sinh_nhat",
+    "subcategory": "Sang Trọng",
+    "image_url": "../uploads/692299355f686-lang-hoa-hong-la-vie-en-rose.jpg.webp",
+    "description": "Hồng kem 15, Hồng tím 15, Cẩm chướng tím 20, Đài hướng dương 2, Baby trắng 50g"
+  },
+  {
+    "id": 12,
+    "name": "Je t'aime",
+    "price": 1010000,
+    "category": "hoa_sinh_nhat",
+    "subcategory": "Sang Trọng",
+    "image_url": "../uploads/69229964dc4dc-sweet-winter.jpg.webp",
+    "description": "Premium Red Naomi 15 cành, Lá bạc, cỏ đuôi thỏ khô"
+  },
+  {
+    "id": 13,
+    "name": "Rực Rỡ Sắc",
+    "price": 1240000,
+    "category": "hoa_sinh_nhat",
+    "subcategory": "Sang Trọng",
+    "image_url": "../uploads/692299919ced0-NEWBOUQUET_056.jpg.webp",
+    "description": "Hồng O'hara đỏ 25 cành, Hồng trắng 25 cành, Lá bạc Trung"
+  },
+  {
+    "id": 14,
+    "name": "Be Love",
+    "price": 310000,
+    "category": "hoa_sinh_nhat",
+    "subcategory": "Tặng Người Yêu",
+    "image_url": "../uploads/692299f44f3e6-be-love.jpg.webp",
+    "description": "Cẩm tú cầu 4 cành"
+  },
+  {
+    "id": 15,
+    "name": "Hẹn Ước",
+    "price": 360000,
+    "category": "hoa_sinh_nhat",
+    "subcategory": "Tặng Người Yêu",
+    "image_url": "../uploads/69229a2438d01-bo-thach-thao-tim-hen-uoc.jpg.webp",
+    "description": "Thạch thảo tím, tượng trưng tình yêu bình dị nhẹ nhàng"
+  },
+  {
+    "id": 16,
+    "name": "Cozy",
+    "price": 370000,
+    "category": "hoa_sinh_nhat",
+    "subcategory": "Tặng Người Yêu",
+    "image_url": "../uploads/69229a45cc41c-cozy.jpg.webp",
+    "description": "Hướng dương 3, Cẩm chướng cam 5, Lá bạc nhí"
+  },
+  {
+    "id": 17,
+    "name": "Hẹn Hò",
+    "price": 370000,
+    "category": "hoa_sinh_nhat",
+    "subcategory": "Tặng Người Yêu",
+    "image_url": "../uploads/69229a7136b7c-hen-ho.jpg.webp",
+    "description": "Đồng tiền hồng 20 cành"
+  },
+  {
+    "id": 18,
+    "name": "Baby Nhỏ Xinh",
+    "price": 380000,
+    "category": "hoa_sinh_nhat",
+    "subcategory": "Tặng Người Yêu",
+    "image_url": "../uploads/69229aa73b1b1-bo-hoa-baby-nho-xinh-1.jpg.webp",
+    "description": "Baby Hà Lan 150g"
+  },
+  {
+    "id": 19,
+    "name": "Ms Spring",
+    "price": 380000,
+    "category": "hoa_sinh_nhat",
+    "subcategory": "Tặng Người Yêu",
+    "image_url": "../uploads/69229adb3bb27-bo-hoa-cam-chuong-ms-pring.jpg.webp",
+    "description": "Cẩm chướng hồng 15 cành"
+  },
+  {
+    "id": 20,
+    "name": "Only Love",
+    "price": 390000,
+    "category": "hoa_sinh_nhat",
+    "subcategory": "Tặng Người Yêu",
+    "image_url": "../uploads/69229b0872c27-bo-hoa-hong-do-only-love.jpg.webp",
+    "description": "Hồng đỏ 10 cành, Lá bạc"
+  },
+  {
+    "id": 21,
+    "name": "Nụ Cười Em",
+    "price": 400000,
+    "category": "hoa_sinh_nhat",
+    "subcategory": "Tặng Người Yêu",
+    "image_url": "../uploads/69229b2a9cf1b-bo-hoa-cat-tuong-nu-cuoi-em.jpg.webp",
+    "description": "Cát tường hồng 10 cành, Cẩm tú cầu"
+  },
+  {
+    "id": 22,
+    "name": "Lẵng Hoa May Mắn",
+    "price": 560000,
+    "category": "hoa_khai_truong",
+    "subcategory": "Để Bàn",
+    "image_url": "../uploads/6922a1cd617e5-lang-hoa-ngay-may-man.jpg.webp",
+    "description": "Hướng dương 3, Cát tường trắng 5, Cẩm chướng trắng 10"
+  },
+  {
+    "id": 23,
+    "name": "Bản Tình Ca",
+    "price": 590000,
+    "category": "hoa_khai_truong",
+    "subcategory": "Để Bàn",
+    "image_url": "../uploads/6922a0dc1e9e9-lang-hoa-hong-ban-tinh-ca.jpg.webp",
+    "description": "Hồng kem 10, Cát tường hồng 8, Cẩm chướng trắng 10"
+  },
+  {
+    "id": 24,
+    "name": "Sounds of Beauty",
+    "price": 600000,
+    "category": "hoa_khai_truong",
+    "subcategory": "Để Bàn",
+    "image_url": "../uploads/6922a0fdc6a72-ke-hoa-khai-truong-mini-sound-of-beauty.jpg.webp",
+    "description": "Hồng tím 10, Cẩm chướng hồng 10, Cẩm tú cầu 3, Cúc tím 3"
+  },
+  {
+    "id": 25,
+    "name": "Tỏa Sáng Sắc Vàng",
+    "price": 650000,
+    "category": "hoa_khai_truong",
+    "subcategory": "Để Bàn",
+    "image_url": "../uploads/6922a11eaa0a9-toa-sac-nang-vang.jpg.webp",
+    "description": "Đồng tiền vàng 12, Hồng cam 12, Thạch thảo trắng"
+  },
+  {
+    "id": 26,
+    "name": "Tỏa Sáng",
+    "price": 670000,
+    "category": "hoa_khai_truong",
+    "subcategory": "Để Bàn",
+    "image_url": "../uploads/6922a140a38b8-lang-hoa-toa-sang.jpg.webp",
+    "description": "Hướng dương 8, Cúc calimero trắng 5, Thạch thảo trắng"
+  },
+  {
+    "id": 27,
+    "name": "Bông Tuyết Trắng",
+    "price": 710000,
+    "category": "hoa_khai_truong",
+    "subcategory": "Để Bàn",
+    "image_url": "../uploads/6922a15f7488d-bong-tuyet-trang.jpg.webp",
+    "description": "Baby trắng 300g"
+  },
+  {
+    "id": 28,
+    "name": "Flower Field",
+    "price": 710000,
+    "category": "hoa_khai_truong",
+    "subcategory": "Để Bàn",
+    "image_url": "../uploads/6922a17e3480c-NEWBOUQUET_069.jpg.webp",
+    "description": "Hồng vàng 15, Cát tường trắng 5, Lá thường xuân"
+  },
+  {
+    "id": 29,
+    "name": "Giỏ Hoa Nụ Cười",
+    "price": 730000,
+    "category": "hoa_khai_truong",
+    "subcategory": "Để Bàn",
+    "image_url": "../uploads/6922a19930279-gio-hoa-nu-cuoi.jpg.webp",
+    "description": "Hướng dương 15, Thạch thảo trắng"
+  },
+  {
+    "id": 30,
+    "name": "Nhiệt Huyết",
+    "price": 920000,
+    "category": "hoa_khai_truong",
+    "subcategory": "Kệ Hoa",
+    "image_url": "../uploads/6922a217bd597-hoa-khai-truong-nhiet-huyet.jpg.webp",
+    "description": "Đồng tiền đỏ 60 cành, Hoàng anh, lá cau"
+  },
+  {
+    "id": 31,
+    "name": "Cát Tường",
+    "price": 1010000,
+    "category": "hoa_khai_truong",
+    "subcategory": "Kệ Hoa",
+    "image_url": "../uploads/6922a23765593-STANDEE-4188.jpg.webp",
+    "description": "Hướng dương 15, Đồng tiền vàng 15, Đồng tiền đỏ 15"
+  },
+  {
+    "id": 32,
+    "name": "Vươn Xa",
+    "price": 1090000,
+    "category": "hoa_khai_truong",
+    "subcategory": "Kệ Hoa",
+    "image_url": "../uploads/6922a257900b7-vuon-xa.jpg.webp",
+    "description": "Hồng hồng hột gà 20, Cẩm chướng cam 12, Lan vũ nữ 10"
+  },
+  {
+    "id": 33,
+    "name": "Vững Tin",
+    "price": 1200000,
+    "category": "hoa_khai_truong",
+    "subcategory": "Kệ Hoa",
+    "image_url": "../uploads/6922a2782b051-hoa-chuc-mung-vung-tin.jpg.webp",
+    "description": "Hồng đỏ 40, Lá cau, thạch thảo trắng"
+  },
+  {
+    "id": 34,
+    "name": "Vang Danh",
+    "price": 1280000,
+    "category": "hoa_khai_truong",
+    "subcategory": "Kệ Hoa",
+    "image_url": "../uploads/6922a2ade25a7-hoa-khai-truong-vang-danh-2.jpg.webp",
+    "description": "Tú cầu xanh 10, Hồng kem 25, Cát tường hồng 15"
+  },
+  {
+    "id": 35,
+    "name": "Con Đường Thành Công",
+    "price": 1300000,
+    "category": "hoa_khai_truong",
+    "subcategory": "Kệ Hoa",
+    "image_url": "../uploads/6922a2d4cf9be-hoa-khai-truong-con-duong-tc.jpg.webp",
+    "description": "Đồng tiền đỏ 40, Cát tường trắng 20, Hồng đỏ 8"
+  },
+  {
+    "id": 36,
+    "name": "Vạn Đạt",
+    "price": 1340000,
+    "category": "hoa_khai_truong",
+    "subcategory": "Kệ Hoa",
+    "image_url": "../uploads/6922a2f6d0699-hoa-khai-truong-van-dat.jpg.webp",
+    "description": "Hồng vàng 40, Đồng tiền vàng 20, Mõm sói trắng 10"
+  },
+  {
+    "id": 37,
+    "name": "Khởi Đầu Tốt Đẹp",
+    "price": 1380000,
+    "category": "hoa_khai_truong",
+    "subcategory": "Kệ Hoa",
+    "image_url": "../uploads/6922a31338a91-ke-hoa-khai-truong-khoi-dau-tot-dep.jpg.webp",
+    "description": "Hướng dương 15, Hồng vàng 30, Lá chuôi chồn"
+  },
+  {
+    "id": 38,
+    "name": "Trắng Ngần",
+    "price": 400000,
+    "category": "chu_de",
+    "subcategory": "Hoa Cầm Tay",
+    "image_url": "../uploads/6922a35c7c889-trang-ngan.jpg.webp",
+    "description": "Thạch thảo trắng 4-5 bó"
+  },
+  {
+    "id": 39,
+    "name": "Ngày Mới",
+    "price": 410000,
+    "category": "chu_de",
+    "subcategory": "Hoa Cầm Tay",
+    "image_url": "../uploads/6922a38ab8ef6-hoa-cam-tay-co-dau-ngay-moi-2.jpg.webp",
+    "description": "Thạch thảo trắng 4-5 bó"
+  },
+  {
+    "id": 40,
+    "name": "Hẹn Ước Trăm Năm",
+    "price": 500000,
+    "category": "chu_de",
+    "subcategory": "Hoa Cầm Tay",
+    "image_url": "../uploads/6922a3cb4dfac-hen-uoc-tram-nam.jpg.webp",
+    "description": "Hoa sen 7-8 cành"
+  },
+  {
+    "id": 41,
+    "name": "Chờ Anh",
+    "price": 530000,
+    "category": "chu_de",
+    "subcategory": "Hoa Cầm Tay",
+    "image_url": "../uploads/6922a3eaa9337-hoa-cuoi-cho-anh.jpg.webp",
+    "description": "Cẩm chướng trắng 20, Lá bạc nhí"
+  },
+  {
+    "id": 42,
+    "name": "Vitality",
+    "price": 530000,
+    "category": "chu_de",
+    "subcategory": "Hoa Cầm Tay",
+    "image_url": "../uploads/6922a408680ce-hoa-cuoi-vitality.jpg.webp",
+    "description": "Hướng dương 3, Baby trắng 150g"
+  },
+  {
+    "id": 43,
+    "name": "Thơ Ngây",
+    "price": 540000,
+    "category": "chu_de",
+    "subcategory": "Hoa Cầm Tay",
+    "image_url": "../uploads/6922a439953fb-hoa-cuoi-tho-ngay (1).jpg.webp",
+    "description": "Baby sao 1 bó"
+  },
+  {
+    "id": 44,
+    "name": "Dazzling",
+    "price": 580000,
+    "category": "chu_de",
+    "subcategory": "Hoa Cầm Tay",
+    "image_url": "../uploads/6922a45846de8-bo-hoa-cuoi-huong-duong-Dazzling-1.jpg.webp",
+    "description": "Hướng dương 8 bông"
+  },
+  {
+    "id": 45,
+    "name": "Phút Yêu Đầu",
+    "price": 580000,
+    "category": "chu_de",
+    "subcategory": "Hoa Cầm Tay",
+    "image_url": "../uploads/6922a4731b609-hoa-cuoi-cam-tay-phut-yeu-dau.jpg.webp",
+    "description": "Cát tường trắng, Baby trắng"
+  },
+  {
+    "id": 46,
+    "name": "Jane's Garden",
+    "price": 510000,
+    "category": "chu_de",
+    "subcategory": "Hoa Chúc Mừng",
+    "image_url": "../uploads/6922a5277ab0d-lang-hoa-jane-garden.jpg.webp",
+    "description": "Cẩm chướng hồng 6, Hồng kem 6, Cát tường hồng 3"
+  },
+  {
+    "id": 47,
+    "name": "May Mắn",
+    "price": 560000,
+    "category": "chu_de",
+    "subcategory": "Hoa Chúc Mừng",
+    "image_url": "../uploads/6922a5427d23b-gio-hoa-may-man.jpg.webp",
+    "description": "Hướng dương 3, Cát tường trắng 5, Cẩm chướng trắng 10"
+  },
+  {
+    "id": 48,
+    "name": "Sắc Tím Mộng Mơ",
+    "price": 580000,
+    "category": "chu_de",
+    "subcategory": "Hoa Chúc Mừng",
+    "image_url": "../uploads/6922a5610d93c-gio-hoa-thach-thao-tim.jpg.webp",
+    "description": "Thạch thảo tím 5 bó"
+  },
+  {
+    "id": 49,
+    "name": "Bản Tình Ca",
+    "price": 590000,
+    "category": "chu_de",
+    "subcategory": "Hoa Chúc Mừng",
+    "image_url": "../uploads/6922a59705c11-lang-hoa-hong-ban-tinh-ca.jpg.webp",
+    "description": "Hồng kem 10, Cát tường hồng 8, Cẩm chướng trắng 10"
+  },
+  {
+    "id": 50,
+    "name": "Dễ Thương",
+    "price": 610000,
+    "category": "chu_de",
+    "subcategory": "Hoa Chúc Mừng",
+    "image_url": "../uploads/6922a5c9d21cc-gio-hoa-de-thuong.jpg.webp",
+    "description": "Cẩm chướng hồng 30"
+  },
+  {
+    "id": 51,
+    "name": "Tia Hi Vọng",
+    "price": 670000,
+    "category": "chu_de",
+    "subcategory": "Hoa Chúc Mừng",
+    "image_url": "../uploads/6922a5f7d47d4-gio-hoa-hong-tia-hi-vong.jpg.webp",
+    "description": "Hồng đỏ 10, Hồng kem 10, Cát tường xanh 8"
+  },
+  {
+    "id": 52,
+    "name": "Your Wish",
+    "price": 680000,
+    "category": "chu_de",
+    "subcategory": "Hoa Chúc Mừng",
+    "image_url": "../uploads/6922a61ecda34-gio-hoa-hong-your-wisht.jpg.webp",
+    "description": "Hồng kem 12, Cát Tường 10, Lá đuôi chồn"
+  },
+  {
+    "id": 53,
+    "name": "Tuyệt Vời",
+    "price": 760000,
+    "category": "chu_de",
+    "subcategory": "Hoa Chúc Mừng",
+    "image_url": "../uploads/6922a640ca77b-gio-hoa-tuyet-voi.jpg.webp",
+    "description": "Baby phun hồng 300g"
+  },
+  {
+    "id": 54,
+    "name": "Giã Từ",
+    "price": 960000,
+    "category": "chu_de",
+    "subcategory": "Hoa Tang Lễ",
+    "image_url": "../uploads/6922a67dddfb1-hoa-chia-buon-gia-tu.jpg.webp",
+    "description": "Cẩm tú cầu xanh 15, Đồng tiền trắng 20, Cúc calimero 10"
+  },
+  {
+    "id": 55,
+    "name": "An Nghỉ",
+    "price": 980000,
+    "category": "chu_de",
+    "subcategory": "Hoa Tang Lễ",
+    "image_url": "../uploads/6922a6a6f2f1d-hoa-tang-le-an-nghi.jpg.webp",
+    "description": "Cúc lưới trắng 50, Cát tường trắng 5"
+  },
+  {
+    "id": 56,
+    "name": "Hồi Ức",
+    "price": 1050000,
+    "category": "chu_de",
+    "subcategory": "Hoa Tang Lễ",
+    "image_url": "../uploads/6922a6c46129b-hoa-chia-buon-hoi-uc.jpg.webp",
+    "description": "Cúc chùm trắng 25, Cúc chùm tím 25"
+  },
+  {
+    "id": 57,
+    "name": "An Giấc",
+    "price": 1050000,
+    "category": "chu_de",
+    "subcategory": "Hoa Tang Lễ",
+    "image_url": "../uploads/6922a6dfb3e87-hoa-chia-buon-an-giac.jpg.webp",
+    "description": "Cúc trắng 40, Cúc tím 10"
+  },
+  {
+    "id": 58,
+    "name": "Chia Xa",
+    "price": 1140000,
+    "category": "chu_de",
+    "subcategory": "Hoa Tang Lễ",
+    "image_url": "../uploads/6922a7092a22b-vong-hoa-tang-le-chia-xa.jpg.webp",
+    "description": "Hồng trắng 20, Hồng pastel 15, Thạch thảo trắng"
+  },
+  {
+    "id": 59,
+    "name": "Lời Tạm Biệt",
+    "price": 1150000,
+    "category": "chu_de",
+    "subcategory": "Hoa Tang Lễ",
+    "image_url": "../uploads/6922a732089f8-hoa-tang-le-loi-tam-biet.jpg.webp",
+    "description": "Hồng trắng 30, Cúc calimero 10, Lan Denro 12"
+  },
+  {
+    "id": 60,
+    "name": "Dòng Thời Gian",
+    "price": 1190000,
+    "category": "chu_de",
+    "subcategory": "Hoa Tang Lễ",
+    "image_url": "../uploads/6922a778111c1-hoa-tang-le-dong-thoi-gian.jpg.webp",
+    "description": "Lan Mokara tím 20, Cẩm tú cầu xanh 10"
+  },
+  {
+    "id": 61,
+    "name": "Phù Du",
+    "price": 1230000,
+    "category": "chu_de",
+    "subcategory": "Hoa Tang Lễ",
+    "image_url": "../uploads/6922a7a5d4791-hoa-tang-le-phu-du.jpg.webp",
+    "description": "Ping pong trắng 30, Cẩm tú cầu xanh 15"
+  },
+  {
+    "id": 62,
+    "name": "Say Ánh Mắt",
+    "price": 190000,
+    "category": "thiet_ke",
+    "subcategory": "Bó Hoa",
+    "image_url": "../uploads/6922a7e60527a-say-anh-mat.jpg.webp",
+    "description": "Thạch thảo trắng 1 bó, Hồng kem 1, Cỏ đồng tiền"
+  },
+  {
+    "id": 63,
+    "name": "Sunny",
+    "price": 250000,
+    "category": "thiet_ke",
+    "subcategory": "Bó Hoa",
+    "image_url": "../uploads/6922a8024d5c8-bo-hoa-sunny.jpg.webp",
+    "description": "Hướng dương 3, Sao tím"
+  },
+  {
+    "id": 64,
+    "name": "Khoe Sắc",
+    "price": 290000,
+    "category": "thiet_ke",
+    "subcategory": "Bó Hoa",
+    "image_url": "../uploads/6922a82172f37-khoe-sac-v3.jpg.webp",
+    "description": "Hồng kem 5, Lá bạc, thạch thảo tím"
+  },
+  {
+    "id": 65,
+    "name": "Mặt Trời Của Anh",
+    "price": 290000,
+    "category": "thiet_ke",
+    "subcategory": "Bó Hoa",
+    "image_url": "../uploads/6922a8433c4ff-mat-troi-cua-anh-2.jpg.webp",
+    "description": "Hồng đỏ 5, Thạch thảo trắng, lá bạc"
+  },
+  {
+    "id": 66,
+    "name": "Nắng Mai",
+    "price": 320000,
+    "category": "thiet_ke",
+    "subcategory": "Bó Hoa",
+    "image_url": "../uploads/6922a85fa0bdb-nang-mai.jpg.webp",
+    "description": "Hướng dương 3, Thạch thảo tím, hoàng anh"
+  },
+  {
+    "id": 67,
+    "name": "Me Gusta",
+    "price": 330000,
+    "category": "thiet_ke",
+    "subcategory": "Bó Hoa",
+    "image_url": "../uploads/6922a879c81a6-NEWBOUQUET_012.jpg.webp",
+    "description": "Hướng dương 1, Cẩm chướng trắng 6, Sao vàng"
+  },
+  {
+    "id": 68,
+    "name": "Lucky",
+    "price": 360000,
+    "category": "thiet_ke",
+    "subcategory": "Bó Hoa",
+    "image_url": "../uploads/6922a89e5c9b1-bo-hoa-cam-tu-cau-lucky.jpg.webp",
+    "description": "Cẩm tú cầu 5 cành"
+  },
+  {
+    "id": 69,
+    "name": "Cẩm Tú Cầu Trắng",
+    "price": 370000,
+    "category": "thiet_ke",
+    "subcategory": "Bó Hoa",
+    "image_url": "../uploads/6922a8bf6aaaf-bo-cam-tu-cau-trang-size-S.jpg.webp",
+    "description": "Cẩm tú cầu trắng 5 cành"
+  },
+  {
+    "id": 70,
+    "name": "Niềm Tin Tươi Mới",
+    "price": 780000,
+    "category": "thiet_ke",
+    "subcategory": "Giỏ Hoa",
+    "image_url": "../uploads/6922a91d10364-niem-tin-tuoi-moi.jpg.webp",
+    "description": "Cẩm chướng hồng 30, Cát tường xanh 10"
+  },
+  {
+    "id": 71,
+    "name": "Sunrise Spirit",
+    "price": 790000,
+    "category": "thiet_ke",
+    "subcategory": "Giỏ Hoa",
+    "image_url": "../uploads/6922a93d171db-lang-hoa-hong-cam-01.jpg.webp",
+    "description": "Hồng cam 20, Cẩm chướng hồng 5, Cúc tana"
+  },
+  {
+    "id": 72,
+    "name": "Nắng Mai",
+    "price": 830000,
+    "category": "thiet_ke",
+    "subcategory": "Giỏ Hoa",
+    "image_url": "../uploads/6922a95e826fb-NEWBASKET_011.jpg.webp",
+    "description": "Hồng lạc thần 25, Cát tường xoăn 2, Lá bạc"
+  },
+  {
+    "id": 73,
+    "name": "Sum Họp",
+    "price": 830000,
+    "category": "thiet_ke",
+    "subcategory": "Giỏ Hoa",
+    "image_url": "../uploads/6922a978b4c7f-sum-hop.jpg.webp",
+    "description": "Hướng dương 10, Cát tường hồng 10, Lá bạc nhí"
+  },
+  {
+    "id": 74,
+    "name": "Chào Xuân",
+    "price": 850000,
+    "category": "thiet_ke",
+    "subcategory": "Giỏ Hoa",
+    "image_url": "../uploads/6922a99905204-lang-hoa-chao-xuan.jpg.webp",
+    "description": "Hồng đỏ 12, Cẩm chướng đỏ 10, Tuyết mai"
+  },
+  {
+    "id": 75,
+    "name": "Cô Gái Bé Nhỏ",
+    "price": 860000,
+    "category": "thiet_ke",
+    "subcategory": "Giỏ Hoa",
+    "image_url": "../uploads/6922a9b51de1c-gio-hoa-co-gai-be-nho.jpg.webp",
+    "description": "Hồng lạc thần 15, Hồng ohara tím 10, Cúc tana"
+  },
+  {
+    "id": 76,
+    "name": "Hy Vọng",
+    "price": 870000,
+    "category": "thiet_ke",
+    "subcategory": "Giỏ Hoa",
+    "image_url": "../uploads/6922a9d282c36-gio-hoa-hy-vong.jpg.webp",
+    "description": "Hướng dương 5, Hồng dâu 10, Cát tường trắng 6"
+  },
+  {
+    "id": 77,
+    "name": "Hương Sen",
+    "price": 880000,
+    "category": "thiet_ke",
+    "subcategory": "Giỏ Hoa",
+    "image_url": "../uploads/6922a9f640366-gio-hoa-huong-sen.jpg.webp",
+    "description": "Sen hồng 25, Đài sen 10, Tùng La Hán"
+  },
+  {
+    "id": 78,
+    "name": "Ngỏ Lời",
+    "price": 240000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Hồng",
+    "image_url": "../uploads/6922aa37ce898-23.webp",
+    "description": "Hồng kem 3, Lá chanh, thạch thảo trắng"
+  },
+  {
+    "id": 79,
+    "name": "Khoe Sắc",
+    "price": 290000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Hồng",
+    "image_url": "../uploads/6922aa7211a70-bo-hoa-hong-Evermore.jpg.webp",
+    "description": "Hồng kem 5, Lá bạc, thạch thảo tím"
+  },
+  {
+    "id": 80,
+    "name": "Simple",
+    "price": 390000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Hồng",
+    "image_url": "../uploads/6922aa935f52e-bo-hoa-simple-v3.jpg.webp",
+    "description": "Hồng kem 10, Sao tím, lá bạc"
+  },
+  {
+    "id": 81,
+    "name": "Beautiful You",
+    "price": 410000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Hồng",
+    "image_url": "../uploads/6922aaafdf6fc-bo-hoa-hong-do-beautiful-you.jpg.webp",
+    "description": "Hồng đỏ pháp 9 cành"
+  },
+  {
+    "id": 82,
+    "name": "Endless Love",
+    "price": 410000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Hồng",
+    "image_url": "../uploads/6922aacf3a8af-bo-hoa-hong-mix-baby-endless-love.jpg.webp",
+    "description": "Hồng kem 5, Baby trắng 100g, Cỏ lan chi"
+  },
+  {
+    "id": 83,
+    "name": "Kiss Me",
+    "price": 410000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Hồng",
+    "image_url": "../uploads/6922aaef8a040-kiss-me.jpg.webp",
+    "description": "Hồng kem 11, Thạch thảo tím, cỏ đồng tiền"
+  },
+  {
+    "id": 84,
+    "name": "Một Tình Yêu",
+    "price": 410000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Hồng",
+    "image_url": "../uploads/6922ab0eec695-bo-hoa-baby-mot-tinh-yeu.jpg.webp",
+    "description": "Hồng đỏ 1, Baby trắng 150g"
+  },
+  {
+    "id": 85,
+    "name": "White Roses",
+    "price": 420000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Hồng",
+    "image_url": "../uploads/6922ab2e3ad67-white-roses.jpg.webp",
+    "description": "Hồng trắng 10, Lá bạc"
+  },
+  {
+    "id": 86,
+    "name": "Baby Nhỏ Xinh",
+    "price": 380000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Baby",
+    "image_url": "../uploads/6922ab627f7c9-bo-hoa-baby-nho-xinh-1.jpg.webp",
+    "description": "Baby Hà Lan 150g"
+  },
+  {
+    "id": 87,
+    "name": "Chớm Nở",
+    "price": 380000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Baby",
+    "image_url": "../uploads/6922ab78b400a-bo-hoa-baby-trang-chom-no.jpg.webp",
+    "description": "Baby trắng"
+  },
+  {
+    "id": 88,
+    "name": "Trái Tim Nhỏ",
+    "price": 400000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Baby",
+    "image_url": "../uploads/6922ab916ab09-trai-tim-nho.jpg.webp",
+    "description": "Baby trắng 100g, Hồng đỏ 1"
+  },
+  {
+    "id": 89,
+    "name": "Mellow Pink",
+    "price": 410000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Baby",
+    "image_url": "../uploads/6922abafc219f-hoa-baby-hong-mellow-pink.jpg.webp",
+    "description": "Baby phun hồng 200g"
+  },
+  {
+    "id": 90,
+    "name": "Niềm Mong",
+    "price": 440000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Baby",
+    "image_url": "../uploads/6922abd172785-bo-hoa-baby-niem-mong.jpg.webp",
+    "description": "Hồng kem 1, Baby phun hồng 150g, Sao tím"
+  },
+  {
+    "id": 91,
+    "name": "Mát Xanh",
+    "price": 500000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Baby",
+    "image_url": "../uploads/6922abe9a0b36-bo-hoa-baby-xanh-mat-xanh-2.jpg.webp",
+    "description": "Baby xanh"
+  },
+  {
+    "id": 92,
+    "name": "First Date",
+    "price": 530000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Baby",
+    "image_url": "../uploads/6922ac0c36ee5-first-date-new-v.jpg.webp",
+    "description": "Hồng kem 3, Baby phun hồng 250g"
+  },
+  {
+    "id": 93,
+    "name": "Duy Nhất",
+    "price": 540000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Baby",
+    "image_url": "../uploads/6922ac2513ba5-bo-hoa-baby-mix-hong-duy-nhat.jpg.webp",
+    "description": "Hồng đỏ 1, Baby trắng 250g"
+  },
+  {
+    "id": 94,
+    "name": "Giọt Nắng",
+    "price": 190000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Hướng Dương",
+    "image_url": "../uploads/6922ac4a08a70-bo-hoa-thach-thao-mix-huong-duong.jpg.webp",
+    "description": "Hướng dương 1, Thạch thảo trắng 1 bó"
+  },
+  {
+    "id": 95,
+    "name": "Me Gusta",
+    "price": 330000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Hướng Dương",
+    "image_url": "../uploads/6922ac6ac8a82-NEWBOUQUET_012.jpg.webp",
+    "description": "Hướng dương 1, Cẩm chướng trắng 6, Sao vàng"
+  },
+  {
+    "id": 96,
+    "name": "Lời Tri Ân",
+    "price": 370000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Hướng Dương",
+    "image_url": "../uploads/6922ac89bb373-bo-hoa-huong-duong-loi-tri-an.jpg.webp",
+    "description": "Hướng dương 5, Baby trắng, thạch thảo trắng"
+  },
+  {
+    "id": 97,
+    "name": "Màu Nắng Ấm",
+    "price": 370000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Hướng Dương",
+    "image_url": "../uploads/6922aca7912f1-bo-hoa-huong-duong-mau-nang-am.jpg.webp",
+    "description": "Hướng dương 3, Cúc calimero vàng 5, Thạch thảo trắng"
+  },
+  {
+    "id": 98,
+    "name": "Nắng Hạ",
+    "price": 370000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Hướng Dương",
+    "image_url": "../uploads/6922acc72590c-bo-hoa-huong-duong-nang-ha.jpg.webp",
+    "description": "Hướng dương 6, Trúc bách hợp"
+  },
+  {
+    "id": 99,
+    "name": "Sunrise",
+    "price": 370000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Hướng Dương",
+    "image_url": "../uploads/6922ace51b04f-bo-hoa-huong-duong-sunrise.jpg.webp",
+    "description": "Hướng dương 3, Cát tường trắng 5, Sao tím"
+  },
+  {
+    "id": 100,
+    "name": "Vững Tin",
+    "price": 390000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Hướng Dương",
+    "image_url": "../uploads/6922ade68106d-vung-tin-bo.jpg.webp",
+    "description": "Hướng dương 6, Thạch thảo trắng 3, Lá chanh"
+  },
+  {
+    "id": 101,
+    "name": "Happy Day",
+    "price": 410000,
+    "category": "hoa_tuoi",
+    "subcategory": "Hoa Hướng Dương",
+    "image_url": "../uploads/6922ae0b1c02a-bo-hoa-huong-duong-3-bong-happy-day.jpg.webp",
+    "description": "Hướng dương 3, Cát tường trắng 5, Lá bạc, sao tím"
+  }
+]
