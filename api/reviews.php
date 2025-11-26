@@ -424,4 +424,62 @@ function deleteReview($conn, $id) {
     }
     $stmt->close();
 }
+
+// ===== CẬP NHẬT ĐÁNH GIÁ =====
+function updateReview($conn) {
+    $userId = intval($_SESSION['user_id']);
+    $reviewId = isset($_POST['review_id']) ? intval($_POST['review_id']) : 0;
+    $rating = intval($_POST['rating']);
+    $comment = trim($_POST['comment']);
+
+    // Validate
+    if ($reviewId <= 0) {
+        echo json_encode(['success' => false, 'message' => 'ID đánh giá không hợp lệ!']);
+        return;
+    }
+
+    if ($rating < 1 || $rating > 5) {
+        echo json_encode(['success' => false, 'message' => 'Đánh giá phải từ 1-5 sao!']);
+        return;
+    }
+
+    // Kiểm tra quyền sở hữu
+    $checkSql = "SELECT id FROM reviews WHERE id = ? AND user_id = ?";
+    $checkStmt = $conn->prepare($checkSql);
+    $checkStmt->bind_param("ii", $reviewId, $userId);
+    $checkStmt->execute();
+    $result = $checkStmt->get_result();
+
+    if ($result->num_rows === 0) {
+        echo json_encode(['success' => false, 'message' => 'Bạn không có quyền sửa đánh giá này!']);
+        $checkStmt->close();
+        return;
+    }
+    $checkStmt->close();
+
+    // Cập nhật - KHÔNG CẬP NHẬT created_at (giữ nguyên thời gian tạo ban đầu)
+    $sql = "UPDATE reviews SET rating = ?, comment = ? WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("isi", $rating, $comment, $reviewId);
+
+    if ($stmt->execute()) {
+        if ($stmt->affected_rows > 0) {
+            echo json_encode([
+                'success' => true,
+                'message' => 'Cập nhật đánh giá thành công!',
+                'data' => [
+                    'id' => $reviewId,
+                    'rating' => $rating,
+                    'comment' => $comment
+                ]
+            ]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Không có thay đổi nào được thực hiện!']);
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Lỗi cập nhật: ' . $stmt->error]);
+    }
+    $stmt->close();
+}
+
 ?>

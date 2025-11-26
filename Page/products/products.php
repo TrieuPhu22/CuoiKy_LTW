@@ -14,25 +14,18 @@ $product_id = intval($_GET['id']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <?php
-    // Tự động lấy giao thức (http hoặc https)
     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
-    
-    // Tự động lấy tên máy chủ (localhost hoặc 192.168.1.5)
     $host = $_SERVER['HTTP_HOST'];
-    
-    // Tên thư mục gốc của dự án
     $project_root = '/CuoiKy_LTW/';
-    
-    // In ra thẻ <base> động
     echo "<base href='{$protocol}://{$host}{$project_root}'>";
-?>
+    ?>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="img/favicon.png">
     
     <title>Chi tiết sản phẩm</title>
     
-    <!-- jQuery -->
+    <!-- jQuery TRƯỚC TIÊN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
     <!-- Bootstrap CSS -->
@@ -51,6 +44,9 @@ $product_id = intval($_GET['id']);
     <link rel="stylesheet" href="Page/home/assets/css/style.css">
     <link rel="stylesheet" href="Page/home/assets/css/breakpoint.css">
     <link rel="stylesheet" href="Page/products/assets/css/product-detail.css">
+    
+    <!-- ✅ THÊM CHATBOT CSS -->
+    <link rel="stylesheet" href="Page/home/assets/css/chatbot.css">
 </head>
 <body>
     <?php require_once __DIR__ . '/../home/includes/header.php'; ?>
@@ -165,13 +161,101 @@ $product_id = intval($_GET['id']);
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Custom JS -->
+    <!-- ✅ INCLUDE CHATBOT NGAY SAU KHI LOAD BOOTSTRAP -->
+    <?php include __DIR__ . '/../home/includes/chatbot.php'; ?>
+    
+    <!-- ✅ PRODUCT JS VỚI EVENT LISTENER -->
     <script>
-        // Pass product ID to JavaScript
         const PRODUCT_ID = <?php echo $product_id; ?>;
-        console.log('Product ID loaded:', PRODUCT_ID);
+        console.log('🔍 Product ID loaded:', PRODUCT_ID);
+        
+        // ✅ GLOBAL FLAG ĐỂ BIẾT CHATBOT ĐÃ READY
+        let chatbotReady = false;
+        let productJSLoaded = false;
+        
+        // ✅ LISTEN CHO CHATBOT READY EVENT
+        $(document).on('chatbotReady', function() {
+            console.log('🎉 Chatbot ready event received on products page');
+            chatbotReady = true;
+            tryLoadProductJS();
+        });
+        
+        // ✅ DOCUMENT READY
+        $(document).ready(function() {
+            console.log('📄 Products page DOM ready');
+            
+            // Kiểm tra xem chatbot đã ready chưa (có thể load trước DOM ready)
+            if (typeof window.CHATBOT_READY !== 'undefined' && window.CHATBOT_READY) {
+                console.log('✅ Chatbot was already ready');
+                chatbotReady = true;
+                tryLoadProductJS();
+            }
+            
+            // Fallback: nếu sau 3 giây vẫn chưa có chatbot thì load luôn
+            setTimeout(() => {
+                if (!chatbotReady) {
+                    console.log('⚠️ Chatbot timeout, loading product JS anyway');
+                    chatbotReady = true;
+                    tryLoadProductJS();
+                }
+            }, 3000);
+        });
+        
+        function tryLoadProductJS() {
+            if (chatbotReady && !productJSLoaded) {
+                console.log('🚀 Loading product JavaScript files...');
+                productJSLoaded = true;
+                
+                // Load product detail JS
+                $.getScript('Page/products/assets/js/product-detail.js')
+                    .done(function() {
+                        console.log('✅ Product detail JS loaded');
+                    })
+                    .fail(function() {
+                        console.error('❌ Failed to load product detail JS');
+                    });
+                    
+                // Load home script JS (cho các hàm chung)
+                $.getScript('Page/home/assets/js/home_script.js')
+                    .done(function() {
+                        console.log('✅ Home script JS loaded');
+                    })
+                    .fail(function() {
+                        console.error('❌ Failed to load home script JS');
+                    });
+            }
+        }
     </script>
-    <script src="Page/products/assets/js/product-detail.js"></script>
-    <script src="./Page/home/assets/js/home_script.js"></script>
+
+    <!-- ✅ DEBUG SCRIPT CHO CHAT HISTORY -->
+    <script>
+        // Test chat history sync sau 2 giây
+        setTimeout(() => {
+            console.log('🧪 Testing chat history sync on products page...');
+            
+            const chatHistory = localStorage.getItem('ai_chat_global_history');
+            if (chatHistory) {
+                const data = JSON.parse(chatHistory);
+                console.log('✅ Chat history found:', data.messages.length, 'messages');
+                
+                // Kiểm tra có products không
+                let productsCount = 0;
+                data.messages.forEach(msg => {
+                    if (msg.products) productsCount += msg.products.length;
+                });
+                console.log('📦 Products in history:', productsCount);
+            } else {
+                console.log('ℹ️ No chat history found in localStorage');
+            }
+            
+            // Kiểm tra chatbot elements
+            const chatMessages = $('#ai-chat-messages .ai-message').length;
+            const chatProducts = $('#ai-chat-products .ai-product-card').length;
+            console.log('🎯 Chatbot elements:', {
+                messages: chatMessages,
+                products: chatProducts
+            });
+        }, 2000);
+    </script>
 </body>
 </html>
