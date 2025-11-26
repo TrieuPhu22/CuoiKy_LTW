@@ -6,6 +6,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+        <!-- Favicon -->
+    <link rel="icon" type="image/png" href="img/favicon.png">
     <title>Hoa Sinh Nhật Sang Trọng</title>
     <?php
     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
