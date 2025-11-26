@@ -16,9 +16,7 @@
 body {
   font-family: "Montserrat", sans-serif;
   position: relative;
-  min-height: 100vh;
-  position: relative;
-  padding-top: 60px; /* Adjust based on header height */
+  padding-top: 60px; 
 }
 a {
   text-decoration: none;
