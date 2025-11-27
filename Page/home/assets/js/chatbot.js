@@ -1,6 +1,9 @@
 $(document).ready(function () {
   console.log("🚀 Chatbot JS Starting...");
 
+  // ✅ THÊM KEY ĐỂ KIỂM TRA LẦN ĐẦU MỞ CHAT
+  const FIRST_TIME_KEY = "ai_chat_first_time_opened";
+
   // ✅ DEBUG CURRENT PAGE INFO
   console.log("📍 Current page info:", {
     pathname: window.location.pathname,
@@ -126,56 +129,286 @@ $(document).ready(function () {
     restoreChatPosition();
     restoreFloatingBtnPosition();
 
-    // ✅ TẢI LỊCH SỬ CHAT - ƯU TIÊN CHO PRODUCTS PAGE
+    // ✅ KIỂM TRA VÀ HIỂN THỊ WELCOME MESSAGE LẦN ĐẦU
+    checkAndShowWelcomeMessage();
+
+    // ✅ TẢI LỊCH SỬ CHAT
     const isProductsPage = window.location.pathname.includes("/Page/products/");
 
     setTimeout(() => {
       console.log("📥 Starting chat history load...");
       loadGlobalChatHistory();
 
-      // ✅ THÊM CALLBACK ĐẶC BIỆT CHO PRODUCTS PAGE
       if (isProductsPage) {
         setTimeout(() => {
           console.log("🔍 Products page - checking chat sync...");
 
           const messagesCount = chatMessages.find(".ai-message").length;
-          const productsVisible = chatProducts.is(":visible");
-          const productsCount = chatProducts.find(".ai-product-card").length;
 
-          console.log("📊 Chat status:", {
-            messages: messagesCount,
-            productsVisible: productsVisible,
-            productsCount: productsCount,
-          });
-
-          // Nếu không có history thì tạo welcome message
-          if (messagesCount <= 1) {
+          // ✅ NẾU KHÔNG CÓ HISTORY VÀ CHƯA HIỂN THỊ WELCOME THÌ HIỂN THỊ
+          if (messagesCount === 0) {
             console.log(
               "ℹ️ No chat history, showing welcome for products page"
             );
-            showProductsPageWelcome();
+            showWelcomeMessage();
           }
         }, 2000);
       }
     }, 1000);
 
-    // ✅ HIỂN THỊ GREETING THEO TRANG
-    if (isProductsPage) {
-      setTimeout(() => {
-        $("#ai-chat-greeting")
-          .text("Cần tư vấn sản phẩm?")
-          .fadeIn()
-          .delay(4000)
-          .fadeOut();
-      }, 1500);
-    } else {
-      setTimeout(() => {
-        $("#ai-chat-greeting").fadeIn().delay(5000).fadeOut();
-      }, 3000);
-    }
+    // ✅ HIỂN THỊ GREETING - giữ nguyên
+    setTimeout(() => {
+      showGreeting();
+    }, 1000);
 
     console.log("✅ Chatbot initialized successfully");
     return true;
+  }
+
+  // ✅ HÀM MỚI - KIỂM TRA VÀ HIỂN THỊ WELCOME MESSAGE
+  function checkAndShowWelcomeMessage() {
+    try {
+      // Kiểm tra xem có lịch sử chat không
+      const savedData = localStorage.getItem(CHAT_STORAGE_KEY);
+      const hasHistory = savedData && JSON.parse(savedData).messages.length > 0;
+
+      // Kiểm tra xem đã từng mở chat chưa
+      const hasOpenedBefore = localStorage.getItem(FIRST_TIME_KEY) === "true";
+
+      console.log("🔍 Welcome check:", {
+        hasHistory: hasHistory,
+        hasOpenedBefore: hasOpenedBefore,
+      });
+
+      // ✅ CHỈ HIỂN THỊ WELCOME KHI:
+      // 1. Chưa có lịch sử chat
+      // 2. Chưa từng mở chat trước đó
+      if (!hasHistory && !hasOpenedBefore) {
+        console.log("👋 Showing welcome message for first time");
+        showWelcomeMessage();
+
+        // ✅ ĐÁNH DẤU ĐÃ MỞ CHAT LẦN ĐẦU
+        localStorage.setItem(FIRST_TIME_KEY, "true");
+      } else {
+        console.log(
+          "ℹ️ Skipping welcome message - user has history or opened before"
+        );
+      }
+    } catch (e) {
+      console.error("❌ Error checking welcome message:", e);
+      // Fallback: hiển thị welcome nếu có lỗi
+      showWelcomeMessage();
+      localStorage.setItem(FIRST_TIME_KEY, "true");
+    }
+  }
+
+  // ✅ HÀM MỚI - HIỂN THỊ WELCOME MESSAGE
+  function showWelcomeMessage() {
+    const isProductsPage = window.location.pathname.includes("/Page/products/");
+
+    let welcomeContent = "";
+
+    if (isProductsPage) {
+      welcomeContent = `
+        <p>👋 Xin chào! Tôi là trợ lý AI của shop hoa. Tôi có thể giúp bạn:</p>
+        <ul>
+          <li>🌹 Tư vấn sản phẩm hoa trên trang này</li>
+          <li>💐 So sánh và gợi ý sản phẩm phù hợp</li>
+          <li>💰 Tư vấn giá và thông tin chi tiết</li>
+          <li>🎯 Tìm sản phẩm tương tự</li>
+        </ul>
+        <p><strong>Ví dụ:</strong></p>
+        <p>• "So sánh sản phẩm này với sản phẩm khác"</p>
+        <p>• "Tôi muốn tìm hoa tương tự nhưng rẻ hơn"</p>
+      `;
+    } else {
+      welcomeContent = `
+        <p>👋 Xin chào! Tôi là trợ lý AI của shop hoa. Tôi có thể giúp bạn:</p>
+        <ul>
+          <li>🌹 Tư vấn chọn hoa theo dịp (sinh nhật, khai trương, cưới...)</li>
+          <li>💐 Gợi ý sản phẩm cụ thể trong kho</li>
+          <li>💰 Tư vấn giá và link xem chi tiết</li>
+        </ul>
+        <p><strong>Ví dụ:</strong></p>
+        <p>• "Tôi muốn mua hoa sinh nhật giá 500k"</p>
+        <p>• "Gợi ý hoa hồng tặng người yêu"</p>
+      `;
+    }
+
+    const welcomeHtml = `
+      <div class="ai-message ai-bot-message ai-welcome-message">
+        <div class="ai-message-avatar">🤖</div>
+        <div class="ai-message-content">${welcomeContent}</div>
+      </div>
+    `;
+
+    // ✅ THÊM VÀO ĐẦU CHAT MESSAGES
+    chatMessages.prepend(welcomeHtml);
+    chatMessages.scrollTop(chatMessages[0].scrollHeight);
+
+    console.log("👋 Welcome message displayed");
+  }
+
+  // ✅ SỬA HÀM loadGlobalChatHistory - BỎ WELCOME KHI LOAD HISTORY
+  function loadGlobalChatHistory() {
+    console.log("📥 Loading global chat history...");
+
+    try {
+      const savedData = localStorage.getItem(CHAT_STORAGE_KEY);
+      if (savedData) {
+        const chatData = JSON.parse(savedData);
+
+        const isProductsPage =
+          window.location.pathname.includes("/Page/products/");
+        const maxAge = isProductsPage
+          ? 24 * 60 * 60 * 1000
+          : 6 * 60 * 60 * 1000;
+
+        if (
+          Date.now() - chatData.timestamp < maxAge &&
+          chatData.messages.length > 0
+        ) {
+          console.log("📥 Loading global chat from localStorage");
+
+          // ✅ XÓA TẤT CẢ MESSAGES HIỆN TẠI (BAO GỒM WELCOME)
+          chatMessages.empty();
+          chatProducts.hide().empty();
+
+          let hasProducts = false;
+
+          chatData.messages.forEach((msg, index) => {
+            appendMessage(msg.type, msg.content, false);
+
+            if (msg.products && msg.products.length > 0) {
+              console.log(
+                "📥 Restoring products for message:",
+                index,
+                msg.products.length,
+                "items"
+              );
+              displayProducts(msg.products);
+              hasProducts = true;
+            }
+          });
+
+          if (hasProducts) {
+            console.log("✅ Products restored successfully");
+          }
+
+          console.log("✅ Global chat loaded from localStorage");
+          return;
+        } else {
+          localStorage.removeItem(CHAT_STORAGE_KEY);
+        }
+      }
+    } catch (e) {
+      console.error("❌ Error loading localStorage chat:", e);
+    }
+
+    // ✅ NẾU NGƯỜI DÙNG ĐĂNG NHẬP THÌ LOAD TỪ DATABASE
+    if (isUserLoggedIn) {
+      const apiPath = `${apiBasePath}chat_history.php`;
+      console.log("📥 Loading chat from database:", apiPath);
+
+      $.ajax({
+        url: apiPath,
+        method: "POST",
+        data: { action: "load" },
+        dataType: "json",
+        timeout: 10000,
+        success: function (response) {
+          if (
+            response.success &&
+            response.messages &&
+            response.messages.length > 0
+          ) {
+            console.log("📥 Loading chat from database");
+
+            // ✅ XÓA TẤT CẢ MESSAGES (BAO GỒM WELCOME)
+            chatMessages.empty();
+            chatProducts.hide().empty();
+
+            let hasProducts = false;
+
+            response.messages.forEach((msg, index) => {
+              appendMessage(msg.type, msg.content, false);
+
+              if (msg.products && msg.products.length > 0) {
+                console.log(
+                  "📥 Restoring products from DB for message:",
+                  index
+                );
+                displayProducts(msg.products);
+                hasProducts = true;
+              }
+            });
+
+            if (hasProducts) {
+              console.log("✅ Products restored from database");
+            }
+
+            console.log("✅ Chat loaded from database");
+          } else {
+            console.log("ℹ️ No chat history found in database");
+            // ✅ NẾU KHÔNG CÓ HISTORY THÌ HIỂN THỊ WELCOME
+            if (chatMessages.children().length === 0) {
+              showWelcomeMessage();
+            }
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error("❌ Lỗi tải chat từ database:", error);
+          // ✅ NẾU LỖI VÀ KHÔNG CÓ MESSAGE NÀO THÌ HIỂN THỊ WELCOME
+          if (chatMessages.children().length === 0) {
+            showWelcomeMessage();
+          }
+        },
+      });
+    }
+  }
+
+  // ✅ SỬA HÀM clearChatHistory - RESET FIRST TIME FLAG
+  function clearChatHistory() {
+    if (
+      confirm("Bạn có chắc muốn xóa toàn bộ lịch sử chat trên tất cả trang?")
+    ) {
+      localStorage.removeItem(CHAT_STORAGE_KEY);
+
+      // ✅ RESET FIRST TIME FLAG ĐỂ HIỂN THỊ LẠI WELCOME
+      localStorage.removeItem(FIRST_TIME_KEY);
+
+      if (isUserLoggedIn) {
+        const apiPath = `${apiBasePath}chat_history.php`;
+        console.log("🗑️ Clearing chat via:", apiPath);
+
+        $.ajax({
+          url: apiPath,
+          method: "POST",
+          data: { action: "clear" },
+          dataType: "json",
+          success: function (response) {
+            console.log("🗑️ Xóa chat database thành công");
+          },
+        });
+      }
+
+      // ✅ XÓA TẤT CẢ VÀ HIỂN THỊ WELCOME MESSAGE MỚI
+      chatMessages.empty();
+      chatProducts.hide().empty();
+
+      showWelcomeMessage();
+      appendMessage("bot", "🗑️ Đã xóa lịch sử chat trên tất cả trang!", false);
+
+      console.log("🗑️ Cleared global chat history and reset first time flag");
+    }
+  }
+
+  // ✅ THÊM HÀM RIÊNG CHO PRODUCTS PAGE WELCOME (NẾU CẦN)
+  function showProductsPageWelcome() {
+    if (chatMessages.find(".ai-welcome-message").length === 0) {
+      console.log("🔍 Showing products page welcome");
+      showWelcomeMessage();
+    }
   }
 
   // ✅ SETUP EVENT HANDLERS - GIỮ NGUYÊN
@@ -424,17 +657,12 @@ $(document).ready(function () {
   function saveFloatingBtnPosition() {
     if (!floatingWrapper.length) return;
 
-    const currentPos = floatingWrapper.position();
-    const currentCSS = {
-      left: floatingWrapper.css("left"),
-      top: floatingWrapper.css("top"),
-    };
+    // ✅ CHỈ LẤY VỊ TRÍ CỦA WRAPPER, BỎ QUA GREETING
+    const rect = floatingWrapper[0].getBoundingClientRect();
 
     const position = {
-      left: currentCSS.left,
-      top: currentCSS.top,
-      posLeft: currentPos.left,
-      posTop: currentPos.top,
+      left: rect.left + "px",
+      top: rect.top + "px",
       timestamp: Date.now(),
     };
 
@@ -458,8 +686,8 @@ $(document).ready(function () {
         ) {
           const windowWidth = $(window).width();
           const windowHeight = $(window).height();
-          const btnWidth = floatingWrapper.outerWidth();
-          const btnHeight = floatingWrapper.outerHeight();
+          const btnWidth = 60; // Chiều rộng cố định
+          const btnHeight = 60; // Chiều cao cố định
 
           const leftPx = parseInt(position.left) || 0;
           const topPx = parseInt(position.top) || 0;
@@ -479,7 +707,6 @@ $(document).ready(function () {
             top: safeTop + "px",
             right: "auto",
             bottom: "auto",
-            transform: "none",
           });
 
           console.log("📍 Restored floating btn position safely:", {
@@ -490,13 +717,13 @@ $(document).ready(function () {
       }
     } catch (e) {
       console.error("❌ Error restoring floating btn position:", e);
+      // Reset về vị trí mặc định
       floatingWrapper.css({
         position: "fixed",
         bottom: "80px",
         right: "30px",
         left: "auto",
         top: "auto",
-        transform: "none",
       });
     }
   }
@@ -790,10 +1017,18 @@ $(document).ready(function () {
             console.log("✅ Chat loaded from database");
           } else {
             console.log("ℹ️ No chat history found in database");
+            // ✅ NẾU KHÔNG CÓ HISTORY THÌ HIỂN THỊ WELCOME
+            if (chatMessages.children().length === 0) {
+              showWelcomeMessage();
+            }
           }
         },
         error: function (xhr, status, error) {
           console.error("❌ Lỗi tải chat từ database:", error);
+          // ✅ NẾU LỖI VÀ KHÔNG CÓ MESSAGE NÀO THÌ HIỂN THỊ WELCOME
+          if (chatMessages.children().length === 0) {
+            showWelcomeMessage();
+          }
         },
       });
     }
@@ -804,6 +1039,9 @@ $(document).ready(function () {
       confirm("Bạn có chắc muốn xóa toàn bộ lịch sử chat trên tất cả trang?")
     ) {
       localStorage.removeItem(CHAT_STORAGE_KEY);
+
+      // ✅ RESET FIRST TIME FLAG ĐỂ HIỂN THỊ LẠI WELCOME
+      localStorage.removeItem(FIRST_TIME_KEY);
 
       if (isUserLoggedIn) {
         const apiPath = `${apiBasePath}chat_history.php`;
@@ -820,10 +1058,14 @@ $(document).ready(function () {
         });
       }
 
-      chatMessages.find(".ai-message").not(":first").remove();
+      // ✅ XÓA TẤT CẢ VÀ HIỂN THỊ WELCOME MESSAGE MỚI
+      chatMessages.empty();
       chatProducts.hide().empty();
+
+      showWelcomeMessage();
       appendMessage("bot", "🗑️ Đã xóa lịch sử chat trên tất cả trang!", false);
-      console.log("🗑️ Cleared global chat history");
+
+      console.log("🗑️ Cleared global chat history and reset first time flag");
     }
   }
 
@@ -848,45 +1090,65 @@ $(document).ready(function () {
     }
   }
 
-  // ✅ SỬA HÀM displayProducts - THÊM DELAY SAVE
+  // ✅ SỬA HÀM displayProducts - LƯU Ý ĐẾN THAY ĐỔI DỮ LIỆU
   function displayProducts(products) {
     if (!products || products.length === 0) return;
 
     console.log("🖼️ Displaying products:", products.length);
 
     const html = products
-      .map(
-        (product) => `
-        <div class="ai-product-card" onclick="openProductPage('${product.id}')">
-          <img src="${product.image_url}" 
-               alt="${product.name || "Sản phẩm hoa"}"
-               class="ai-product-image"
-               onerror="handleImageError(this, '${product.id}')"
-               onload="this.style.opacity='1';"
-               style="opacity: 0; transition: opacity 0.3s;">
-          <div class="ai-product-info">
-            <h4 class="ai-product-name" title="${
-              product.name || product.description
-            }">
-              ${
-                product.name ||
-                (product.description
-                  ? product.description.substring(0, 40) + "..."
-                  : "Sản phẩm hoa")
-              }
-            </h4>
-            <p class="ai-product-price">${Number(
-              product.price || 0
-            ).toLocaleString("vi-VN")}đ</p>
-            ${
-              product.score
-                ? `<small class="ai-product-score" style="color: #6c757d; font-size: 11px;">Điểm: ${product.score}</small>`
-                : ""
-            }
-          </div>
-        </div>
-      `
-      )
+      .map((product) => {
+        const productId = product.id || product.product_id || "0";
+        const productName =
+          product.name || product.description || "Sản phẩm hoa";
+
+        // ✅ SỬ DỤNG HÀM PARSER MỚI
+        let productPrice = parseVietnamesePrice(product.price);
+
+        console.log(`💰 Product "${productName}":`, {
+          original: product.price,
+          parsed: productPrice,
+        });
+
+        // Nếu giá vẫn <= 0, đặt giá mặc định
+        if (productPrice <= 0) {
+          productPrice = 500000;
+          console.log(`💰 Using default price: ${productPrice}`);
+        }
+
+        const formattedPrice = new Intl.NumberFormat("vi-VN").format(
+          productPrice
+        );
+        console.log(`💰 Final formatted: "${formattedPrice}đ"`);
+
+        return `
+                <div class="ai-product-card" onclick="openProductPage('${productId}')">
+                    <img src="${
+                      product.image_url || "./img/web/hoahong/default.jpg"
+                    }" 
+                         alt="${productName}"
+                         class="ai-product-image"
+                         onerror="handleImageError(this, '${productId}')"
+                         onload="this.style.opacity='1';"
+                         style="opacity: 0; transition: opacity 0.3s;">
+                    <div class="ai-product-info">
+                        <h4 class="ai-product-name" title="${productName}">
+                            ${
+                              productName.length > 40
+                                ? productName.substring(0, 40) + "..."
+                                : productName
+                            }
+                        </h4>
+                        <p class="ai-product-price">${formattedPrice}đ</p>
+                        ${
+                          product.score
+                            ? `<small class="ai-product-score" style="color: #6c757d; font-size: 11px;">Điểm: ${product.score}</small>`
+                            : ""
+                        }
+                    </div>
+                </div>
+            `;
+      })
       .join("");
 
     chatProducts.html(`<div class="ai-product-carousel">${html}</div>`);
@@ -1045,40 +1307,27 @@ $(document).ready(function () {
 
   window.clearChatHistory = clearChatHistory;
 
-  console.log("✅ Chatbot script loaded - Fixed products saving/loading");
+  console.log("✅ Chatbot script loaded with first-time welcome logic");
 });
 
-// ✅ CSS FIXES - GIỮ NGUYÊN
-const style = document.createElement("style");
-style.textContent = `
-  .dragging-active {
-    user-select: none !important;
-    -webkit-user-select: none !important;
-    -moz-user-select: none !important;
-    -ms-user-select: none !important;
+// ✅ THÊM CSS CHO WELCOME MESSAGE
+const welcomeStyle = document.createElement("style");
+welcomeStyle.textContent = `
+  .ai-welcome-message {
+    border-left: 4px solid #e63946;
+    background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
   }
   
-  .dragging-active * {
-    user-select: none !important;
-    -webkit-user-select: none !important;
-    -moz-user-select: none !important;
-    -ms-user-select: none !important;
-  }
-
-  .ai-chat-floating-wrapper.dragging-floating {
-    z-index: 10002 !important;
-    transition: none !important;
+  .ai-welcome-message .ai-message-content {
+    background: linear-gradient(135deg, #fff5f5 0%, #fff 100%) !important;
+    border: 1px solid #ffe0e0 !important;
   }
   
-  .ai-chat-floating-btn.dragging {
-    cursor: grabbing !important;
-    transform: scale(1.1) !important;
-    box-shadow: 0 8px 35px rgba(230, 57, 70, 0.8) !important;
-    animation: none !important;
-  }
-
-  .ai-chat-floating-wrapper {
-    transform: none !important;
+  .ai-welcome-message .ai-message-avatar {
+    background: linear-gradient(135deg, #e63946 0%, #f72585 100%);
+    animation: bounce 2s infinite;
   }
 `;
-document.head.appendChild(style);
+document.head.appendChild(welcomeStyle);
+
+// ✅ GIỮ NGUYÊN CÁC HÀM KHÁC: parseVietnamesePrice, testPriceParser, etc...

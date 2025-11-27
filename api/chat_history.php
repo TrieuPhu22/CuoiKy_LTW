@@ -1,5 +1,45 @@
 <?php
 // filepath: c:\xampp\htdocs\CuoiKy_LTW\api\chat_history.php
+
+// Thêm hàm xử lý giá chuyên biệt vào đầu file:
+function parseVietnamesePrice($priceInput) {
+    if (empty($priceInput)) return 500000; // Giá mặc định
+    
+    $priceString = trim((string)$priceInput);
+    
+    // Loại bỏ ký tự tiền tệ
+    $priceString = preg_replace('/[₫đÐ\s]/u', '', $priceString);
+    
+    // ✅ XỬ LÝ CÁC TRƯỜNG HỢP ĐẶC BIỆT
+    
+    // Case 1: "1.050.000" hoặc "2.500.000" (multiple dots)
+    if (preg_match('/^\d{1,3}(\.\d{3})+$/', $priceString)) {
+        $result = (int)str_replace('.', '', $priceString);
+        error_log("Price Case 1 - Multiple dots: '$priceString' -> $result");
+        return $result;
+    }
+    
+    // Case 2: "105.000" (single dot with 3 digits)
+    if (preg_match('/^\d{1,3}\.\d{3}$/', $priceString)) {
+        $result = (int)str_replace('.', '', $priceString);
+        error_log("Price Case 2 - Single dot: '$priceString' -> $result");
+        return $result;
+    }
+    
+    // Case 3: "1050000" (pure number)
+    if (preg_match('/^\d+$/', $priceString)) {
+        $result = (int)$priceString;
+        error_log("Price Case 3 - Pure number: '$priceString' -> $result");
+        return $result;
+    }
+    
+    // Case 4: Fallback - loại bỏ tất cả không phải số
+    $cleanPrice = preg_replace('/[^\d]/', '', $priceString);
+    $result = !empty($cleanPrice) ? (int)$cleanPrice : 500000;
+    error_log("Price Case 4 - Fallback: '$priceString' -> '$cleanPrice' -> $result");
+    return $result;
+}
+
 header('Content-Type: application/json; charset=utf-8');
 require_once(__DIR__ . '/../admin/db_connect.php');
 
@@ -34,8 +74,39 @@ switch ($action) {
 
 function saveChatHistory($conn, $data) {
     try {
-        // ✅ LƯU CẢ MESSAGES VÀ PRODUCTS DATA
-        $messages = json_encode($data['messages'] ?? [], JSON_UNESCAPED_UNICODE);
+        $messages = $data['messages'] ?? [];
+        
+        // Xử lý từng message để đảm bảo products có dữ liệu hợp lệ
+        foreach ($messages as &$msg) {
+            if (isset($msg['products']) && is_array($msg['products'])) {
+                foreach ($msg['products'] as &$product) {
+                    // ✅ SỬ DỤNG HÀM PARSER MỚI
+                    if (isset($product['price'])) {
+                        $product['price'] = parseVietnamesePrice($product['price']);
+                    } else {
+                        $product['price'] = 500000;
+                    }
+                    
+                    // ✅ Đảm bảo giá hợp lý (50k - 50tr)
+                    if ($product['price'] < 50000) {
+                        $product['price'] = 500000;
+                    } else if ($product['price'] > 50000000) {
+                        $product['price'] = 5000000;
+                    }
+                    
+                    // Chuẩn hóa tên và ID
+                    if (!isset($product['name']) || empty($product['name'])) {
+                        $product['name'] = $product['description'] ?? 'Sản phẩm hoa';
+                    }
+                    
+                    if (!isset($product['id'])) {
+                        $product['id'] = $product['product_id'] ?? '0';
+                    }
+                }
+            }
+        }
+        
+        $messagesJson = json_encode($messages, JSON_UNESCAPED_UNICODE);
         
         if (isset($_SESSION['user_id'])) {
             $user_id = $_SESSION['user_id'];
@@ -49,18 +120,17 @@ function saveChatHistory($conn, $data) {
             if ($result->num_rows > 0) {
                 $sql = "UPDATE chat_history SET messages = ?, updated_at = NOW() WHERE user_id = ?";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("si", $messages, $user_id);
+                $stmt->bind_param("si", $messagesJson, $user_id);
             } else {
                 $sql = "INSERT INTO chat_history (user_id, messages, created_at, updated_at) VALUES (?, ?, NOW(), NOW())";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("is", $user_id, $messages);
+                $stmt->bind_param("is", $user_id, $messagesJson);
             }
             
             if ($stmt->execute()) {
                 // ✅ LOG PRODUCTS COUNT
-                $messagesArray = json_decode($messages, true);
                 $productsCount = 0;
-                foreach ($messagesArray as $msg) {
+                foreach ($messages as $msg) {
                     if (isset($msg['products'])) {
                         $productsCount += count($msg['products']);
                     }
@@ -100,6 +170,34 @@ function loadChatHistory($conn) {
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
                 $messages = json_decode($row['messages'], true);
+                
+                // ✅ CHUẨN HÓA DỮ LIỆU KHI LOAD
+                if (is_array($messages)) {
+                    foreach ($messages as &$msg) {
+                        if (isset($msg['products']) && is_array($msg['products'])) {
+                            foreach ($msg['products'] as &$product) {
+                                // ✅ SỬ DỤNG HÀM PARSER MỚI
+                                if (isset($product['price'])) {
+                                    $product['price'] = parseVietnamesePrice($product['price']);
+                                } else {
+                                    $product['price'] = 500000;
+                                }
+                                
+                                // Đảm bảo giá hợp lý
+                                if ($product['price'] < 50000) {
+                                    $product['price'] = 500000;
+                                } else if ($product['price'] > 50000000) {
+                                    $product['price'] = 5000000;
+                                }
+                                
+                                // Chuẩn hóa tên
+                                if (!isset($product['name']) || empty($product['name'])) {
+                                    $product['name'] = $product['description'] ?? 'Sản phẩm hoa';
+                                }
+                            }
+                        }
+                    }
+                }
                 
                 // ✅ LOG PRODUCTS COUNT
                 $productsCount = 0;

@@ -55,22 +55,7 @@ error_log("Base Path: " . $basePath);
         </div>
         
         <div class="ai-chat-messages" id="ai-chat-messages">
-            <div class="ai-message ai-bot-message">
-                <div class="ai-message-avatar">
-                    <i class="bi bi-robot"></i>
-                </div>
-                <div class="ai-message-content">
-                    <p>👋 Xin chào! Tôi là trợ lý AI của shop hoa. Tôi có thể giúp bạn:</p>
-                    <ul>
-                        <li>🌹 Tư vấn chọn hoa theo dịp (sinh nhật, khai trương, cưới...)</li>
-                        <li>💐 Gợi ý sản phẩm cụ thể trong kho</li>
-                        <li>💰 Tư vấn giá và link xem chi tiết</li>
-                    </ul>
-                    <p><strong>Ví dụ:</strong></p>
-                    <p>• "Tôi muốn mua hoa sinh nhật giá 500k"</p>
-                    <p>• "Gợi ý hoa hồng tặng người yêu"</p>
-                </div>
-            </div>
+            <!-- ✅ XÓA WELCOME MESSAGE MẶC ĐỊNH - CHỈ ĐỂ TRỐNG -->
         </div>
         
         <div class="ai-chat-products" id="ai-chat-products" style="display: none;"></div>
@@ -99,15 +84,27 @@ error_log("Base Path: " . $basePath);
     gap: 10px;
     transition: transform 0.2s ease, z-index 0.2s ease;
     cursor: grab;
+    /* ✅ THÊM THUỘC TÍNH NÀY ĐỂ FIX LAYOUT SHIFT */
+    width: auto;
+    min-width: 60px; /* Chiều rộng tối thiểu bằng nút chat */
 }
 
-.ai-chat-floating-wrapper:hover {
-    transform: scale(1.05);
-}
-
-.ai-chat-floating-wrapper.dragging-floating {
-    z-index: 10002 !important;
-    cursor: grabbing !important;
+/* ✅ SỬA CSS GREETING ĐỂ KHÔNG ẢNH HƯỞNG LAYOUT */
+.ai-chat-greeting {
+    background: white;
+    color: #333;
+    padding: 12px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+    animation: slideInRight 0.5s ease, float 3s ease-in-out infinite;
+    /* ✅ THÊM POSITION ABSOLUTE ĐỂ KHÔNG ẢNH HƯỞNG LAYOUT */
+    position: absolute;
+    top: -50px; /* Đẩy lên trên nút chat */
+    right: 0;
+    transform-origin: bottom right;
 }
 
 .ai-chat-floating-btn {
@@ -123,31 +120,71 @@ error_log("Base Path: " . $basePath);
     box-shadow: 0 4px 20px rgba(230, 57, 70, 0.5);
     transition: all 0.3s ease;
     animation: pulse 2s infinite;
+    /* ✅ THÊM THUỘC TÍNH ĐỂ ĐẢM BẢO VỊ TRÍ CỐ ĐỊNH */
+    position: relative;
+    flex-shrink: 0;
 }
 
-.ai-chat-floating-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 30px rgba(230, 57, 70, 0.7);
+/* ✅ SỬA ANIMATION SLIDE IN RIGHT */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateX(0) translateY(0) scale(1);
+    }
+    50% {
+        transform: translateX(0) translateY(-5px) scale(1);
+    }
+}
+
+/* ✅ RESPONSIVE CHO GREETING */
+@media (max-width: 768px) {
+    .ai-chat-greeting {
+        font-size: 12px;
+        padding: 8px 15px;
+        top: -45px; /* Điều chỉnh cho mobile */
+        max-width: 200px; /* Giới hạn chiều rộng trên mobile */
+        word-wrap: break-word;
+    }
+    
+    .ai-chat-floating-wrapper {
+        bottom: 70px;
+        right: 20px;
+        min-width: 50px;
+    }
+    
+    .ai-chat-floating-btn {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+/* ✅ THÊM CSS CHO TRẠNG THÁI DRAGGING */
+.ai-chat-floating-wrapper.dragging-floating {
+    z-index: 10002 !important;
+    cursor: grabbing !important;
 }
 
 .ai-chat-floating-btn.dragging {
     cursor: grabbing !important;
     transform: scale(1.15) !important;
     box-shadow: 0 8px 40px rgba(230, 57, 70, 0.9) !important;
-    animation: none !important; /* Stop pulse animation when dragging */
+    animation: none !important;
 }
 
-.ai-chat-floating-btn i {
-    font-size: 28px;
-}
-
-@keyframes pulse {
-    0%, 100% {
-        box-shadow: 0 4px 20px rgba(230, 57, 70, 0.5);
-    }
-    50% {
-        box-shadow: 0 4px 30px rgba(230, 57, 70, 0.8);
-    }
+/* ✅ ĐẢM BẢO GREETING KHÔNG ẢNH HƯỞNG KHI DRAG */
+.ai-chat-floating-wrapper.dragging-floating .ai-chat-greeting {
+    opacity: 0.5;
+    pointer-events: none;
 }
 
 /* Câu chào bên ngoài */
