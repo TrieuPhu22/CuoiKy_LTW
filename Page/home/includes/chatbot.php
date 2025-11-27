@@ -55,22 +55,7 @@ error_log("Base Path: " . $basePath);
         </div>
         
         <div class="ai-chat-messages" id="ai-chat-messages">
-            <div class="ai-message ai-bot-message">
-                <div class="ai-message-avatar">
-                    <i class="bi bi-robot"></i>
-                </div>
-                <div class="ai-message-content">
-                    <p>👋 Xin chào! Tôi là trợ lý AI của shop hoa. Tôi có thể giúp bạn:</p>
-                    <ul>
-                        <li>🌹 Tư vấn chọn hoa theo dịp (sinh nhật, khai trương, cưới...)</li>
-                        <li>💐 Gợi ý sản phẩm cụ thể trong kho</li>
-                        <li>💰 Tư vấn giá và link xem chi tiết</li>
-                    </ul>
-                    <p><strong>Ví dụ:</strong></p>
-                    <p>• "Tôi muốn mua hoa sinh nhật giá 500k"</p>
-                    <p>• "Gợi ý hoa hồng tặng người yêu"</p>
-                </div>
-            </div>
+            <!-- ✅ XÓA WELCOME MESSAGE MẶC ĐỊNH - CHỈ ĐỂ TRỐNG -->
         </div>
         
         <div class="ai-chat-products" id="ai-chat-products" style="display: none;"></div>
