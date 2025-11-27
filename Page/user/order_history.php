@@ -12,13 +12,13 @@ include __DIR__ . '/../../admin/db_connect.php';
 
 // ✅ LẤY LỊCH SỬ ĐƠN HÀNG VÀ ĐÁNH GIÁ
 $userId = intval($_SESSION['user_id']);
-$sql = "SELECT o.id, o.customer_name, o.customer_phone, o.customer_address, 
-               o.total_price, o.status, 
+$sql = "SELECT o.id, o.customer_name, o.customer_phone, o.customer_address,
+               o.total_price, o.status,
                DATE_FORMAT(o.order_date, '%d/%m/%Y %H:%i') as formatted_date,
                r.id as review_id, r.rating, r.comment
         FROM orders o
         LEFT JOIN reviews r ON o.id = r.order_id
-        WHERE o.user_id = ? 
+        WHERE o.user_id = ?
         ORDER BY o.order_date DESC";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $userId);
@@ -37,23 +37,25 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+   
     <?php
     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
     $host = $_SERVER['HTTP_HOST'];
     $project_root = '/CuoiKy_LTW/';
     echo "<base href='{$protocol}://{$host}{$project_root}'>";
     ?>
-    
+   
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="img/favicon.png">
-    
+   
     <!-- Reset CSS -->
     <link rel="stylesheet" href="./Page/home/assets/css/reset.css">
+
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
+
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -66,7 +68,7 @@ $conn->close();
     <link rel="stylesheet" href="./Page/user/assets/css/user.css" />
     <!-- Breakpoint Css -->
     <link rel="stylesheet" href="./Page/home/assets/css/breakpoint.css" />
-    
+   
     <title>Lịch sử đơn hàng</title>
 </head>
 <body>
@@ -77,11 +79,12 @@ $conn->close();
         <div class="userContainer">
             <!-- Menu -->
             <?php require_once __DIR__ . '/../home/includes/Menu.php'; ?>
-            
+           
             <div class="userMain">
-                <div class="container mt-4">
+                <!-- left-content -->
+                <div class="container userLeft mt-4">
                     <h2 class="mb-4">Lịch sử đơn hàng</h2>
-                    
+                   
                     <?php if (empty($orders)): ?>
                         <div class="alert alert-info">
                             <i class="bi bi-info-circle me-2"></i>Bạn chưa có đơn hàng nào.
@@ -130,20 +133,20 @@ $conn->close();
                                                 </span>
                                             </td>
                                             <td>
-                                                <button class="btn btn-sm btn-outline-primary view-order-detail" 
+                                                <button class="btn btn-sm btn-outline-primary view-order-detail"
                                                         data-order-id="<?php echo $order['id']; ?>">
                                                     <i class="bi bi-eye"></i> Xem
                                                 </button>
-                                                
+                                               
                                                 <?php if ($order['status'] === 'Đã giao'): ?>
                                                     <?php if ($order['review_id']): ?>
-                                                        <button class="btn btn-sm btn-outline-success view-review" 
+                                                        <button class="btn btn-sm btn-outline-success view-review"
                                                                 data-order-id="<?php echo $order['id']; ?>"
                                                                 title="Xem đánh giá">
                                                             <i class="bi bi-star-fill"></i> Đã đánh giá
                                                         </button>
                                                     <?php else: ?>
-                                                        <button class="btn btn-sm btn-outline-warning add-review" 
+                                                        <button class="btn btn-sm btn-outline-warning add-review"
                                                                 data-order-id="<?php echo $order['id']; ?>"
                                                                 title="Đánh giá đơn hàng">
                                                             <i class="bi bi-star"></i> Đánh giá
@@ -157,6 +160,13 @@ $conn->close();
                             </table>
                         </div>
                     <?php endif; ?>
+                </div>
+                <!-- Right content -->
+                <div class="userRight">
+                    <div class="userRightContent">
+                        <a href="./Page/user/user.php">Tài khoản của tôi</a>
+                        <a href="./Page/user/order_history.php">Lịch sử đơn hàng</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -192,7 +202,7 @@ $conn->close();
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="review-order-id">
-                    
+                   
                     <div class="mb-3">
                         <label class="form-label fw-bold">Đánh giá của bạn:</label>
                         <div class="rating-stars" id="rating-stars">
@@ -205,10 +215,10 @@ $conn->close();
                         <input type="hidden" id="rating-value" value="0">
                         <small class="text-muted">Nhấp vào sao để đánh giá</small>
                     </div>
-                    
+                   
                     <div class="mb-3">
                         <label for="review-comment" class="form-label fw-bold">Nhận xét:</label>
-                        <textarea class="form-control" id="review-comment" rows="4" 
+                        <textarea class="form-control" id="review-comment" rows="4"
                                   placeholder="Chia sẻ trải nghiệm của bạn về đơn hàng này..."></textarea>
                     </div>
                 </div>
@@ -261,7 +271,7 @@ $conn->close();
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    
+   
     <script>
     $(document).ready(function() {
         let selectedRating = 0;
@@ -271,7 +281,7 @@ $conn->close();
             const orderId = $(this).data('order-id');
             const modal = new bootstrap.Modal(document.getElementById('orderDetailModal'));
             modal.show();
-            
+           
             $.ajax({
                 url: '/CuoiKy_LTW/api/orders.php',
                 method: 'POST',
@@ -292,7 +302,7 @@ $conn->close();
                             <table class="table table-sm">
                                 <thead><tr><th>Sản phẩm</th><th>SL</th><th>Đơn giá</th><th>Thành tiền</th></tr></thead>
                                 <tbody>`;
-                        
+                       
                         order.items.forEach(item => {
                             html += `<tr>
                                 <td>${item.product_name}</td>
@@ -301,12 +311,12 @@ $conn->close();
                                 <td>${(item.price * item.quantity).toLocaleString('vi-VN')}₫</td>
                             </tr>`;
                         });
-                        
+                       
                         html += `</tbody></table>
                             <div class="text-end">
                                 <h5>Tổng: <span class="text-danger">${parseFloat(order.total_price).toLocaleString('vi-VN')}₫</span></h5>
                             </div>`;
-                        
+                       
                         $('#order-detail-content').html(html);
                     } else {
                         $('#order-detail-content').html('<div class="alert alert-danger">Không tìm thấy đơn hàng!</div>');
@@ -317,7 +327,7 @@ $conn->close();
                 }
             });
         });
-        
+       
         // Mở modal đánh giá
         $(document).on('click', '.add-review', function() {
             const orderId = $(this).data('order-id');
@@ -326,7 +336,7 @@ $conn->close();
             $('#review-comment').val('');
             $('.star').removeClass('active');
             selectedRating = 0;
-            
+           
             const modal = new bootstrap.Modal(document.getElementById('reviewModal'));
             modal.show();
         });
@@ -335,7 +345,7 @@ $conn->close();
         $('#rating-stars .star').click(function() {
             selectedRating = $(this).data('rating');
             $('#rating-value').val(selectedRating);
-            
+           
             $('.star').removeClass('active');
             for (let i = 1; i <= selectedRating; i++) {
                 $(`.star[data-rating="${i}"]`).addClass('active');
@@ -361,6 +371,7 @@ $conn->close();
             const orderId = $('#review-order-id').val();
             const rating = $('#rating-value').val();
             const comment = $('#review-comment').val().trim();
+
 
             if (rating == 0) {
                 alert('Vui lòng chọn số sao đánh giá!');
@@ -397,7 +408,7 @@ $conn->close();
         // Xem đánh giá
         $(document).on('click', '.view-review', function() {
             const orderId = $(this).data('order-id');
-            
+           
             $.ajax({
                 url: '/CuoiKy_LTW/api/reviews.php',
                 method: 'POST',
@@ -417,7 +428,7 @@ $conn->close();
                                 stars += '<i class="bi bi-star text-muted"></i>';
                             }
                         }
-                        
+                       
                         const html = `
                             <div class="mb-3">
                                 <label class="fw-bold">Đánh giá:</label>
@@ -429,7 +440,7 @@ $conn->close();
                             </div>
                             <small class="text-muted">Đánh giá vào: ${review.created_at}</small>
                         `;
-                        
+                       
                         $('#view-review-content').html(html);
                         const modal = new bootstrap.Modal(document.getElementById('viewReviewModal'));
                         modal.show();
