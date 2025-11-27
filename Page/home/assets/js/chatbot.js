@@ -902,45 +902,65 @@ $(document).ready(function () {
     }
   }
 
-  // ✅ SỬA HÀM displayProducts - THÊM DELAY SAVE
+  // ✅ SỬA HÀM displayProducts - LƯU Ý ĐẾN THAY ĐỔI DỮ LIỆU
   function displayProducts(products) {
     if (!products || products.length === 0) return;
 
     console.log("🖼️ Displaying products:", products.length);
 
     const html = products
-      .map(
-        (product) => `
-        <div class="ai-product-card" onclick="openProductPage('${product.id}')">
-          <img src="${product.image_url}" 
-               alt="${product.name || "Sản phẩm hoa"}"
-               class="ai-product-image"
-               onerror="handleImageError(this, '${product.id}')"
-               onload="this.style.opacity='1';"
-               style="opacity: 0; transition: opacity 0.3s;">
-          <div class="ai-product-info">
-            <h4 class="ai-product-name" title="${
-              product.name || product.description
-            }">
-              ${
-                product.name ||
-                (product.description
-                  ? product.description.substring(0, 40) + "..."
-                  : "Sản phẩm hoa")
-              }
-            </h4>
-            <p class="ai-product-price">${Number(
-              product.price || 0
-            ).toLocaleString("vi-VN")}đ</p>
-            ${
-              product.score
-                ? `<small class="ai-product-score" style="color: #6c757d; font-size: 11px;">Điểm: ${product.score}</small>`
-                : ""
-            }
-          </div>
-        </div>
-      `
-      )
+      .map((product) => {
+        const productId = product.id || product.product_id || "0";
+        const productName =
+          product.name || product.description || "Sản phẩm hoa";
+
+        // ✅ SỬ DỤNG HÀM PARSER MỚI
+        let productPrice = parseVietnamesePrice(product.price);
+
+        console.log(`💰 Product "${productName}":`, {
+          original: product.price,
+          parsed: productPrice,
+        });
+
+        // Nếu giá vẫn <= 0, đặt giá mặc định
+        if (productPrice <= 0) {
+          productPrice = 500000;
+          console.log(`💰 Using default price: ${productPrice}`);
+        }
+
+        const formattedPrice = new Intl.NumberFormat("vi-VN").format(
+          productPrice
+        );
+        console.log(`💰 Final formatted: "${formattedPrice}đ"`);
+
+        return `
+                <div class="ai-product-card" onclick="openProductPage('${productId}')">
+                    <img src="${
+                      product.image_url || "./img/web/hoahong/default.jpg"
+                    }" 
+                         alt="${productName}"
+                         class="ai-product-image"
+                         onerror="handleImageError(this, '${productId}')"
+                         onload="this.style.opacity='1';"
+                         style="opacity: 0; transition: opacity 0.3s;">
+                    <div class="ai-product-info">
+                        <h4 class="ai-product-name" title="${productName}">
+                            ${
+                              productName.length > 40
+                                ? productName.substring(0, 40) + "..."
+                                : productName
+                            }
+                        </h4>
+                        <p class="ai-product-price">${formattedPrice}đ</p>
+                        ${
+                          product.score
+                            ? `<small class="ai-product-score" style="color: #6c757d; font-size: 11px;">Điểm: ${product.score}</small>`
+                            : ""
+                        }
+                    </div>
+                </div>
+            `;
+      })
       .join("");
 
     chatProducts.html(`<div class="ai-product-carousel">${html}</div>`);
@@ -1136,3 +1156,78 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+
+// ✅ HÀM XỬ LÝ GIÁ CHUYÊN BIỆT
+function parseVietnamesePrice(priceInput) {
+  if (!priceInput) return 0;
+
+  let priceString = priceInput.toString().trim();
+  console.log(`🔍 Original price input: "${priceString}"`);
+
+  // Loại bỏ ký tự tiền tệ và khoảng trắng
+  priceString = priceString.replace(/[₫đÐ\s]/gi, "");
+
+  // ✅ XỬ LÝ CÁC TRƯỜNG HỢP ĐẶC BIỆT
+
+  // Case 1: "1.050.000" -> 1050000
+  if (/^\d{1,3}(\.\d{3})+$/.test(priceString)) {
+    const result = parseInt(priceString.replace(/\./g, ""), 10);
+    console.log(
+      `💰 Case 1 - Multiple dots (thousand separator): "${priceString}" -> ${result}`
+    );
+    return result;
+  }
+
+  // Case 2: "105.000" -> 105000
+  if (/^\d{1,3}\.\d{3}$/.test(priceString)) {
+    const result = parseInt(priceString.replace(".", ""), 10);
+    console.log(
+      `💰 Case 2 - Single dot (thousand): "${priceString}" -> ${result}`
+    );
+    return result;
+  }
+
+  // Case 3: "1050000" (số thuần)
+  if (/^\d+$/.test(priceString)) {
+    const result = parseInt(priceString, 10);
+    console.log(`💰 Case 3 - Pure number: "${priceString}" -> ${result}`);
+    return result;
+  }
+
+  // Case 4: "1050.5" (có decimal)
+  if (/^\d+\.\d{1,2}$/.test(priceString)) {
+    const result = Math.round(parseFloat(priceString));
+    console.log(`💰 Case 4 - Decimal: "${priceString}" -> ${result}`);
+    return result;
+  }
+
+  // Case 5: Fallback - loại bỏ tất cả không phải số
+  const fallbackResult = parseInt(priceString.replace(/[^\d]/g, ""), 10) || 0;
+  console.log(`💰 Case 5 - Fallback: "${priceString}" -> ${fallbackResult}`);
+  return fallbackResult;
+}
+
+// ✅ TEST HÀM XỬ LÝ GIÁ
+function testPriceParser() {
+  const testCases = [
+    "1.050.000đ", // Expected: 1050000
+    "105.000đ", // Expected: 105000
+    "1050000", // Expected: 1050000
+    "980.000đ", // Expected: 980000
+    "500000", // Expected: 500000
+    "1.500.000", // Expected: 1500000
+    "750.000", // Expected: 750000
+  ];
+
+  console.log("🧪 Testing Vietnamese Price Parser:");
+  testCases.forEach((testCase) => {
+    const result = parseVietnamesePrice(testCase);
+    const formatted = new Intl.NumberFormat("vi-VN").format(result);
+    console.log(`✅ "${testCase}" -> ${result} -> "${formatted}đ"`);
+  });
+}
+
+// Gọi test khi load trang
+setTimeout(() => {
+  testPriceParser();
+}, 2000);
