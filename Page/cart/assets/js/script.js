@@ -188,81 +188,211 @@ $(document).ready(function () {
 
     console.log("🔘 Checkout button clicked");
 
-    const checkoutModal = new bootstrap.Modal(
-      document.getElementById("checkoutModal")
-    );
-    checkoutModal.show();
+    // ✅ SỬ DỤNG BOOTSTRAP 5 API
+    const checkoutModalEl = document.getElementById("checkoutModal");
+    if (checkoutModalEl) {
+      const checkoutModal = new bootstrap.Modal(checkoutModalEl);
+      checkoutModal.show();
+      console.log("✅ Modal opened successfully");
+    } else {
+      console.error("❌ Modal element not found!");
 
-    console.log("✅ Modal opened");
+      // ✅ FALLBACK: Tạo modal động nếu không tìm thấy
+      createDynamicModal();
+    }
+
     return false;
   });
 
-  // ===== XÁC NHẬN THANH TOÁN =====
-  $(document).on("click", "#confirm-checkout-btn", function (e) {
-    e.preventDefault();
+  // ✅ THÊM HÀM TẠO MODAL ĐỘNG
+  function createDynamicModal() {
+    console.log("🔧 Creating dynamic modal...");
 
-    console.log("🔘 Confirm checkout clicked");
+    const modalHtml = `
+      <div class="modal fade" id="dynamicCheckoutModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">
+                <i class="bi bi-credit-card me-2"></i>Thông tin thanh toán
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <form id="dynamic-checkout-form">
+                <div class="row">
+                  <div class="col-md-6">
+                    <h6 class="mb-3">Thông tin giao hàng</h6>
+                    <div class="mb-3">
+                      <label for="dynamic_customer_name" class="form-label">Họ và tên *</label>
+                      <input type="text" class="form-control" id="dynamic_customer_name" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="dynamic_customer_phone" class="form-label">Số điện thoại *</label>
+                      <input type="tel" class="form-control" id="dynamic_customer_phone" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="dynamic_customer_address" class="form-label">Địa chỉ giao hàng *</label>
+                      <textarea class="form-control" id="dynamic_customer_address" rows="3" required></textarea>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <h6 class="mb-3">Chi tiết đơn hàng</h6>
+                    <div class="alert alert-info">
+                      <p class="mb-2"><strong>Tổng cộng: </strong><span class="text-danger h5">${$(
+                        ".order-summary__total strong"
+                      ).text()}</span></p>
+                      <small><i class="bi bi-info-circle me-1"></i>Đơn hàng sẽ được giao trong 1-2 ngày.</small>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+              <button type="button" class="btn btn-success" id="dynamic-confirm-checkout-btn">
+                <i class="bi bi-check-circle me-2"></i>Xác nhận thanh toán
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
 
-    const customerName = $("#customer_name").val().trim();
-    const customerPhone = $("#customer_phone").val().trim();
-    const customerAddress = $("#customer_address").val().trim();
+    // Thêm modal vào body
+    $("body").append(modalHtml);
 
-    if (!customerName || !customerPhone || !customerAddress) {
-      showToast("Vui lòng điền đầy đủ thông tin!", false);
-      return false;
-    }
+    // Mở modal
+    const dynamicModal = new bootstrap.Modal(
+      document.getElementById("dynamicCheckoutModal")
+    );
+    dynamicModal.show();
 
-    const $btn = $(this);
-    $btn
-      .prop("disabled", true)
-      .html(
-        '<span class="spinner-border spinner-border-sm me-2"></span>Đang xử lý...'
-      );
+    console.log("✅ Dynamic modal created and opened");
+  }
 
-    console.log("📤 Sending order request...");
+  // ✅ XÁC NHẬN THANH TOÁN - HỖ TRỢ CẢ 2 MODAL
+  $(document).on(
+    "click",
+    "#confirm-checkout-btn, #dynamic-confirm-checkout-btn",
+    function (e) {
+      e.preventDefault();
 
-    $.ajax({
-      url: "/CuoiKy_LTW/api/orders.php",
-      method: "POST",
-      data: {
-        action: "create",
-        customer_name: customerName,
-        customer_phone: customerPhone,
-        customer_address: customerAddress,
-      },
-      dataType: "json",
-      success: function (response) {
-        console.log("✅ Response:", response);
+      console.log("🔘 Confirm checkout clicked");
 
-        if (response.success) {
-          const modalInstance = bootstrap.Modal.getInstance(
-            document.getElementById("checkoutModal")
-          );
-          if (modalInstance) modalInstance.hide();
+      // ✅ XÁC ĐỊNH MODAL ĐANG SỬ DỤNG
+      const isDynamicModal =
+        $(this).attr("id") === "dynamic-confirm-checkout-btn";
+      const nameSelector = isDynamicModal
+        ? "#dynamic_customer_name"
+        : "#customer_name";
+      const phoneSelector = isDynamicModal
+        ? "#dynamic_customer_phone"
+        : "#customer_phone";
+      const addressSelector = isDynamicModal
+        ? "#dynamic_customer_address"
+        : "#customer_address";
 
-          showToast("Đặt hàng thành công! Đang chuyển hướng...", true);
+      const customerName = $(nameSelector).val().trim();
+      const customerPhone = $(phoneSelector).val().trim();
+      const customerAddress = $(addressSelector).val().trim();
 
-          // ✅ SỬA LẠI ĐƯỜNG DẪN - Dùng relative path
-          setTimeout(() => {
-            window.location.href = "Page/user/order_history.php";
-          }, 1500);
-        } else {
-          showToast(response.message || "Có lỗi xảy ra!", false);
+      if (!customerName || !customerPhone || !customerAddress) {
+        showToast("Vui lòng điền đầy đủ thông tin!", false);
+        return false;
+      }
+
+      const $btn = $(this);
+      $btn
+        .prop("disabled", true)
+        .html(
+          '<span class="spinner-border spinner-border-sm me-2"></span>Đang xử lý...'
+        );
+
+      console.log("📤 Sending order request...");
+
+      $.ajax({
+        url: "/CuoiKy_LTW/api/orders.php",
+        method: "POST",
+        data: {
+          action: "create",
+          customer_name: customerName,
+          customer_phone: customerPhone,
+          customer_address: customerAddress,
+        },
+        dataType: "json",
+        success: function (response) {
+          console.log("✅ Response:", response);
+
+          if (response.success) {
+            // ✅ ĐÓNG MODAL
+            const modalSelector = isDynamicModal
+              ? "#dynamicCheckoutModal"
+              : "#checkoutModal";
+            const modalEl = document.querySelector(modalSelector);
+            if (modalEl) {
+              const modalInstance = bootstrap.Modal.getInstance(modalEl);
+              if (modalInstance) modalInstance.hide();
+            }
+
+            showToast("Đặt hàng thành công! Đang chuyển hướng...", true);
+
+            // ✅ CHUYỂN HƯỚNG
+            setTimeout(() => {
+              window.location.href = "Page/user/order_history.php";
+            }, 1500);
+          } else {
+            showToast(response.message || "Có lỗi xảy ra!", false);
+            $btn
+              .prop("disabled", false)
+              .html(
+                '<i class="bi bi-check-circle me-2"></i>Xác nhận thanh toán'
+              );
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error("❌ Error:", error);
+          console.error("Response:", xhr.responseText);
+          showToast("Lỗi kết nối server!", false);
           $btn
             .prop("disabled", false)
             .html('<i class="bi bi-check-circle me-2"></i>Xác nhận thanh toán');
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error("❌ Error:", error);
-        console.error("Response:", xhr.responseText);
-        showToast("Lỗi kết nối server!", false);
-        $btn
-          .prop("disabled", false)
-          .html('<i class="bi bi-check-circle me-2"></i>Xác nhận thanh toán');
-      },
-    });
+        },
+      });
 
-    return false;
-  });
+      return false;
+    }
+  );
+
+  // ✅ THÊM CSS CHO TOAST NOTIFICATIONS
+  const toastCSS = `
+    <style>
+      .toast-notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 12px 20px;
+        border-radius: 6px;
+        color: white;
+        font-weight: 500;
+        z-index: 10000;
+        opacity: 0;
+        transform: translateX(100%);
+        transition: all 0.3s ease;
+      }
+      .toast-notification.show {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      .toast-notification.toast-success {
+        background-color: #28a745;
+      }
+      .toast-notification.toast-error {
+        background-color: #dc3545;
+      }
+    </style>
+  `;
+  $("head").append(toastCSS);
+
+  console.log("✅ Cart script loaded successfully");
 });
