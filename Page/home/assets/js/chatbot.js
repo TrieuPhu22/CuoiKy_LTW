@@ -159,23 +159,83 @@ $(document).ready(function () {
       }
     }, 1000);
 
-    // ✅ HIỂN THỊ GREETING THEO TRANG
-    if (isProductsPage) {
-      setTimeout(() => {
-        $("#ai-chat-greeting")
-          .text("Cần tư vấn sản phẩm?")
-          .fadeIn()
-          .delay(4000)
-          .fadeOut();
-      }, 1500);
-    } else {
-      setTimeout(() => {
-        $("#ai-chat-greeting").fadeIn().delay(5000).fadeOut();
-      }, 3000);
-    }
+    // ✅ SỬA PHẦN HIỂN THỊ GREETING
+    setTimeout(() => {
+      showGreeting();
+    }, 1000);
 
     console.log("✅ Chatbot initialized successfully");
     return true;
+  }
+
+  // ✅ THÊM HÀM RIÊNG ĐỂ HIỂN THỊ GREETING
+  function showGreeting() {
+    const isProductsPage = window.location.pathname.includes("/Page/products/");
+    const greetingElement = $("#ai-chat-greeting");
+
+    if (!greetingElement.length) return;
+
+    // Đặt text phù hợp
+    const greetingText = isProductsPage
+      ? "Cần tư vấn sản phẩm?"
+      : "Bạn cần hỗ trợ gì ạ?";
+    greetingElement.text(greetingText);
+
+    // ✅ HIỂN THỊ VỚI ANIMATION MƯỢT MÀ
+    greetingElement
+      .css({
+        opacity: 0,
+        transform: "translateX(20px) scale(0.8)",
+      })
+      .show()
+      .animate(
+        {
+          opacity: 1,
+        },
+        {
+          duration: 500,
+          step: function (now, fx) {
+            if (fx.prop === "opacity") {
+              const progress = now;
+              const translateX = 20 * (1 - progress);
+              const scale = 0.8 + 0.2 * progress;
+              $(this).css(
+                "transform",
+                `translateX(${translateX}px) scale(${scale})`
+              );
+            }
+          },
+          complete: function () {
+            $(this).css("transform", "translateX(0) scale(1)");
+
+            // ✅ TỰ ĐỘNG ẨN SAU 4 GIÂY
+            setTimeout(() => {
+              greetingElement.animate(
+                {
+                  opacity: 0,
+                },
+                {
+                  duration: 300,
+                  step: function (now, fx) {
+                    if (fx.prop === "opacity") {
+                      const progress = 1 - now;
+                      const translateX = 20 * progress;
+                      const scale = 1 - 0.2 * progress;
+                      $(this).css(
+                        "transform",
+                        `translateX(${translateX}px) scale(${scale})`
+                      );
+                    }
+                  },
+                  complete: function () {
+                    $(this).hide();
+                  },
+                }
+              );
+            }, 4000);
+          },
+        }
+      );
   }
 
   // ✅ SETUP EVENT HANDLERS - GIỮ NGUYÊN
@@ -424,17 +484,12 @@ $(document).ready(function () {
   function saveFloatingBtnPosition() {
     if (!floatingWrapper.length) return;
 
-    const currentPos = floatingWrapper.position();
-    const currentCSS = {
-      left: floatingWrapper.css("left"),
-      top: floatingWrapper.css("top"),
-    };
+    // ✅ CHỈ LẤY VỊ TRÍ CỦA WRAPPER, BỎ QUA GREETING
+    const rect = floatingWrapper[0].getBoundingClientRect();
 
     const position = {
-      left: currentCSS.left,
-      top: currentCSS.top,
-      posLeft: currentPos.left,
-      posTop: currentPos.top,
+      left: rect.left + "px",
+      top: rect.top + "px",
       timestamp: Date.now(),
     };
 
@@ -458,8 +513,8 @@ $(document).ready(function () {
         ) {
           const windowWidth = $(window).width();
           const windowHeight = $(window).height();
-          const btnWidth = floatingWrapper.outerWidth();
-          const btnHeight = floatingWrapper.outerHeight();
+          const btnWidth = 60; // Chiều rộng cố định
+          const btnHeight = 60; // Chiều cao cố định
 
           const leftPx = parseInt(position.left) || 0;
           const topPx = parseInt(position.top) || 0;
@@ -479,7 +534,6 @@ $(document).ready(function () {
             top: safeTop + "px",
             right: "auto",
             bottom: "auto",
-            transform: "none",
           });
 
           console.log("📍 Restored floating btn position safely:", {
@@ -490,13 +544,13 @@ $(document).ready(function () {
       }
     } catch (e) {
       console.error("❌ Error restoring floating btn position:", e);
+      // Reset về vị trí mặc định
       floatingWrapper.css({
         position: "fixed",
         bottom: "80px",
         right: "30px",
         left: "auto",
         top: "auto",
-        transform: "none",
       });
     }
   }
