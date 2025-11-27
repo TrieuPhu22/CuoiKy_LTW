@@ -12,6 +12,8 @@ include 'admin_auth_check.php';
     <link rel="icon" type="image/png" href="../img/favicon.png">
     <!-- Tải jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- ✅ THÊM CHART.JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
     rel="stylesheet"
@@ -75,21 +77,56 @@ include 'admin_auth_check.php';
                 <!-- Dashboard Section -->
                 <div id="dashboard-section" class="content-section" style="display: block;">
                     <h3 class="content-title">Dashboard</h3>
+                    
+                    <!-- Cards thống kê -->
                     <div class="dashboard-grid">
                         <div class="card">
                             <div class="card-title">Tổng doanh thu</div>
-                            <div class="card-value">12.000.000 đ</div>
-                            <div class="card-footer text-green-600">+15% so với tháng trước</div>
+                            <div class="card-value" id="total-revenue">Đang tải...</div>
+                            <div class="card-footer text-green-600">Từ đơn hàng đã giao</div>
                         </div>
                         <div class="card">
                             <div class="card-title">Đơn hàng mới</div>
-                            <div class="card-value">32</div>
+                            <div class="card-value" id="new-orders">Đang tải...</div>
                             <div class="card-footer text-gray-500">Trong 24 giờ qua</div>
                         </div>
                         <div class="card">
-                            <div class="card-title">Người dùng đăng ký</div>
-                            <div class="card-value">10</div>
-                            <div class="card-footer text-green-600">+5 mới hôm nay</div>
+                            <div class="card-title">Người dùng mới</div>
+                            <div class="card-value" id="new-users">Đang tải...</div>
+                            <div class="card-footer text-green-600">Đăng ký hôm nay</div>
+                        </div>
+                        <div class="card">
+                            <div class="card-title">Đơn hàng chờ xử lý</div>
+                            <div class="card-value" id="pending-orders">Đang tải...</div>
+                            <div class="card-footer text-orange-600">Cần xử lý</div>
+                        </div>
+                        <div class="card">
+                            <div class="card-title">Tổng sản phẩm</div>
+                            <div class="card-value" id="total-products">Đang tải...</div>
+                            <div class="card-footer text-blue-600">Trong kho</div>
+                        </div>
+                    </div>
+
+                    <!-- ✅ THÊM PHẦN BIỂU ĐỒ -->
+                    <div class="charts-section">
+                        <div class="charts-grid">
+                            <!-- Biểu đồ doanh thu theo tuần -->
+                            <div class="chart-container">
+                                <h4>Doanh thu 7 tuần gần nhất</h4>
+                                <canvas id="weeklyRevenueChart"></canvas>
+                            </div>
+                            
+                            <!-- Biểu đồ doanh thu theo tháng -->
+                            <div class="chart-container">
+                                <h4>Doanh thu 6 tháng gần nhất</h4>
+                                <canvas id="monthlyRevenueChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Biểu đồ tròn trạng thái đơn hàng -->
+                        <div class="chart-container chart-center">
+                            <h4>Thống kê đơn hàng theo trạng thái</h4>
+                            <canvas id="orderStatusChart"></canvas>
                         </div>
                     </div>
                 </div>

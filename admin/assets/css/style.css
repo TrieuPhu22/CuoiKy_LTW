@@ -52,7 +52,6 @@ td {
   text-align: left;
 }
 
-
 /* --- Layout Chính --- */
 .container {
   display: flex;
@@ -185,6 +184,7 @@ td {
 
 /* --- Dashboard Cards --- */
 .dashboard-grid {
+  margin-bottom: 30px; /* ✅ Khoảng cách với biểu đồ */
   margin-top: 1rem; /* mt-4 */
   display: grid;
   grid-template-columns: repeat(1, 1fr);
@@ -678,18 +678,100 @@ footer {
   flex-shrink: 0;
 }
 
-/* ✅ RESPONSIVE */
+/* ===== BIỂU ĐỒ DASHBOARD ===== */
+.charts-section {
+  margin-top: 30px;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.chart-container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  height: 400px; /* ✅ Tăng chiều cao cố định */
+}
+
+.chart-container h4 {
+  margin-bottom: 15px;
+  color: #374151;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  height: 25px; /* ✅ Chiều cao cố định cho tiêu đề */
+}
+
+.chart-container canvas {
+  position: absolute !important; /* ✅ Vị trí tuyệt đối */
+  top: 50px !important; /* ✅ Cách tiêu đề */
+  left: 20px !important;
+  right: 20px !important;
+  bottom: 20px !important;
+  width: calc(100% - 40px) !important; /* ✅ Chiều rộng cố định */
+  height: calc(100% - 70px) !important; /* ✅ Chiều cao cố định */
+  max-height: none !important; /* ✅ Bỏ giới hạn max-height */
+}
+
+.chart-center {
+  max-width: 600px; /* ✅ Tăng chiều rộng */
+  margin: 0 auto;
+  height: 450px; /* ✅ Chiều cao riêng cho biểu đồ tròn */
+}
+
+.chart-center canvas {
+  height: calc(
+    100% - 70px
+  ) !important; /* ✅ Đảm bảo biểu đồ tròn không bị méo */
+}
+
+/* Thêm vào cuối phần biểu đồ */
+/* ===== FIX CANVAS RESIZE ISSUE ===== */
+.charts-section .chart-container {
+  overflow: hidden; /* ✅ Ngăn overflow */
+}
+
+.charts-section canvas {
+  display: block !important;
+  box-sizing: border-box !important;
+}
+
+/* ===== RESPONSIVE CHO BIỂU ĐỒ ===== */
+@media (max-width: 1024px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 768px) {
-  .auth-container {
-    padding: 20px 15px;
-    min-height: calc(100vh - 150px);
+  .chart-container {
+    height: 300px;
+    padding: 15px;
   }
 
-  .auth-form {
-    padding: 30px 20px;
+  .chart-container h4 {
+    font-size: 14px;
+    margin-bottom: 10px;
   }
 
-  .auth-title {
-    font-size: 24px;
+  .chart-container canvas {
+    top: 40px !important;
+    height: calc(100% - 55px) !important;
   }
+
+  .chart-center {
+    height: 350px;
+  }
+}
+
+/* Dashboard Section cố định */
+#dashboard-section {
+  min-height: 100vh; /* ✅ Chiều cao tối thiểu */
+  overflow-y: auto; /* ✅ Cho phép scroll */
 }

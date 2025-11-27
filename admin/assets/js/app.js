@@ -64,6 +64,7 @@ $(document).ready(function () {
   // --- XỬ LÝ CHUYỂN TAB ---
 
   // Tải dữ liệu lần đầu
+  loadDashboardStats(); // ✅ Thêm dòng này
   loadProducts();
 
   $(".nav-link").on("click", function (e) {
@@ -77,12 +78,18 @@ $(document).ready(function () {
     $(this).addClass("active");
 
     // Tải dữ liệu tương ứng khi chuyển tab
-    if (targetId === "products-section") {
+    if (targetId === "dashboard-section") {
+      // ✅ Thêm điều kiện này
+      loadDashboardStats();
+    } else if (targetId === "products-section") {
       loadProducts();
     } else if (targetId === "users-section") {
       loadUsers();
     } else if (targetId === "orders-section") {
       loadOrders();
+    } else if (targetId === "reviews-section") {
+      // ✅ Thêm điều kiện này
+      loadReviews();
     }
   });
 
@@ -1091,4 +1098,238 @@ $(document).ready(function () {
   $(document).on("click", '[data-target="reviews-section"]', function () {
     loadReviews();
   });
+
+  // ===== BIẾN TOÀN CỤC CHO BIỂU ĐỒ =====
+  let weeklyChart, monthlyChart, statusChart;
+
+  // Hàm load thống kê Dashboard (CẬP NHẬT)
+  function loadDashboardStats() {
+    $.ajax({
+      url: "../api/dashboard.php",
+      method: "GET",
+      dataType: "json",
+      success: function (response) {
+        if (response.success) {
+          const data = response.data;
+
+          // Cập nhật các giá trị thống kê
+          $("#total-revenue").text(
+            new Intl.NumberFormat("vi-VN").format(data.total_revenue) + " đ"
+          );
+          $("#new-orders").text(data.new_orders);
+          $("#new-users").text(data.new_users);
+          $("#pending-orders").text(data.pending_orders);
+          $("#total-products").text(data.total_products);
+
+          // ✅ VẼ CÁC BIỂU ĐỒ
+          drawWeeklyRevenueChart(data.weekly_revenue);
+          drawMonthlyRevenueChart(data.monthly_revenue);
+          drawOrderStatusChart(data.order_status);
+        }
+      },
+      error: function () {
+        console.error("Lỗi khi tải thống kê Dashboard");
+        $(".card-value").text("Lỗi");
+      },
+    });
+  }
+
+  // ===== VẼ BIỂU ĐỒ DOANH THU THEO TUẦN =====
+  function drawWeeklyRevenueChart(data) {
+    const canvas = document.getElementById("weeklyRevenueChart");
+    const ctx = canvas.getContext("2d");
+
+    if (weeklyChart) {
+      weeklyChart.destroy();
+    }
+
+    weeklyChart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: data.labels,
+        datasets: [
+          {
+            label: "Doanh thu (VNĐ)",
+            data: data.data,
+            borderColor: "#3b82f6",
+            backgroundColor: "rgba(59, 130, 246, 0.1)",
+            borderWidth: 3,
+            fill: true,
+            tension: 0.4,
+            pointBackgroundColor: "#3b82f6",
+            pointBorderColor: "#ffffff",
+            pointBorderWidth: 2,
+            pointRadius: 5,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false, // ✅ Quan trọng
+        interaction: {
+          intersect: false,
+        },
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+        scales: {
+          x: {
+            display: true,
+            grid: {
+              color: "rgba(0, 0, 0, 0.1)",
+            },
+          },
+          y: {
+            display: true,
+            beginAtZero: true,
+            grid: {
+              color: "rgba(0, 0, 0, 0.1)",
+            },
+            ticks: {
+              callback: function (value) {
+                return new Intl.NumberFormat("vi-VN").format(value) + "đ";
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  // ===== VẼ BIỂU ĐỒ DOANH THU THEO THÁNG =====
+  function drawMonthlyRevenueChart(data) {
+    const canvas = document.getElementById("monthlyRevenueChart");
+    const ctx = canvas.getContext("2d");
+
+    if (monthlyChart) {
+      monthlyChart.destroy();
+    }
+
+    monthlyChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: data.labels,
+        datasets: [
+          {
+            label: "Doanh thu (VNĐ)",
+            data: data.data,
+            backgroundColor: [
+              "#f59e0b",
+              "#10b981",
+              "#3b82f6",
+              "#8b5cf6",
+              "#ef4444",
+              "#06b6d4",
+            ],
+            borderColor: [
+              "#d97706",
+              "#059669",
+              "#2563eb",
+              "#7c3aed",
+              "#dc2626",
+              "#0891b2",
+            ],
+            borderWidth: 1,
+            borderRadius: 6,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false, // ✅ Quan trọng
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+        scales: {
+          x: {
+            display: true,
+            grid: {
+              color: "rgba(0, 0, 0, 0.1)",
+            },
+          },
+          y: {
+            display: true,
+            beginAtZero: true,
+            grid: {
+              color: "rgba(0, 0, 0, 0.1)",
+            },
+            ticks: {
+              callback: function (value) {
+                return new Intl.NumberFormat("vi-VN").format(value) + "đ";
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  // ===== VẼ BIỂU ĐỒ TRÒN TRẠNG THÁI ĐƠN HÀNG =====
+  function drawOrderStatusChart(data) {
+    const canvas = document.getElementById("orderStatusChart");
+    const ctx = canvas.getContext("2d");
+
+    if (statusChart) {
+      statusChart.destroy();
+    }
+
+    statusChart = new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: data.labels,
+        datasets: [
+          {
+            data: data.data,
+            backgroundColor: [
+              "#10b981", // Đã giao - xanh lá
+              "#f59e0b", // Đang xử lý - vàng
+              "#ef4444", // Đã hủy - đỏ
+            ],
+            borderColor: "#ffffff",
+            borderWidth: 3,
+            hoverOffset: 10,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false, // ✅ Quan trọng
+        plugins: {
+          legend: {
+            position: "bottom",
+            labels: {
+              padding: 15, // ✅ Giảm padding
+              usePointStyle: true,
+              pointStyle: "circle",
+              font: {
+                size: 12, // ✅ Giảm font size
+              },
+            },
+          },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                const percentage = ((context.raw / total) * 100).toFixed(1);
+                return `${context.label}: ${context.raw} đơn (${percentage}%)`;
+              },
+            },
+          },
+        },
+        layout: {
+          padding: {
+            top: 0, // ✅ Bỏ padding trên
+            bottom: 10, // ✅ Giảm padding dưới
+          },
+        },
+      },
+    });
+  }
+
+  // Tải thống kê Dashboard lần đầu
+  loadDashboardStats();
 });
