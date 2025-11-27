@@ -26,6 +26,26 @@ $(document).ready(function () {
     }, 3000);
   }
 
+  // ✅ HÀM RESET MODAL VÀ XÓA BACKDROP
+  function resetModal() {
+    // Xóa tất cả backdrop còn sót lại
+    $(".modal-backdrop").remove();
+
+    // Đảm bảo body không bị lock scroll
+    $("body").removeClass("modal-open").css({
+      overflow: "",
+      "padding-right": "",
+    });
+
+    // Reset form
+    $("#checkout-form")[0].reset();
+
+    // Reset button
+    $("#confirm-checkout-btn")
+      .prop("disabled", false)
+      .html('<i class="bi bi-check-circle me-2"></i>Xác nhận thanh toán');
+  }
+
   // Hàm cập nhật tổng tiền
   function updateCartTotal() {
     $.ajax({
@@ -181,20 +201,59 @@ $(document).ready(function () {
     }
   });
 
-  // ===== NÚT THANH TOÁN - CHỈ MỞ MODAL =====
+  // ===== NÚT THANH TOÁN - MỞ MODAL =====
   $(document).on("click", "#checkout-btn", function (e) {
     e.preventDefault();
     e.stopPropagation();
 
     console.log("🔘 Checkout button clicked");
 
+    // ✅ Reset trước khi mở modal
+    resetModal();
+
+    // Mở modal bằng Bootstrap 5
     const checkoutModal = new bootstrap.Modal(
-      document.getElementById("checkoutModal")
+      document.getElementById("checkoutModal"),
+      {
+        backdrop: true,
+        keyboard: true,
+        focus: true,
+      }
     );
     checkoutModal.show();
 
     console.log("✅ Modal opened");
-    return false;
+  });
+
+  // ✅ XỬ LÝ KHI ĐÓNG MODAL
+  $("#checkoutModal").on("hidden.bs.modal", function () {
+    console.log("🔘 Modal closed");
+    resetModal();
+  });
+
+  // ✅ XỬ LÝ KHI BẤM NÚT HỦY
+  $(document).on("click", "[data-bs-dismiss='modal']", function () {
+    console.log("🔘 Cancel button clicked");
+    const modalInstance = bootstrap.Modal.getInstance(
+      document.getElementById("checkoutModal")
+    );
+    if (modalInstance) {
+      modalInstance.hide();
+    }
+    resetModal();
+  });
+
+  // ✅ XỬ LÝ KHI BẤM ESC HOẶC CLICK BACKDROP
+  $(document).on("keydown", function (e) {
+    if (e.key === "Escape") {
+      const modalInstance = bootstrap.Modal.getInstance(
+        document.getElementById("checkoutModal")
+      );
+      if (modalInstance) {
+        modalInstance.hide();
+        resetModal();
+      }
+    }
   });
 
   // ===== XÁC NHẬN THANH TOÁN =====
@@ -238,11 +297,15 @@ $(document).ready(function () {
           const modalInstance = bootstrap.Modal.getInstance(
             document.getElementById("checkoutModal")
           );
-          if (modalInstance) modalInstance.hide();
+          if (modalInstance) {
+            modalInstance.hide();
+          }
+
+          // ✅ Reset sau khi thành công
+          resetModal();
 
           showToast("Đặt hàng thành công! Đang chuyển hướng...", true);
 
-          // ✅ SỬA LẠI ĐƯỜNG DẪN - Dùng relative path
           setTimeout(() => {
             window.location.href = "Page/user/order_history.php";
           }, 1500);

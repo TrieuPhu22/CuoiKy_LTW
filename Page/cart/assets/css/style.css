@@ -402,3 +402,117 @@ header {
 
 /* ==================================================================footer fixed=============================================================== */
 
+/* Toast Notification Styles */
+.toast-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  z-index: 9999;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.3s ease;
+  max-width: 350px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.toast-notification.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.toast-success {
+  background-color: #28a745;
+  border-left: 4px solid #1e7e34;
+}
+
+.toast-error {
+  background-color: #dc3545;
+  border-left: 4px solid #c82333;
+}
+
+/* Modal Customization */
+#checkoutModal .modal-content {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+#checkoutModal .modal-header {
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 12px 12px 0 0;
+  border-bottom: none;
+}
+
+#checkoutModal .modal-title {
+  font-weight: 600;
+}
+
+#checkoutModal .btn-close {
+  filter: invert(1);
+}
+
+#checkoutModal .form-control {
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  padding: 10px 15px;
+  transition: border-color 0.3s ease;
+}
+
+#checkoutModal .form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(237, 107, 135, 0.25);
+}
+
+#checkoutModal .alert-info {
+  background-color: #f8f9fa;
+  border: 2px solid var(--primary-color);
+  border-radius: 8px;
+  color: var(--third-color);
+}
+
+#confirm-checkout-btn {
+  background-color: #28a745;
+  border: none;
+  padding: 10px 20px;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+#confirm-checkout-btn:hover {
+  background-color: #218838;
+}
+
+#confirm-checkout-btn:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Responsive cho mobile */
+@media (max-width: 768px) {
+  .toast-notification {
+    right: 10px;
+    left: 10px;
+    max-width: none;
+  }
+
+  .cart-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+
+  .cart-item__actions {
+    justify-content: center;
+  }
+
+  .order-summary {
+    position: static;
+    margin-top: 20px;
+  }
+}

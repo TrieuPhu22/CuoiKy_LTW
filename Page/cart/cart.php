@@ -219,7 +219,7 @@ $finalTotal = $cartTotal + $shippingFee - $discount;
                         </div>
                         
                         <!-- Đảm bảo nút checkout ĐÚNG cấu trúc này -->
-                    <button class="btn btn-success w-100" id="checkout-btn" type="button">
+                    <button class="btn btn-success w-100" id="checkout-btn" type="button" data-bs-toggle="modal" data-bs-target="#checkoutModal">
                         <i class="bi bi-credit-card me-2"></i>Thanh toán
                     </button>
                     </div>
@@ -243,5 +243,42 @@ $finalTotal = $cartTotal + $shippingFee - $discount;
 
     <!-- ✅ INCLUDE CHATBOT CUỐI CÙNG -->
     <?php include __DIR__ . '/../home/includes/chatbot.php'; ?>
-</body>
+    
+    <!-- Checkout Modal -->
+<div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="checkoutModalLabel">Thông tin đặt hàng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="checkout-form">
+                    <div class="mb-3">
+                        <label for="customer_name" class="form-label">Họ và tên *</label>
+                        <input type="text" class="form-control" id="customer_name" name="customer_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="customer_phone" class="form-label">Số điện thoại *</label>
+                        <input type="tel" class="form-control" id="customer_phone" name="customer_phone" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="customer_address" class="form-label">Địa chỉ giao hàng *</label>
+                        <textarea class="form-control" id="customer_address" name="customer_address" rows="3" required></textarea>
+                    </div>
+                    <div class="alert alert-info">
+                        <strong>Tổng tiền: </strong><span id="modal-total-price"><?php echo number_format($finalTotal, 0, ',', '.'); ?>₫</span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-success" id="confirm-checkout-btn">
+                    <i class="bi bi-check-circle me-2"></i>Xác nhận thanh toán
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+  </body>
 </html>
