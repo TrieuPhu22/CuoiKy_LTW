@@ -81,29 +81,13 @@ $finalTotal = $cartTotal + $shippingFee - $discount;
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="img/favicon.png">
     
-    <!-- Reset CSS -->
-    <link rel="stylesheet" href="Page/cart/assets/css/reset.css" />
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Bootstrap CSS -->
-    <link
-      rel="stylesheet"
-      href="node_modules/bootstrap/dist/css/bootstrap.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="node_modules/bootstrap-icons/font/bootstrap-icons.css"
-    />
+    <!-- ✅ FIX: SỬ DỤNG CDN CHO BOOTSTRAP CSS -->
+    <!-- Bootstrap CSS từ CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
     <!-- Your CSS -->
-    
+    <link rel="stylesheet" href="Page/cart/assets/css/reset.css" />
     <link rel="stylesheet" href="Page/cart/assets/css/style.css" />
     <link rel="stylesheet" href="Page/home/assets/css/style.css" />
     <link rel="stylesheet" href="Page/home/assets/css/breakpoint.css"/>
@@ -228,14 +212,82 @@ $finalTotal = $cartTotal + $shippingFee - $discount;
         <?php endif; ?>
     </main>
 
+    <!-- ✅ THÊM MODAL THANH TOÁN -->
+    <!-- Modal Thanh toán -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="checkoutModalLabel">
+                        <i class="bi bi-credit-card me-2"></i>Thông tin thanh toán
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="checkout-form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="mb-3">Thông tin giao hàng</h6>
+                                <div class="mb-3">
+                                    <label for="customer_name" class="form-label">Họ và tên *</label>
+                                    <input type="text" class="form-control" id="customer_name" name="customer_name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="customer_phone" class="form-label">Số điện thoại *</label>
+                                    <input type="tel" class="form-control" id="customer_phone" name="customer_phone" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="customer_address" class="form-label">Địa chỉ giao hàng *</label>
+                                    <textarea class="form-control" id="customer_address" name="customer_address" rows="3" required></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="mb-3">Chi tiết đơn hàng</h6>
+                                <div class="order-summary-modal">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Tạm tính:</span>
+                                        <strong><?php echo number_format($cartTotal, 0, ',', '.'); ?>₫</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Phí vận chuyển:</span>
+                                        <strong><?php echo number_format($shippingFee, 0, ',', '.'); ?>₫</strong>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <span class="h6">Tổng cộng:</span>
+                                        <strong class="h5 text-danger" id="modal-total-price"><?php echo number_format($finalTotal, 0, ',', '.'); ?>₫</strong>
+                                    </div>
+                                    
+                                    <div class="alert alert-info">
+                                        <i class="bi bi-info-circle me-2"></i>
+                                        <small>Đơn hàng sẽ được xác nhận và giao trong 1-2 ngày làm việc.</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-2"></i>Hủy
+                    </button>
+                    <button type="button" class="btn btn-success" id="confirm-checkout-btn">
+                        <i class="bi bi-check-circle me-2"></i>Xác nhận thanh toán
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- ======== Footer (include) ======== -->
     <?php include __DIR__ . '/../home/includes/Footer.php'; ?>
     
+    <!-- ✅ FIX: SỬ DỤNG CDN CHO BOOTSTRAP THAY VÌ NODE_MODULES -->
     <!-- jQuery (load trước) -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     
-    <!-- Bootstrap JS & deps -->  
-    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <!-- Bootstrap JS & deps từ CDN -->  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom JS -->
     <script src="Page/cart/assets/js/script.js"></script>
