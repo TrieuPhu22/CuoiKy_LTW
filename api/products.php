@@ -40,7 +40,6 @@ function handleFileUpload($fileData, $oldImageUrl = '') {
 
     return $oldImageUrl;
 }
-
 // ===================================
 // HÀM: LẤY SUBCATEGORIES THEO CATEGORY
 // ===================================
